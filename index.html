@@ -2,387 +2,3465 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Thịt Chó Ông Trung - V2</title>
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<title>Thịt Chó Ông Trung - V3</title>
+
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:#171717;color:#f4f1e8;font-family:system-ui,Arial,sans-serif;overflow-x:hidden}
-button,input{font:inherit}
-button{border:0;border-radius:12px;padding:12px 14px;background:#d99b38;color:#171717;font-weight:800;cursor:pointer;min-height:44px}
-button.secondary{background:#343434;color:#eee}
-button.danger{background:#b84c42;color:white}
-button:disabled{opacity:.45;cursor:not-allowed}
-#game{max-width:900px;margin:auto;min-height:100vh;background:#202020}
-.screen{padding:20px;min-height:100vh}
-.hidden{display:none!important}
-h1,h2,h3{margin:0 0 10px}
-p{line-height:1.45}
-.title{text-align:center;padding-top:9vh}
-.title h1{font-size:clamp(34px,9vw,72px);line-height:1;color:#e3aa49;text-shadow:3px 3px #000}
-.subtitle{color:#cfc6b4}
-.card{background:#2b2b2b;border:1px solid #464646;border-radius:18px;padding:16px;margin:12px 0}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.center{justify-content:center}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.stat{background:#292929;border-radius:12px;padding:10px;text-align:center}
-.stat b{display:block;font-size:18px;color:#f0b85b}
-.bar{height:10px;background:#111;border-radius:10px;overflow:hidden}
-.bar>i{display:block;height:100%;background:#e3aa49}
-#canvasWrap{position:relative;background:#111;border-radius:18px;overflow:hidden;border:1px solid #555}
-canvas{display:block;width:100%;height:auto;image-rendering:auto}
-#touch{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;max-width:330px;margin-left:auto;margin-right:auto}
-#touch button{background:#333;color:#eee;font-size:20px}
-#touch .blank{visibility:hidden}
-.actiongrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
-.small{font-size:13px;color:#bdb7aa}
-.good{color:#8bd38b}.bad{color:#f08075}.gold{color:#f2bd5b}
-.modal{position:fixed;inset:0;background:#000b;display:flex;align-items:center;justify-content:center;padding:16px;z-index:10}
-.modalBox{width:min(560px,100%);max-height:90vh;overflow:auto;background:#242424;border:1px solid #555;border-radius:18px;padding:18px}
-.menuBtns{display:grid;gap:10px;max-width:420px;margin:25px auto}
-input{width:100%;padding:13px;border-radius:12px;border:1px solid #666;background:#151515;color:#fff}
-.table{width:100%;border-collapse:collapse}.table td,.table th{padding:9px;border-bottom:1px solid #444;text-align:left}
-.log{max-height:170px;overflow:auto;font-size:13px}
-.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#3b3324;color:#efc36d;font-size:12px}
-@media(max-width:620px){.stats{grid-template-columns:repeat(2,1fr)}.screen{padding:12px}.actiongrid{grid-template-columns:1fr}.title{padding-top:5vh}}
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+}
+
+body{
+    background:#101010;
+    color:#f5f0e7;
+    font-family:Arial,system-ui,sans-serif;
+    overflow-x:hidden;
+}
+
+button,input{
+    font:inherit;
+}
+
+button{
+    border:0;
+    border-radius:12px;
+    padding:12px 15px;
+    min-height:44px;
+    background:#d89a38;
+    color:#171717;
+    font-weight:800;
+    cursor:pointer;
+    transition:.15s;
+}
+
+button:hover{
+    filter:brightness(1.08);
+}
+
+button:active{
+    transform:scale(.97);
+}
+
+button.secondary{
+    background:#353535;
+    color:#eee;
+}
+
+button.danger{
+    background:#b8493f;
+    color:white;
+}
+
+button:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+input{
+    width:100%;
+    padding:13px;
+    border:1px solid #666;
+    border-radius:12px;
+    background:#151515;
+    color:white;
+    outline:none;
+}
+
+input:focus{
+    border-color:#dca047;
+}
+
+#game{
+    width:min(920px,100%);
+    min-height:100vh;
+    margin:auto;
+    background:#202020;
+}
+
+.screen{
+    min-height:100vh;
+    padding:20px;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* =========================
+   START
+========================= */
+
+.title{
+    text-align:center;
+    padding-top:8vh;
+}
+
+.titleIcon{
+    font-size:68px;
+    margin-bottom:5px;
+}
+
+.title h1{
+    margin:0;
+    color:#e2a84d;
+    font-size:clamp(36px,9vw,72px);
+    line-height:.95;
+    text-shadow:4px 4px #000;
+}
+
+.subtitle{
+    color:#bdb5a5;
+    margin-top:15px;
+}
+
+.menuBtns{
+    display:grid;
+    gap:10px;
+    width:min(430px,100%);
+    margin:25px auto;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card{
+    background:#2a2a2a;
+    border:1px solid #464646;
+    border-radius:17px;
+    padding:16px;
+    margin:12px 0;
+}
+
+.row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+}
+
+.center{
+    justify-content:center;
+}
+
+.small{
+    color:#aaa397;
+    font-size:13px;
+}
+
+.good{
+    color:#87d486;
+}
+
+.bad{
+    color:#f07870;
+}
+
+.gold{
+    color:#f0ba5c;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    background:#403421;
+    color:#edc06b;
+    font-size:12px;
+    font-weight:bold;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+}
+
+.stat{
+    background:#292929;
+    border-radius:12px;
+    padding:10px;
+    text-align:center;
+    font-size:12px;
+}
+
+.stat b{
+    display:block;
+    margin-top:3px;
+    font-size:17px;
+    color:#efb95b;
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.bar{
+    height:10px;
+    background:#111;
+    border-radius:10px;
+    overflow:hidden;
+    margin-top:8px;
+}
+
+.bar i{
+    display:block;
+    height:100%;
+    width:0%;
+    background:#dba34a;
+    transition:.3s;
+}
+
+/* =========================
+   CANVAS
+========================= */
+
+#canvasWrap{
+    position:relative;
+    width:100%;
+    background:#111;
+    border:1px solid #555;
+    border-radius:18px;
+    overflow:hidden;
+}
+
+#world{
+    display:block;
+    width:100%;
+    height:auto;
+    background:#52634e;
+}
+
+/* =========================
+   TOUCH
+========================= */
+
+#touch{
+    width:min(330px,100%);
+    margin:10px auto 0;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:7px;
+}
+
+#touch button{
+    background:#343434;
+    color:white;
+    font-size:20px;
+    user-select:none;
+    touch-action:none;
+}
+
+#touch .blank{
+    visibility:hidden;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.actiongrid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:9px;
+}
+
+/* =========================
+   LOG
+========================= */
+
+.log{
+    max-height:190px;
+    overflow-y:auto;
+    font-size:13px;
+}
+
+.log div{
+    padding:4px 0;
+    border-bottom:1px solid #333;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:15px;
+    background:rgba(0,0,0,.72);
+}
+
+.modalBox{
+    width:min(570px,100%);
+    max-height:90vh;
+    overflow:auto;
+    background:#242424;
+    border:1px solid #5a5a5a;
+    border-radius:18px;
+    padding:18px;
+    box-shadow:0 20px 60px #000;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+#loading{
+    position:fixed;
+    inset:0;
+    z-index:999;
+    background:#111;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+.loadingBox{
+    width:min(420px,90%);
+}
+
+.loadingTitle{
+    font-size:32px;
+    color:#e2a84d;
+    font-weight:900;
+}
+
+.loadingBar{
+    margin-top:20px;
+    height:8px;
+    background:#333;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.loadingBar i{
+    display:block;
+    width:0%;
+    height:100%;
+    background:#d89a38;
+    animation:loading 1.1s forwards;
+}
+
+@keyframes loading{
+    from{width:0}
+    to{width:100%}
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:620px){
+
+    .screen{
+        padding:12px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .actiongrid{
+        grid-template-columns:1fr;
+    }
+
+    .title{
+        padding-top:5vh;
+    }
+
+    .titleIcon{
+        font-size:55px;
+    }
+}
 </style>
 </head>
+
 <body>
-<div id="game">
-<section id="start" class="screen">
-  <div class="title">
-    <div style="font-size:64px">🐕</div>
-    <h1>THỊT CHÓ<br>ÔNG TRUNG</h1>
-    <p class="subtitle">V2 • 30 NGÀY SINH TỒN KINH DOANH</p>
-  </div>
-  <div class="card">
-    <h3>📖 Cốt truyện</h3>
-    <p>Khi bố mẹ đi du lịch, Đạt Trung bất ngờ được giao sạp hàng của bố cùng khoản nợ <b>360.000.000đ</b>. Bạn phải quản lý vốn, nhập hàng, phục vụ khách và trả nợ trước khi tháng kết thúc.</p>
-    <p class="small">Đây là mô phỏng hư cấu mang tính hài hước; các lựa chọn hàng hóa chỉ là cơ chế game.</p>
-  </div>
-  <div class="menuBtns">
-    <button id="playBtn">▶ VÀO GAME</button>
-    <button id="rankBtn" class="secondary">🏆 BẢNG XẾP HẠNG</button>
-    <button id="helpBtn" class="secondary">❔ HƯỚNG DẪN</button>
-  </div>
-</section>
 
-<section id="nameScreen" class="screen hidden">
-  <div class="title" style="padding-top:7vh">
-    <div style="font-size:55px">📝</div>
-    <h2>Đặt tên trên bảng xếp hạng</h2>
-    <p class="small">Tên nhân vật chính vẫn luôn là <b>Đạt Trung</b>.</p>
-  </div>
-  <div class="card">
-    <label for="playerName">Tên BXH</label>
-    <input id="playerName" maxlength="16" placeholder="Ví dụ: Long">
-    <div class="row" style="margin-top:12px">
-      <button id="startGameBtn">BẮT ĐẦU</button>
-      <button id="backNameBtn" class="secondary">QUAY LẠI</button>
+<!-- LOADING -->
+<div id="loading">
+    <div class="loadingBox">
+        <div class="loadingTitle">THỊT CHÓ ÔNG TRUNG</div>
+        <p class="small">Đang chuẩn bị sạp hàng...</p>
+        <div class="loadingBar"><i></i></div>
     </div>
-  </div>
-</section>
-
-<section id="gameScreen" class="screen hidden">
-  <div class="row" style="justify-content:space-between;margin-bottom:10px">
-    <div><b style="color:#e5b45d">THỊT CHÓ ÔNG TRUNG</b><div class="small">Đạt Trung • Người chơi: <span id="uiName"></span></div></div>
-    <button id="menuBtn" class="secondary">☰</button>
-  </div>
-  <div class="stats">
-    <div class="stat">💵 TIỀN<b id="money"></b></div>
-    <div class="stat">💳 NỢ<b id="debt"></b></div>
-    <div class="stat">📅 NGÀY<b id="day"></b></div>
-    <div class="stat">⭐ UY TÍN<b id="rep"></b></div>
-  </div>
-  <div class="card">
-    <div class="row" style="justify-content:space-between"><span>📌 Mục tiêu: trả hết nợ trước ngày 30</span><span class="badge" id="upgradeText"></span></div>
-    <div class="bar"><i id="debtBar"></i></div>
-  </div>
-
-  <div id="canvasWrap"><canvas id="world" width="720" height="430"></canvas></div>
-  <div id="touch">
-    <button class="blank">•</button><button data-key="up">▲</button><button class="blank">•</button>
-    <button data-key="left">◀</button><button data-key="down">▼</button><button data-key="right">▶</button>
-  </div>
-
-  <div class="card">
-    <h3>🛒 Quản lý</h3>
-    <div class="actiongrid">
-      <button id="marketBtn">📦 NHẬP HÀNG</button>
-      <button id="shopBtn">🍲 MỞ SẠP</button>
-      <button id="debtBtn">💳 TRẢ NỢ</button>
-      <button id="upgradeBtn">🔧 NÂNG CẤP</button>
-      <button id="inventoryBtn" class="secondary">📦 KHO</button>
-      <button id="nextDayBtn" class="secondary">🌙 KẾT NGÀY</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <h3>📜 Nhật ký</h3>
-    <div id="log" class="log"></div>
-  </div>
-</section>
 </div>
 
-<div id="modal" class="modal hidden"><div class="modalBox" id="modalBox"></div></div>
+<div id="game">
+
+<!-- =========================
+     START SCREEN
+========================= -->
+
+<section id="startScreen" class="screen">
+
+    <div class="title">
+
+        <div class="titleIcon">🐕</div>
+
+        <h1>
+            THỊT CHÓ<br>
+            ÔNG TRUNG
+        </h1>
+
+        <p class="subtitle">
+            V3 • 30 NGÀY SINH TỒN KINH DOANH
+        </p>
+
+    </div>
+
+    <div class="card">
+
+        <h3>📖 CÂU CHUYỆN</h3>
+
+        <p>
+            Đạt Trung bất ngờ phải tiếp quản sạp hàng của gia đình
+            trong khi vẫn còn một khoản nợ khổng lồ.
+        </p>
+
+        <p>
+            Bạn có <b>30 ngày</b> để quản lý tiền,
+            nhập hàng, phục vụ khách hàng,
+            nâng cấp sạp và trả hết nợ.
+        </p>
+
+        <p class="small">
+            Cứ mỗi 6 ngày, ông chủ nợ sẽ xuất hiện.
+            Cuối ngày 30, khoản nợ phải được thanh toán hết.
+        </p>
+
+    </div>
+
+    <div class="menuBtns">
+
+        <button id="playButton">
+            ▶ VÀO GAME
+        </button>
+
+        <button id="rankButton" class="secondary">
+            🏆 BẢNG XẾP HẠNG
+        </button>
+
+        <button id="helpButton" class="secondary">
+            ❔ HƯỚNG DẪN
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     NAME SCREEN
+========================= -->
+
+<section id="nameScreen" class="screen hidden">
+
+    <div class="title">
+
+        <div class="titleIcon">📝</div>
+
+        <h2>ĐẶT TÊN BẢNG XẾP HẠNG</h2>
+
+        <p class="small">
+            Tên nhân vật chính vẫn là <b>Đạt Trung</b>.
+        </p>
+
+    </div>
+
+    <div class="card">
+
+        <label>
+            Tên của bạn trên BXH
+        </label>
+
+        <input
+            id="playerName"
+            maxlength="16"
+            autocomplete="off"
+            placeholder="Ví dụ: Long"
+        >
+
+        <div class="row" style="margin-top:12px">
+
+            <button id="startGameButton">
+                BẮT ĐẦU
+            </button>
+
+            <button id="backNameButton" class="secondary">
+                QUAY LẠI
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     GAME
+========================= -->
+
+<section id="gameScreen" class="screen hidden">
+
+    <div
+        class="row"
+        style="justify-content:space-between;margin-bottom:10px"
+    >
+
+        <div>
+
+            <b style="color:#e5b45d">
+                THỊT CHÓ ÔNG TRUNG
+            </b>
+
+            <div class="small">
+                Đạt Trung • Người chơi:
+                <span id="uiName"></span>
+            </div>
+
+        </div>
+
+        <button
+            id="menuButton"
+            class="secondary"
+        >
+            ☰
+        </button>
+
+    </div>
+
+
+    <!-- STATS -->
+
+    <div class="stats">
+
+        <div class="stat">
+            💵 TIỀN
+            <b id="money"></b>
+        </div>
+
+        <div class="stat">
+            💳 NỢ
+            <b id="debt"></b>
+        </div>
+
+        <div class="stat">
+            📅 NGÀY
+            <b id="day"></b>
+        </div>
+
+        <div class="stat">
+            ⭐ UY TÍN
+            <b id="rep"></b>
+        </div>
+
+    </div>
+
+
+    <!-- OBJECTIVE -->
+
+    <div class="card">
+
+        <div
+            class="row"
+            style="justify-content:space-between"
+        >
+
+            <span>
+                📌 Mục tiêu: trả hết nợ trước ngày 30
+            </span>
+
+            <span
+                class="badge"
+                id="upgradeText"
+            ></span>
+
+        </div>
+
+        <div class="bar">
+            <i id="debtBar"></i>
+        </div>
+
+    </div>
+
+
+    <!-- WORLD -->
+
+    <div id="canvasWrap">
+
+        <canvas
+            id="world"
+            width="720"
+            height="430"
+        ></canvas>
+
+    </div>
+
+
+    <!-- TOUCH -->
+
+    <div id="touch">
+
+        <button class="blank">•</button>
+
+        <button data-key="up">▲</button>
+
+        <button class="blank">•</button>
+
+        <button data-key="left">◀</button>
+
+        <button data-key="down">▼</button>
+
+        <button data-key="right">▶</button>
+
+    </div>
+
+
+    <!-- ACTIONS -->
+
+    <div class="card">
+
+        <h3>🛒 QUẢN LÝ</h3>
+
+        <div class="actiongrid">
+
+            <button id="marketButton">
+                📦 NHẬP HÀNG
+            </button>
+
+            <button id="shopButton">
+                🍲 MỞ SẠP
+            </button>
+
+            <button id="debtButton">
+                💳 TRẢ NỢ
+            </button>
+
+            <button id="upgradeButton">
+                🔧 NÂNG CẤP
+            </button>
+
+            <button
+                id="inventoryButton"
+                class="secondary"
+            >
+                📦 KHO
+            </button>
+
+            <button
+                id="nextDayButton"
+                class="secondary"
+            >
+                🌙 KẾT NGÀY
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- LOG -->
+
+    <div class="card">
+
+        <h3>📜 NHẬT KÝ</h3>
+
+        <div
+            id="log"
+            class="log"
+        ></div>
+
+    </div>
+
+</section>
+
+</div>
+
+
+<!-- MODAL -->
+
+<div
+    id="modal"
+    class="modal hidden"
+>
+
+    <div
+        id="modalBox"
+        class="modalBox"
+    ></div>
+
+</div>
+
 
 <script>
-(() => {
 "use strict";
-const $=id=>document.getElementById(id);
-const fmt=n=>Math.round(n).toLocaleString("vi-VN")+"đ";
-const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
-const key="ot_v2_rank";
 
-let state=null;
-let keys={up:false,down:false,left:false,right:false};
-const canvas=$("world"),ctx=canvas.getContext("2d");
-let player={x:360,y:275};
+/* =========================================================
+   THỊT CHÓ ÔNG TRUNG V3
+   ========================================================= */
 
-const goods={
- fresh:{name:"Hàng tươi",buy:2000000,quality:5,stock:0,desc:"Đắt hơn nhưng ổn định.",risk:0.03},
- cheap:{name:"Hàng giá rẻ",buy:1200000,quality:2,stock:0,desc:"Rẻ, nhưng có rủi ro chất lượng.",risk:0.22}
-};
-const recipes=[
- {name:"Phần cơ bản",need:{fresh:1},base:350000},
- {name:"Thịt + rau",need:{fresh:1},base:500000,veg:true},
- {name:"Thịt + mắm tôm",need:{fresh:1},base:650000,sauce:true},
- {name:"Đặc biệt",need:{fresh:2},base:1200000,veg:true,sauce:true}
-];
+(() => {
 
-function newState(name){
- return {name,day:1,money:10000000,debt:360000000,rep:60,level:1,stock:{fresh:3,cheap:0},sales:0,spent:0,paid:0,tips:0,events:0,served:0,fail:0,gameOver:false,won:false};
-}
-function log(t,cls=""){const d=document.createElement("div");d.className=cls;d.textContent="• "+t;$("log").prepend(d)}
-function saveRank(score){
- let arr=[];try{arr=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}
- arr.push({name:state.name,score,day:state.day,date:new Date().toLocaleDateString("vi-VN")});
- arr.sort((a,b)=>b.score-a.score);arr=arr.slice(0,10);
- try{localStorage.setItem(key,JSON.stringify(arr))}catch(e){}
-}
-function ranks(){
- let arr=[];try{arr=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}
- let rows=arr.length?arr.map((r,i)=>`<tr><td>${i+1}</td><td>${escapeHtml(r.name)}</td><td>${fmt(r.score)}</td><td>Ngày ${r.day}</td></tr>`).join(""):`<tr><td colspan="4">Chưa có kỷ lục.</td></tr>`;
- openModal(`<h2>🏆 Bảng xếp hạng</h2><table class="table"><tr><th>#</th><th>Tên</th><th>Điểm tiền</th><th>Ngày</th></tr>${rows}</table><br><button id="closeRank" class="secondary">ĐÓNG</button>`);
- $("closeRank").onclick=closeModal;
-}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function openModal(html){$("modalBox").innerHTML=html;$("modal").classList.remove("hidden")}
-function closeModal(){$("modal").classList.add("hidden")}
+    /* =====================================================
+       SHORTCUTS
+    ===================================================== */
 
-function render(){
- if(!state)return;
- $("uiName").textContent=state.name;
- $("money").textContent=fmt(state.money);
- $("debt").textContent=fmt(state.debt);
- $("day").textContent=state.day+"/30";
- $("rep").textContent=state.rep;
- $("upgradeText").textContent="Sạp Lv."+state.level;
- $("debtBar").style.width=(100-clamp(state.debt/360000000*100,0,100))+"%";
-}
-function draw(){
- ctx.clearRect(0,0,720,430);
- ctx.fillStyle="#52624c";ctx.fillRect(0,0,720,430);
- ctx.fillStyle="#8a7756";ctx.fillRect(0,170,720,100);
- ctx.fillStyle="#6f6148";ctx.fillRect(0,280,720,150);
- // stalls/buildings
- ctx.fillStyle="#3a3a3a";ctx.fillRect(30,30,180,105);
- ctx.fillStyle="#d59a3a";ctx.fillRect(50,65,140,55);
- ctx.fillStyle="#222";ctx.font="bold 20px Arial";ctx.textAlign="center";ctx.fillText("KHU NHẬP HÀNG",120,98);
- ctx.fillStyle="#5b3b28";ctx.fillRect(265,55,190,95);
- ctx.fillStyle="#e5ad4e";ctx.fillRect(280,70,160,35);
- ctx.fillStyle="#211b15";ctx.font="bold 18px Arial";ctx.fillText("SẠP ÔNG TRUNG",360,94);
- ctx.fillStyle="#333";ctx.fillRect(500,40,175,110);
- ctx.fillStyle="#aaa";ctx.font="bold 16px Arial";ctx.fillText("KHU KHÁCH",587,98);
- // NPC dog
- ctx.font="42px sans-serif";ctx.fillText("🐕",95,335);
- ctx.font="13px Arial";ctx.fillStyle="#fff";ctx.fillText("Béo",95,358);
- // customers
- const n=clamp(2+state.rep/35,2,5);
- for(let i=0;i<n;i++){let x=500+(i%3)*65,y=225+Math.floor(i/3)*55;ctx.font="30px sans-serif";ctx.fillText(i%2?"👩":"👨",x,y)}
- // player 3/4 cartoon
- ctx.fillStyle="#e9c39b";ctx.beginPath();ctx.arc(player.x,player.y-28,18,0,Math.PI*2);ctx.fill();
- ctx.fillStyle="#222";ctx.fillRect(player.x-18,player.y-12,36,43);
- ctx.fillStyle="#4d78a8";ctx.fillRect(player.x-17,player.y-5,34,20);
- ctx.fillStyle="#f2f2f2";ctx.font="12px Arial";ctx.fillText("ĐẠT",player.x,player.y+4);
- ctx.fillStyle="#222";ctx.beginPath();ctx.arc(player.x-6,player.y-30,2.5,0,Math.PI*2);ctx.arc(player.x+6,player.y-30,2.5,0,Math.PI*2);ctx.fill();
- ctx.font="11px Arial";ctx.textAlign="left";ctx.fillStyle="#fff";ctx.fillText("Đạt Trung",player.x-30,player.y+50);
- requestAnimationFrame(draw);
-}
-function move(){
- const speed=3;
- if(keys.up)player.y-=speed;if(keys.down)player.y+=speed;if(keys.left)player.x-=speed;if(keys.right)player.x+=speed;
- player.x=clamp(player.x,25,695);player.y=clamp(player.y,175,400);
-}
-setInterval(move,16);
+    const $ = id => document.getElementById(id);
 
-document.querySelectorAll("#touch button[data-key]").forEach(b=>{
- const k=b.dataset.key;
- ["pointerdown"].forEach(ev=>b.addEventListener(ev,e=>{e.preventDefault();keys[k]=true}));
- ["pointerup","pointercancel","pointerleave"].forEach(ev=>b.addEventListener(ev,e=>{keys[k]=false}));
-});
-window.addEventListener("keydown",e=>{if(e.key==="ArrowUp")keys.up=true;if(e.key==="ArrowDown")keys.down=true;if(e.key==="ArrowLeft")keys.left=true;if(e.key==="ArrowRight")keys.right=true});
-window.addEventListener("keyup",e=>{if(e.key==="ArrowUp")keys.up=false;if(e.key==="ArrowDown")keys.down=false;if(e.key==="ArrowLeft")keys.left=false;if(e.key==="ArrowRight")keys.right=false});
+    const clamp = (value,min,max) =>
+        Math.max(min,Math.min(max,value));
 
-$("playBtn").onclick=()=>$("nameScreen").classList.remove("hidden");
-$("rankBtn").onclick=ranks;
-$("helpBtn").onclick=()=>openModal(`<h2>❔ Cách chơi</h2>
-<p>Quản lý tiền trong 30 ngày. Nhập hàng, mở sạp để phục vụ khách, trả nợ và nâng cấp.</p>
-<ul><li>Cứ mỗi 6 ngày ông chủ nợ đến đòi tiền.</li><li>Cuối ngày có thể trả một phần nợ.</li><li>Khách Lv cao trả nhiều hơn nhưng yêu cầu khó hơn.</li><li>Hàng giá rẻ giúp tiết kiệm vốn nhưng có rủi ro bị đánh giá xấu.</li><li>Đến ngày 30 phải thanh toán toàn bộ nợ.</li></ul><button id="helpClose" class="secondary">ĐÓNG</button>`);
-$("modal").addEventListener("click",e=>{if(e.target===$("modal"))closeModal()});
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
-$("helpClose")?.addEventListener("click",closeModal);
+    const money = value =>
+        Math.round(value).toLocaleString("vi-VN") + "đ";
 
-$("backNameBtn").onclick=()=>{$("nameScreen").classList.add("hidden")};
-$("startGameBtn").onclick=()=>{
- let name=$("playerName").value.trim().slice(0,16)||"Player";
- state=newState(name);
- $("start").classList.add("hidden");$("nameScreen").classList.add("hidden");$("gameScreen").classList.remove("hidden");
- $("log").innerHTML="";player={x:360,y:275};render();
- log("Ngày 1: Đạt Trung tiếp quản sạp. Khoản nợ ban đầu 360 triệu.");
- log("Mẹo: đừng tiêu sạch tiền; cứ 6 ngày ông chủ nợ sẽ xuất hiện.");
-};
 
-$("menuBtn").onclick=()=>openModal(`<h2>☰ Menu</h2><div class="menuBtns">
-<button id="resume">TIẾP TỤC</button><button id="rank2" class="secondary">🏆 BẢNG XẾP HẠNG</button><button id="restart" class="danger">CHƠI LẠI</button></div>`);
-$("resume").onclick=closeModal;$("rank2").onclick=()=>{closeModal();ranks()};$("restart").onclick=()=>location.reload();
+    /* =====================================================
+       GAME VARIABLES
+    ===================================================== */
 
-$("marketBtn").onclick=market;
-function market(){
- const f=goods.fresh,c=goods.cheap;
- openModal(`<h2>📦 Nhập hàng</h2>
- <p class="small">Tiền hiện có: ${fmt(state.money)}</p>
- <div class="card"><b>${f.name}</b><p>${f.desc}</p><p>Giá: <b>${fmt(f.buy)}</b>/đơn vị</p><button id="buyFresh">MUA 1</button> <button id="buyFresh3" class="secondary">MUA 3</button></div>
- <div class="card"><b>${c.name}</b><p>${c.desc}</p><p>Giá: <b>${fmt(c.buy)}</b>/đơn vị</p><button id="buyCheap">MUA 1</button> <button id="buyCheap3" class="secondary">MUA 3</button></div>
- <button id="marketClose" class="secondary">ĐÓNG</button>`);
- const buy=(type,n)=>{let g=goods[type],cost=g.buy*n;if(state.money<cost){log("Không đủ tiền nhập hàng.","bad");return}state.money-=cost;state.stock[type]+=n;state.spent+=cost;render();log(`Nhập ${n} ${g.name}, tốn ${fmt(cost)}.`);market()};
- $("buyFresh").onclick=()=>buy("fresh",1);$("buyFresh3").onclick=()=>buy("fresh",3);
- $("buyCheap").onclick=()=>buy("cheap",1);$("buyCheap3").onclick=()=>buy("cheap",3);
- $("marketClose").onclick=closeModal;
-}
-$("inventoryBtn").onclick=()=>openModal(`<h2>📦 Kho hàng</h2><p>Hàng tươi: <b>${state.stock.fresh}</b></p><p>Hàng giá rẻ: <b>${state.stock.cheap}</b></p><p>Khách đã phục vụ: ${state.served} • Món lỗi: ${state.fail}</p><button id="invClose" class="secondary">ĐÓNG</button>`),setTimeout(()=>$("invClose").onclick=closeModal,0);
+    const canvas = $("world");
+    const ctx = canvas.getContext("2d");
 
-$("shopBtn").onclick=shop;
-function customerLevel(){return clamp(1+Math.floor((state.day-1)/4)+Math.floor(state.level/2),1,9)}
-function shop(){
- const lv=customerLevel();
- const options=recipes.filter(r=>r.need.fresh<=state.stock.fresh+state.stock.cheap);
- const pool=options.length?options:recipes;
- let order=pool[Math.floor(Math.random()*pool.length)];
- let use="fresh";
- if(state.stock.fresh<=0&&state.stock.cheap>0)use="cheap";
- if(order.need.fresh>state.stock.fresh && state.stock.cheap>=order.need.fresh)use="cheap";
- if((order.need.fresh*1)>state.stock.fresh+state.stock.cheap){openModal(`<h2>😅 Hết hàng</h2><p>Khách đang chờ nhưng kho không đủ để làm món.</p><button id="sc" class="secondary">ĐÓNG</button>`);$("sc").onclick=closeModal;return}
- let price=Math.round(order.base*(1+lv*.10)*(0.9+Math.random()*.25));
- let quality=use==="fresh"?5:2;
- let risk=use==="fresh"?0.04:0.22;
- const difficult=lv>=6 && Math.random()<.35;
- if(difficult){order=recipes[3];if(state.stock.fresh<2&&state.stock.cheap<2){order=recipes[0]}}
- openModal(`<h2>👤 Khách Lv.${lv}</h2><p>"Cho tôi <b>${order.name}</b>!"</p><p>Thanh toán dự kiến: <b>${fmt(price)}</b></p>
- <div class="card"><p>Kho: tươi ${state.stock.fresh} • giá rẻ ${state.stock.cheap}</p><p class="small">Chọn nguyên liệu cho món này:</p>
- <button id="serveFresh">DÙNG HÀNG TƯƠI</button> <button id="serveCheap" class="secondary">DÙNG HÀNG GIÁ RẺ</button></div>
- <button id="shopCancel" class="secondary">KHÔNG PHỤC VỤ</button>`);
- function serve(type){
-   let need=order.need.fresh;
-   if(state.stock[type]<need){log("Không đủ nguyên liệu để làm món.","bad");return}
-   state.stock[type]-=need;
-   let q=type==="fresh"?5:2;
-   let fail=Math.random()<(type==="cheap"?0.22:0.04);
-   if(fail){
-     state.fail++;state.rep=clamp(state.rep-(type==="cheap"?5:2),0,100);
-     state.money+=50000;state.served++;
-     closeModal();render();log(`Khách Lv.${lv} phát hiện vấn đề và chỉ trả 50.000đ. Uy tín giảm.`,`bad`);
-     dog();
-   }else{
-     let mult=1+(state.rep-50)/250;
-     let earn=Math.max(100000,Math.round(price*mult));
-     let tip=lv>=5&&Math.random()<.22?Math.round((100000+Math.random()*400000)*lv/3):0;
-     state.money+=earn+tip;state.sales+=earn;state.tips+=tip;state.served++;
-     state.rep=clamp(state.rep+(q>=5?1:0),0,100);
-     closeModal();render();log(`Bán ${order.name} cho khách Lv.${lv}: +${fmt(earn)}${tip?` + tip ${fmt(tip)}`:""}.`,"good");
-   }
- }
- $("serveFresh").onclick=()=>serve("fresh");$("serveCheap").onclick=()=>serve("cheap");$("shopCancel").onclick=closeModal;
-}
-function dog(){
- if(Math.random()<.85)log("🐕 Béo ăn món lỗi: 'Để tôi xử lý cho!'","gold");
-}
+    const WIDTH = canvas.width;
+    const HEIGHT = canvas.height;
 
-$("debtBtn").onclick=debtModal;
-function debtModal(){
- if(state.debt<=0){openModal(`<h2>🎉 Hết nợ!</h2><p>Ông Trung đã thoát kiếp con nợ.</p><button id="dc" class="secondary">ĐÓNG</button>`);$("dc").onclick=closeModal;return}
- openModal(`<h2>💳 Trả nợ</h2><p>Nợ hiện tại: <b>${fmt(state.debt)}</b></p><p>Tiền mặt: <b>${fmt(state.money)}</b></p>
- <div class="row"><button id="p500">500K</button><button id="p1m">1 TRIỆU</button><button id="p5m">5 TRIỆU</button><button id="pAll" class="secondary">TRẢ TỐI ĐA</button></div>
- <br><button id="dc2" class="secondary">ĐÓNG</button>`);
- function pay(x){let a=Math.min(x,state.money,state.debt);if(a<=0){log("Không có tiền để trả nợ.","bad");return}state.money-=a;state.debt-=a;state.paid+=a;render();log(`Đã trả ${fmt(a)} tiền nợ.`);debtModal()}
- $("p500").onclick=()=>pay(500000);$("p1m").onclick=()=>pay(1000000);$("p5m").onclick=()=>pay(5000000);$("pAll").onclick=()=>pay(state.money);$("dc2").onclick=closeModal;
-}
+    const RANK_KEY = "thit_cho_ong_trung_v3_rank";
 
-$("upgradeBtn").onclick=upgrade;
-function upgrade(){
- const costs=[0,8000000,20000000,45000000,90000000];
- if(state.level>=4){openModal(`<h2>🔧 Đã tối đa</h2><p>Sạp đang ở cấp cao nhất.</p><button id="uc" class="secondary">ĐÓNG</button>`);$("uc").onclick=closeModal;return}
- let cost=costs[state.level];
- openModal(`<h2>🔧 Nâng cấp sạp</h2><p>Lv.${state.level} → Lv.${state.level+1}</p><p>Chi phí: <b>${fmt(cost)}</b></p><ul><li>Tăng lượng khách tiềm năng.</li><li>Tăng giá trị đơn hàng.</li><li>Mở cơ hội gặp khách Lv cao.</li></ul><button id="buyUp">NÂNG CẤP</button> <button id="upc" class="secondary">ĐÓNG</button>`);
- $("buyUp").onclick=()=>{if(state.money<cost){log("Không đủ tiền nâng cấp.","bad");return}state.money-=cost;state.level++;render();log(`Sạp được nâng lên Lv.${state.level}.`,"good");upgrade()};
- $("upc").onclick=closeModal;
-}
+    let state = null;
 
-$("nextDayBtn").onclick=endDay;
-function endDay(){
- if(state.day>=30){finalCheck();return}
- // daily operating cost
- const cost=300000+state.level*100000;
- state.money-=cost;
- if(state.money<0){state.money=0;state.rep=clamp(state.rep-4,0,100);log("Chi phí vận hành khiến tiền mặt về 0.","bad")}
- if(state.day%6===0)debtVisit();
- else randomEvent();
- state.day++;
- render();
- if(state.day>30)finalCheck();
- else log(`Bắt đầu ngày ${state.day}. Chi phí vận hành ngày trước: ${fmt(cost)}.`);
-}
-function debtVisit(){
- let due=Math.min(5000000+state.day*100000,state.debt);
- openModal(`<h2>💼 Ông chủ nợ tới!</h2><p>"Đạt Trung! Ngày ${state.day} rồi. Đưa tiền đây!"</p><p>Khoản nợ hiện tại: <b>${fmt(state.debt)}</b></p>
- <div class="actiongrid"><button id="dpay">💵 TRẢ ${fmt(Math.min(due,state.money))}</button><button id="promise" class="secondary">🙏 XIN CUỐI THÁNG</button><button id="fight" class="danger">🥊 ĐỐI ĐẦU</button></div>`);
- $("dpay").onclick=()=>{let a=Math.min(due,state.money,state.debt);state.money-=a;state.debt-=a;state.paid+=a;closeModal();render();log(`Ông chủ nợ nhận ${fmt(a)}.`,"good")};
- $("promise").onclick=()=>{state.rep=clamp(state.rep-1,0,100);closeModal();log("Ông chủ nợ đồng ý cho khất đến cuối tháng. Lãi áp lực tăng.");};
- $("fight").onclick=()=>{let ok=Math.random()<.45;if(ok){state.debt+=2000000;state.rep=clamp(state.rep-7,0,100);closeModal();render();log("Đối đầu thất bại: khoản nợ tăng 2 triệu và uy tín giảm.","bad")}else{state.debt+=1000000;closeModal();render();log("Ông Trung bị kéo đi làm việc với luật sư. Nợ tăng 1 triệu.","bad")}};
-}
-function randomEvent(){
- let r=Math.random();
- if(r<0.075){
-   state.events++;
-   openModal(`<h2>🥊 Sự kiện hiếm: Nhóm khách quỵt</h2><p>Một nhóm khách định ăn xong rồi rời đi mà không thanh toán.</p><div class="actiongrid"><button id="ignore">😐 NHẪN NHỊN</button><button id="confront" class="danger">🥊 ĐỐI ĐẦU</button></div>`);
-   $("ignore").onclick=()=>{state.rep=clamp(state.rep+2,0,100);closeModal();log("Đạt Trung nhẫn nhịn. Uy tín tăng nhẹ nhưng không thu được tiền.")};
-   $("confront").onclick=()=>{let ok=Math.random()<.5;if(ok){state.money+=1000000;log("Đối đầu thành công: thu được 1 triệu.","good")}else{state.money=Math.max(0,state.money-1000000);log("Đối đầu thất bại: mất 1 triệu.","bad")}closeModal();render()};
- }else if(r<0.11){
-   state.events++;
-   let tip=500000+Math.floor(Math.random()*4)*500000;
-   openModal(`<h2>💎 Khách sộp!</h2><p>Một nhóm khách sộp gọi rất nhiều món và để lại tip.</p><p class="gold">TIP: +${fmt(tip)}</p><button id="rich">NHẬN TIP</button>`);
-   $("rich").onclick=()=>{state.money+=tip;state.tips+=tip;state.rep=clamp(state.rep+4,0,100);closeModal();render();log(`Khách sộp tip ${fmt(tip)}!`,"good")};
- }else{
-   // quiet day
-   if(Math.random()<.3){state.rep=clamp(state.rep+1,0,100);log("Một ngày yên bình. Uy tín tăng nhẹ.")}
- }
-}
-function finalCheck(){
- if(state.debt<=0){
-   state.won=true;
-   let score=state.money+state.paid+state.tips+state.rep*100000;
-   saveRank(score);
-   openModal(`<h2>🏆 CHIẾN THẮNG!</h2><p>Đạt Trung đã trả hết khoản nợ 360 triệu!</p><div class="card"><p>💵 Tiền còn lại: <b>${fmt(state.money)}</b></p><p>💳 Đã trả: <b>${fmt(state.paid)}</b></p><p>⭐ Uy tín: <b>${state.rep}</b></p><p>📊 Điểm BXH: <b>${fmt(score)}</b></p></div><button id="winRank">🏆 XEM BXH</button> <button id="winMenu" class="secondary">VỀ MENU</button>`);
-   $("winRank").onclick=()=>{closeModal();ranks()};$("winMenu").onclick=()=>location.reload();
- }else{
-   state.gameOver=true;
-   let score=Math.max(0,state.money+state.paid+state.tips);
-   saveRank(score);
-   openModal(`<h2>💀 HẾT THÁNG</h2><p>Ngày 30 kết thúc nhưng vẫn còn <b>${fmt(state.debt)}</b> tiền nợ.</p><p>Trong thế giới game, Đạt Trung bị ông chủ nợ đưa đi “xử lý hợp đồng” và màn chơi kết thúc.</p><div class="card"><p>Điểm BXH: <b>${fmt(score)}</b></p></div><button id="loseRank">🏆 XEM BXH</button> <button id="loseRestart" class="danger">CHƠI LẠI</button>`);
-   $("loseRank").onclick=()=>{closeModal();ranks()};$("loseRestart").onclick=()=>location.reload();
- }
-}
-render();draw();
+    let running = false;
+
+    let animationId = null;
+
+    let lastTime = 0;
+
+    const keys = {
+        up:false,
+        down:false,
+        left:false,
+        right:false
+    };
+
+    const player = {
+        x:360,
+        y:350,
+        width:26,
+        height:40,
+        speed:145
+    };
+
+
+    /* =====================================================
+       DATA
+    ===================================================== */
+
+    const GOODS = {
+
+        fresh:{
+            name:"Hàng tươi",
+            price:2000000,
+            quality:5,
+            risk:.04
+        },
+
+        cheap:{
+            name:"Hàng giá rẻ",
+            price:1200000,
+            quality:2,
+            risk:.22
+        }
+
+    };
+
+
+    const RECIPES = [
+
+        {
+            name:"Phần cơ bản",
+            need:1,
+            base:350000
+        },
+
+        {
+            name:"Thịt + rau",
+            need:1,
+            base:500000
+        },
+
+        {
+            name:"Thịt + mắm tôm",
+            need:1,
+            base:650000
+        },
+
+        {
+            name:"Đặc biệt",
+            need:2,
+            base:1200000
+        }
+
+    ];
+
+
+    /* =====================================================
+       STATE
+    ===================================================== */
+
+    function createState(name){
+
+        return {
+
+            name:name,
+
+            day:1,
+
+            money:10000000,
+
+            debt:360000000,
+
+            rep:60,
+
+            level:1,
+
+            stock:{
+                fresh:3,
+                cheap:0
+            },
+
+            sales:0,
+
+            spent:0,
+
+            paid:0,
+
+            tips:0,
+
+            events:0,
+
+            served:0,
+
+            fail:0,
+
+            gameOver:false,
+
+            won:false
+
+        };
+
+    }
+
+
+    /* =====================================================
+       SAFE STORAGE
+    ===================================================== */
+
+    function readRanks(){
+
+        try{
+
+            const data =
+                localStorage.getItem(RANK_KEY);
+
+            if(!data) return [];
+
+            const parsed = JSON.parse(data);
+
+            return Array.isArray(parsed)
+                ? parsed
+                : [];
+
+        }catch(error){
+
+            return [];
+
+        }
+
+    }
+
+
+    function writeRanks(ranks){
+
+        try{
+
+            localStorage.setItem(
+                RANK_KEY,
+                JSON.stringify(ranks)
+            );
+
+        }catch(error){
+
+            console.warn(
+                "Không thể lưu BXH:",
+                error
+            );
+
+        }
+
+    }
+
+
+    function saveRank(score){
+
+        const ranks = readRanks();
+
+        ranks.push({
+
+            name:state.name,
+
+            score:Math.round(score),
+
+            day:state.day,
+
+            date:new Date().toLocaleDateString("vi-VN")
+
+        });
+
+        ranks.sort(
+            (a,b) => b.score - a.score
+        );
+
+        writeRanks(
+            ranks.slice(0,10)
+        );
+
+    }
+
+
+    /* =====================================================
+       LOG
+    ===================================================== */
+
+    function addLog(text,type=""){
+
+        const item =
+            document.createElement("div");
+
+        item.className = type;
+
+        item.textContent =
+            "• " + text;
+
+        $("log").prepend(item);
+
+    }
+
+
+    /* =====================================================
+       MODAL
+    ===================================================== */
+
+    function openModal(html){
+
+        $("modalBox").innerHTML = html;
+
+        $("modal").classList.remove("hidden");
+
+    }
+
+
+    function closeModal(){
+
+        $("modal").classList.add("hidden");
+
+        $("modalBox").innerHTML = "";
+
+    }
+
+
+    /* =====================================================
+       SCREEN
+    ===================================================== */
+
+    function showScreen(screen){
+
+        [
+            $("startScreen"),
+            $("nameScreen"),
+            $("gameScreen")
+        ].forEach(s => {
+
+            s.classList.add("hidden");
+
+        });
+
+        screen.classList.remove("hidden");
+
+    }
+
+
+    /* =====================================================
+       HTML ESCAPE
+    ===================================================== */
+
+    function escapeHTML(text){
+
+        return String(text).replace(
+            /[&<>"']/g,
+            char => {
+
+                const map = {
+
+                    "&":"&amp;",
+                    "<":"&lt;",
+                    ">":"&gt;",
+                    '"':"&quot;",
+                    "'":"&#039;"
+
+                };
+
+                return map[char];
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       RENDER UI
+    ===================================================== */
+
+    function render(){
+
+        if(!state) return;
+
+        $("uiName").textContent =
+            state.name;
+
+        $("money").textContent =
+            money(state.money);
+
+        $("debt").textContent =
+            money(state.debt);
+
+        $("day").textContent =
+            state.day + "/30";
+
+        $("rep").textContent =
+            state.rep;
+
+        $("upgradeText").textContent =
+            "Sạp Lv." + state.level;
+
+
+        let debtPercent =
+            100 -
+            (state.debt / 360000000 * 100);
+
+        debtPercent =
+            clamp(debtPercent,0,100);
+
+        $("debtBar").style.width =
+            debtPercent + "%";
+
+    }
+
+
+    /* =====================================================
+       WORLD COLLISION
+    ===================================================== */
+
+    const buildings = [
+
+        {
+            x:30,
+            y:30,
+            w:180,
+            h:105
+        },
+
+        {
+            x:265,
+            y:55,
+            w:190,
+            h:95
+        },
+
+        {
+            x:500,
+            y:40,
+            w:175,
+            h:110
+        }
+
+    ];
+
+
+    function isBlocked(x,y){
+
+        const halfW =
+            player.width / 2;
+
+        const halfH =
+            player.height / 2;
+
+        const px =
+            x - halfW;
+
+        const py =
+            y - halfH;
+
+        const pw =
+            player.width;
+
+        const ph =
+            player.height;
+
+
+        for(const b of buildings){
+
+            const hit =
+                px < b.x + b.w &&
+                px + pw > b.x &&
+                py < b.y + b.h &&
+                py + ph > b.y;
+
+            if(hit) return true;
+
+        }
+
+        return false;
+
+    }
+
+
+    /* =====================================================
+       PLAYER MOVEMENT
+    ===================================================== */
+
+    function updatePlayer(delta){
+
+        if(!running) return;
+
+        let dx = 0;
+        let dy = 0;
+
+        if(keys.left) dx--;
+        if(keys.right) dx++;
+        if(keys.up) dy--;
+        if(keys.down) dy++;
+
+
+        if(dx !== 0 || dy !== 0){
+
+            const length =
+                Math.sqrt(dx*dx + dy*dy);
+
+            dx /= length;
+            dy /= length;
+
+        }
+
+
+        const distance =
+            player.speed * delta;
+
+
+        const newX =
+            player.x + dx * distance;
+
+        const newY =
+            player.y + dy * distance;
+
+
+        if(
+            newX >= 20 &&
+            newX <= WIDTH - 20 &&
+            !isBlocked(newX,player.y)
+        ){
+
+            player.x = newX;
+
+        }
+
+
+        if(
+            newY >= 175 &&
+            newY <= HEIGHT - 20 &&
+            !isBlocked(player.x,newY)
+        ){
+
+            player.y = newY;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       DRAW WORLD
+    ===================================================== */
+
+    function drawWorld(){
+
+        ctx.clearRect(
+            0,
+            0,
+            WIDTH,
+            HEIGHT
+        );
+
+
+        /* GRASS */
+
+        ctx.fillStyle = "#506149";
+
+        ctx.fillRect(
+            0,
+            0,
+            WIDTH,
+            HEIGHT
+        );
+
+
+        /* ROAD */
+
+        ctx.fillStyle = "#8b7859";
+
+        ctx.fillRect(
+            0,
+            170,
+            WIDTH,
+            105
+        );
+
+
+        /* BOTTOM AREA */
+
+        ctx.fillStyle = "#6d6049";
+
+        ctx.fillRect(
+            0,
+            280,
+            WIDTH,
+            150
+        );
+
+
+        /* ROAD LINES */
+
+        ctx.strokeStyle = "#b9a17b";
+
+        ctx.lineWidth = 3;
+
+        ctx.setLineDash([25,20]);
+
+        ctx.beginPath();
+
+        ctx.moveTo(0,222);
+        ctx.lineTo(WIDTH,222);
+
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+
+
+        /* BUILDING 1 */
+
+        ctx.fillStyle = "#3b3b3b";
+
+        ctx.fillRect(
+            30,
+            30,
+            180,
+            105
+        );
+
+        ctx.fillStyle = "#d69a38";
+
+        ctx.fillRect(
+            50,
+            65,
+            140,
+            55
+        );
+
+        ctx.fillStyle = "#211b15";
+
+        ctx.font =
+            "bold 17px Arial";
+
+        ctx.textAlign =
+            "center";
+
+        ctx.fillText(
+            "KHO HÀNG",
+            120,
+            98
+        );
+
+
+        /* SHOP */
+
+        ctx.fillStyle = "#563b29";
+
+        ctx.fillRect(
+            265,
+            55,
+            190,
+            95
+        );
+
+        ctx.fillStyle = "#e1a746";
+
+        ctx.fillRect(
+            280,
+            70,
+            160,
+            35
+        );
+
+        ctx.fillStyle = "#211b15";
+
+        ctx.font =
+            "bold 15px Arial";
+
+        ctx.fillText(
+            "SẠP ÔNG TRUNG",
+            360,
+            93
+        );
+
+
+        /* CUSTOMER AREA */
+
+        ctx.fillStyle = "#383838";
+
+        ctx.fillRect(
+            500,
+            40,
+            175,
+            110
+        );
+
+        ctx.fillStyle = "#ddd";
+
+        ctx.font =
+            "bold 15px Arial";
+
+        ctx.fillText(
+            "KHU KHÁCH",
+            587,
+            98
+        );
+
+
+        /* DOG NPC */
+
+        ctx.font = "42px sans-serif";
+
+        ctx.fillText(
+            "🐕",
+            95,
+            335
+        );
+
+        ctx.font =
+            "12px Arial";
+
+        ctx.fillStyle =
+            "#fff";
+
+        ctx.fillText(
+            "Béo",
+            95,
+            358
+        );
+
+
+        /* CUSTOMERS */
+
+        const customers =
+            clamp(
+                2 +
+                Math.floor(state.rep / 35),
+                2,
+                5
+            );
+
+
+        for(let i=0;i<customers;i++){
+
+            const x =
+                510 +
+                (i % 3) * 55;
+
+            const y =
+                215 +
+                Math.floor(i / 3) * 45;
+
+
+            ctx.font =
+                "29px sans-serif";
+
+            ctx.fillText(
+                i % 2 ? "👩" : "👨",
+                x,
+                y
+            );
+
+        }
+
+
+        /* PLAYER */
+
+        drawPlayer();
+
+
+        /* DAY/NIGHT EFFECT */
+
+        if(state.day >= 22){
+
+            ctx.fillStyle =
+                "rgba(25,30,70,.13)";
+
+            ctx.fillRect(
+                0,
+                0,
+                WIDTH,
+                HEIGHT
+            );
+
+        }
+
+    }
+
+
+    function drawPlayer(){
+
+        ctx.save();
+
+        ctx.translate(
+            player.x,
+            player.y
+        );
+
+
+        /* SHADOW */
+
+        ctx.fillStyle =
+            "rgba(0,0,0,.25)";
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+            0,
+            18,
+            18,
+            7,
+            0,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+
+        /* BODY */
+
+        ctx.fillStyle =
+            "#252525";
+
+        ctx.fillRect(
+            -18,
+            -10,
+            36,
+            38
+        );
+
+
+        /* SHIRT */
+
+        ctx.fillStyle =
+            "#4c79a7";
+
+        ctx.fillRect(
+            -17,
+            -5,
+            34,
+            20
+        );
+
+
+        /* HEAD */
+
+        ctx.fillStyle =
+            "#e7bd94";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            0,
+            -28,
+            18,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+
+        /* HAIR */
+
+        ctx.fillStyle =
+            "#242424";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            0,
+            -35,
+            16,
+            Math.PI,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+
+        /* EYES */
+
+        ctx.fillStyle =
+            "#111";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            -6,
+            -29,
+            2.2,
+            0,
+            Math.PI*2
+        );
+
+        ctx.arc(
+            6,
+            -29,
+            2.2,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+
+        /* NAME */
+
+        ctx.font =
+            "bold 11px Arial";
+
+        ctx.textAlign =
+            "center";
+
+        ctx.fillStyle =
+            "#fff";
+
+        ctx.fillText(
+            "ĐẠT TRUNG",
+            0,
+            48
+        );
+
+
+        ctx.restore();
+
+    }
+
+
+    /* =====================================================
+       GAME LOOP
+    ===================================================== */
+
+    function gameLoop(timestamp){
+
+        if(!lastTime)
+            lastTime = timestamp;
+
+        const delta =
+            Math.min(
+                (timestamp-lastTime)/1000,
+                .05
+            );
+
+        lastTime =
+            timestamp;
+
+        updatePlayer(delta);
+
+        if(state)
+            drawWorld();
+
+        animationId =
+            requestAnimationFrame(gameLoop);
+
+    }
+
+
+    /* =====================================================
+       RANKING
+    ===================================================== */
+
+    function showRanks(){
+
+        const ranks =
+            readRanks();
+
+
+        let rows = "";
+
+
+        if(ranks.length === 0){
+
+            rows =
+                `<tr>
+                    <td colspan="4">
+                        Chưa có kỷ lục.
+                    </td>
+                </tr>`;
+
+        }else{
+
+            rows =
+                ranks.map(
+                    (r,index) => {
+
+                        return `
+                        <tr>
+                            <td>${index+1}</td>
+                            <td>${escapeHTML(r.name)}</td>
+                            <td>${money(r.score)}</td>
+                            <td>Ngày ${r.day}</td>
+                        </tr>`;
+
+                    }
+                ).join("");
+
+        }
+
+
+        openModal(`
+
+            <h2>🏆 BẢNG XẾP HẠNG</h2>
+
+            <table class="table" style="width:100%;border-collapse:collapse">
+
+                <tr>
+                    <th>#</th>
+                    <th>Tên</th>
+                    <th>Điểm</th>
+                    <th>Ngày</th>
+                </tr>
+
+                ${rows}
+
+            </table>
+
+            <br>
+
+            <button
+                id="closeRank"
+                class="secondary"
+            >
+                ĐÓNG
+            </button>
+
+        `);
+
+
+        $("closeRank").onclick =
+            closeModal;
+
+    }
+
+
+    /* =====================================================
+       HELP
+    ===================================================== */
+
+    function showHelp(){
+
+        openModal(`
+
+            <h2>❔ HƯỚNG DẪN</h2>
+
+            <p>
+                Mục tiêu của bạn là trả hết
+                <b>360 triệu đồng</b> trong 30 ngày.
+            </p>
+
+            <ul>
+
+                <li>
+                    Nhập hàng để có nguyên liệu.
+                </li>
+
+                <li>
+                    Mở sạp để phục vụ khách.
+                </li>
+
+                <li>
+                    Hàng tươi có chất lượng tốt hơn.
+                </li>
+
+                <li>
+                    Hàng giá rẻ tiết kiệm vốn
+                    nhưng có nguy cơ làm khách không hài lòng.
+                </li>
+
+                <li>
+                    Cứ mỗi 6 ngày ông chủ nợ xuất hiện.
+                </li>
+
+                <li>
+                    Có thể nâng cấp sạp để tăng khả năng kinh doanh.
+                </li>
+
+                <li>
+                    Cuối ngày 30 phải trả hết nợ.
+                </li>
+
+            </ul>
+
+            <p class="small">
+                PC: WASD hoặc phím mũi tên để di chuyển.
+            </p>
+
+            <button
+                id="helpClose"
+                class="secondary"
+            >
+                ĐÓNG
+            </button>
+
+        `);
+
+
+        $("helpClose").onclick =
+            closeModal;
+
+    }
+
+
+    /* =====================================================
+       MARKET
+    ===================================================== */
+
+    function showMarket(){
+
+        if(!state) return;
+
+
+        openModal(`
+
+            <h2>📦 NHẬP HÀNG</h2>
+
+            <p>
+                Tiền hiện tại:
+                <b>${money(state.money)}</b>
+            </p>
+
+            <div class="card">
+
+                <b>Hàng tươi</b>
+
+                <p class="small">
+                    Chất lượng cao, ít rủi ro.
+                </p>
+
+                <p>
+                    Giá:
+                    <b>${money(GOODS.fresh.price)}</b>
+                </p>
+
+                <button id="fresh1">
+                    MUA 1
+                </button>
+
+                <button
+                    id="fresh3"
+                    class="secondary"
+                >
+                    MUA 3
+                </button>
+
+            </div>
+
+
+            <div class="card">
+
+                <b>Hàng giá rẻ</b>
+
+                <p class="small">
+                    Rẻ hơn nhưng có rủi ro.
+                </p>
+
+                <p>
+                    Giá:
+                    <b>${money(GOODS.cheap.price)}</b>
+                </p>
+
+                <button id="cheap1">
+                    MUA 1
+                </button>
+
+                <button
+                    id="cheap3"
+                    class="secondary"
+                >
+                    MUA 3
+                </button>
+
+            </div>
+
+
+            <button
+                id="marketClose"
+                class="secondary"
+            >
+                ĐÓNG
+            </button>
+
+        `);
+
+
+        function buy(type,amount){
+
+            const item =
+                GOODS[type];
+
+            const cost =
+                item.price * amount;
+
+
+            if(state.money < cost){
+
+                addLog(
+                    "Không đủ tiền nhập hàng.",
+                    "bad"
+                );
+
+                return;
+
+            }
+
+
+            state.money -= cost;
+
+            state.stock[type] += amount;
+
+            state.spent += cost;
+
+            render();
+
+            addLog(
+                `Nhập ${amount} ${item.name}, tốn ${money(cost)}.`,
+                ""
+            );
+
+            showMarket();
+
+        }
+
+
+        $("fresh1").onclick =
+            () => buy("fresh",1);
+
+        $("fresh3").onclick =
+            () => buy("fresh",3);
+
+        $("cheap1").onclick =
+            () => buy("cheap",1);
+
+        $("cheap3").onclick =
+            () => buy("cheap",3);
+
+        $("marketClose").onclick =
+            closeModal;
+
+    }
+
+
+    /* =====================================================
+       INVENTORY
+    ===================================================== */
+
+    function showInventory(){
+
+        openModal(`
+
+            <h2>📦 KHO HÀNG</h2>
+
+            <div class="card">
+
+                <p>
+                    Hàng tươi:
+                    <b>${state.stock.fresh}</b>
+                </p>
+
+                <p>
+                    Hàng giá rẻ:
+                    <b>${state.stock.cheap}</b>
+                </p>
+
+            </div>
+
+            <p>
+                👤 Khách đã phục vụ:
+                <b>${state.served}</b>
+            </p>
+
+            <p>
+                ⚠️ Đơn có vấn đề:
+                <b>${state.fail}</b>
+            </p>
+
+            <button
+                id="inventoryClose"
+                class="secondary"
+            >
+                ĐÓNG
+            </button>
+
+        `);
+
+
+        $("inventoryClose").onclick =
+            closeModal;
+
+    }
+
+
+    /* =====================================================
+       CUSTOMER LEVEL
+    ===================================================== */
+
+    function customerLevel(){
+
+        return clamp(
+            1 +
+            Math.floor((state.day-1)/4) +
+            Math.floor(state.level/2),
+            1,
+            9
+        );
+
+    }
+
+
+    /* =====================================================
+       SHOP
+    ===================================================== */
+
+    function openShop(){
+
+        const level =
+            customerLevel();
+
+
+        const possible =
+            RECIPES.filter(
+                recipe =>
+                    recipe.need <=
+                    state.stock.fresh +
+                    state.stock.cheap
+            );
+
+
+        if(possible.length === 0){
+
+            openModal(`
+
+                <h2>😅 HẾT HÀNG</h2>
+
+                <p>
+                    Kho không còn đủ nguyên liệu
+                    để phục vụ khách.
+                </p>
+
+                <button
+                    id="outClose"
+                    class="secondary"
+                >
+                    ĐÓNG
+                </button>
+
+            `);
+
+            $("outClose").onclick =
+                closeModal;
+
+            return;
+
+        }
+
+
+        let order =
+            possible[
+                Math.floor(
+                    Math.random()*possible.length
+                )
+            ];
+
+
+        if(
+            level >= 6 &&
+            Math.random() < .35
+        ){
+
+            const special =
+                RECIPES[3];
+
+            if(
+                state.stock.fresh +
+                state.stock.cheap >=
+                special.need
+            ){
+
+                order = special;
+
+            }
+
+        }
+
+
+        const price =
+            Math.round(
+                order.base *
+                (1 + level*.1) *
+                (.9 + Math.random()*.25)
+            );
+
+
+        openModal(`
+
+            <h2>👤 KHÁCH LV.${level}</h2>
+
+            <p>
+                "Cho tôi
+                <b>${order.name}</b>!"
+            </p>
+
+            <p>
+                Thanh toán dự kiến:
+                <b>${money(price)}</b>
+            </p>
+
+            <div class="card">
+
+                <p>
+                    Kho:
+                    Tươi ${state.stock.fresh}
+                    • Giá rẻ ${state.stock.cheap}
+                </p>
+
+                <button id="serveFresh">
+                    DÙNG HÀNG TƯƠI
+                </button>
+
+                <button
+                    id="serveCheap"
+                    class="secondary"
+                >
+                    DÙNG HÀNG GIÁ RẺ
+                </button>
+
+            </div>
+
+            <button
+                id="cancelServe"
+                class="secondary"
+            >
+                KHÔNG PHỤC VỤ
+            </button>
+
+        `);
+
+
+        function serve(type){
+
+            if(
+                state.stock[type] <
+                order.need
+            ){
+
+                addLog(
+                    "Không đủ nguyên liệu loại này.",
+                    "bad"
+                );
+
+                return;
+
+            }
+
+
+            state.stock[type] -=
+                order.need;
+
+
+            const cheap =
+                type === "cheap";
+
+
+            const fail =
+                Math.random() <
+                (cheap ? .22 : .04);
+
+
+            state.served++;
+
+
+            if(fail){
+
+                state.fail++;
+
+                state.rep =
+                    clamp(
+                        state.rep -
+                        (cheap ? 5 : 2),
+                        0,
+                        100
+                    );
+
+
+                state.money += 50000;
+
+                closeModal();
+
+                render();
+
+                addLog(
+                    "Khách không hài lòng và chỉ trả 50.000đ.",
+                    "bad"
+                );
+
+                return;
+
+            }
+
+
+            const multiplier =
+                1 +
+                (state.rep - 50)/250;
+
+
+            const earn =
+                Math.max(
+                    100000,
+                    Math.round(
+                        price * multiplier
+                    )
+                );
+
+
+            let tip = 0;
+
+
+            if(
+                level >= 5 &&
+                Math.random() < .22
+            ){
+
+                tip =
+                    Math.round(
+                        (100000 +
+                        Math.random()*400000) *
+                        level/3
+                    );
+
+            }
+
+
+            state.money +=
+                earn + tip;
+
+            state.sales +=
+                earn;
+
+            state.tips +=
+                tip;
+
+
+            if(!cheap){
+
+                state.rep =
+                    clamp(
+                        state.rep + 1,
+                        0,
+                        100
+                    );
+
+            }
+
+
+            closeModal();
+
+            render();
+
+
+            addLog(
+                `Bán ${order.name}: +${money(earn)}${
+                    tip
+                    ? " + tip " + money(tip)
+                    : ""
+                }.`,
+                "good"
+            );
+
+        }
+
+
+        $("serveFresh").onclick =
+            () => serve("fresh");
+
+        $("serveCheap").onclick =
+            () => serve("cheap");
+
+        $("cancelServe").onclick =
+            closeModal;
+
+    }
+
+
+    /* =====================================================
+       DEBT
+    ===================================================== */
+
+    function showDebt(){
+
+        if(state.debt <= 0){
+
+            openModal(`
+
+                <h2>🎉 HẾT NỢ!</h2>
+
+                <p>
+                    Bạn đã thanh toán toàn bộ khoản nợ.
+                </p>
+
+                <button
+                    id="debtDone"
+                    class="secondary"
+                >
+                    ĐÓNG
+                </button>
+
+            `);
+
+            $("debtDone").onclick =
+                closeModal;
+
+            return;
+
+        }
+
+
+        openModal(`
+
+            <h2>💳 TRẢ NỢ</h2>
+
+            <p>
+                Nợ:
+                <b>${money(state.debt)}</b>
+            </p>
+
+            <p>
+                Tiền:
+                <b>${money(state.money)}</b>
+            </p>
+
+            <div class="row">
+
+                <button id="pay500">
+                    500K
+                </button>
+
+                <button id="pay1m">
+                    1 TRIỆU
+                </button>
+
+                <button id="pay5m">
+                    5 TRIỆU
+                </button>
+
+                <button
+                    id="payAll"
+                    class="secondary"
+                >
+                    TRẢ TỐI ĐA
+                </button>
+
+            </div>
+
+            <br>
+
+            <button
+                id="debtClose"
+                class="secondary"
+            >
+                ĐÓNG
+            </button>
+
+        `);
+
+
+        function pay(amount){
+
+            const actual =
+                Math.min(
+                    amount,
+                    state.money,
+                    state.debt
+                );
+
+
+            if(actual <= 0){
+
+                addLog(
+                    "Không có tiền để trả nợ.",
+                    "bad"
+                );
+
+                return;
+
+            }
+
+
+            state.money -= actual;
+
+            state.debt -= actual;
+
+            state.paid += actual;
+
+
+            render();
+
+            addLog(
+                `Đã trả ${money(actual)} tiền nợ.`,
+                "good"
+            );
+
+
+            showDebt();
+
+        }
+
+
+        $("pay500").onclick =
+            () => pay(500000);
+
+        $("pay1m").onclick =
+            () => pay(1000000);
+
+        $("pay5m").onclick =
+            () => pay(5000000);
+
+        $("payAll").onclick =
+            () => pay(state.money);
+
+        $("debtClose").onclick =
+            closeModal;
+
+    }
+
+
+    /* =====================================================
+       UPGRADE
+    ===================================================== */
+
+    function upgrade(){
+
+        if(state.level >= 4){
+
+            openModal(`
+
+                <h2>🔧 ĐÃ TỐI ĐA</h2>
+
+                <p>
+                    Sạp đã đạt cấp độ cao nhất.
+                </p>
+
+                <button
+                    id="upgradeClose"
+                    class="secondary"
+                >
+                    ĐÓNG
+                </button>
+
+            `);
+
+            $("upgradeClose").onclick =
+                closeModal;
+
+            return;
+
+        }
+
+
+        const costs = {
+
+            1:8000000,
+
+            2:20000000,
+
+            3:45000000
+
+        };
+
+
+        const cost =
+            costs[state.level];
+
+
+        openModal(`
+
+            <h2>🔧 NÂNG CẤP SẠP</h2>
+
+            <p>
+                Lv.${state.level}
+                →
+                Lv.${state.level+1}
+            </p>
+
+            <p>
+                Chi phí:
+                <b>${money(cost)}</b>
+            </p>
+
+            <ul>
+
+                <li>Tăng lượng khách.</li>
+
+                <li>Tăng giá trị đơn hàng.</li>
+
+                <li>Cơ hội gặp khách cấp cao.</li>
+
+            </ul>
+
+            <button id="upgradeBuy">
+                NÂNG CẤP
+            </button>
+
+            <button
+                id="upgradeCancel"
+                class="secondary"
+            >
+                ĐÓNG
+            </button>
+
+        `);
+
+
+        $("upgradeBuy").onclick = () => {
+
+            if(state.money < cost){
+
+                addLog(
+                    "Không đủ tiền nâng cấp.",
+                    "bad"
+                );
+
+                return;
+
+            }
+
+
+            state.money -= cost;
+
+            state.level++;
+
+
+            render();
+
+            addLog(
+                `Sạp được nâng lên Lv.${state.level}.`,
+                "good"
+            );
+
+
+            upgrade();
+
+        };
+
+
+        $("upgradeCancel").onclick =
+            closeModal;
+
+    }
+
+
+    /* =====================================================
+       DEBT COLLECTOR
+    ===================================================== */
+
+    function debtCollector(){
+
+        const amount =
+            Math.min(
+                5000000 + state.day*100000,
+                state.debt
+            );
+
+
+        openModal(`
+
+            <h2>💼 ÔNG CHỦ NỢ TỚI!</h2>
+
+            <p>
+                "Đạt Trung!
+                Ngày ${state.day} rồi.
+                Đưa tiền đây!"
+            </p>
+
+            <p>
+                Khoản nợ:
+                <b>${money(state.debt)}</b>
+            </p>
+
+            <div class="actiongrid">
+
+                <button id="collectorPay">
+                    💵 TRẢ ${money(
+                        Math.min(
+                            amount,
+                            state.money
+                        )
+                    )}
+                </button>
+
+                <button
+                    id="collectorWait"
+                    class="secondary"
+                >
+                    🙏 XIN KHẤT
+                </button>
+
+            </div>
+
+        `);
+
+
+        $("collectorPay").onclick = () => {
+
+            const actual =
+                Math.min(
+                    amount,
+                    state.money,
+                    state.debt
+                );
+
+
+            state.money -= actual;
+
+            state.debt -= actual;
+
+            state.paid += actual;
+
+
+            closeModal();
+
+            render();
+
+            addLog(
+                `Ông chủ nợ nhận ${money(actual)}.`,
+                "good"
+            );
+
+        };
+
+
+        $("collectorWait").onclick = () => {
+
+            state.rep =
+                clamp(
+                    state.rep - 1,
+                    0,
+                    100
+                );
+
+            closeModal();
+
+            addLog(
+                "Ông chủ nợ cho khất đến cuối tháng.",
+                "bad"
+            );
+
+        };
+
+    }
+
+
+    /* =====================================================
+       RANDOM EVENT
+    ===================================================== */
+
+    function randomEvent(){
+
+        const r =
+            Math.random();
+
+
+        if(r < .08){
+
+            state.events++;
+
+
+            openModal(`
+
+                <h2>💼 KHÁCH QUỴT TIỀN</h2>
+
+                <p>
+                    Một nhóm khách định rời đi
+                    mà không thanh toán.
+                </p>
+
+                <div class="actiongrid">
+
+                    <button id="ignoreEvent">
+                        NHẪN NHỊN
+                    </button>
+
+                    <button
+                        id="dealEvent"
+                        class="danger"
+                    >
+                        ĐÒI TIỀN
+                    </button>
+
+                </div>
+
+            `);
+
+
+            $("ignoreEvent").onclick = () => {
+
+                state.rep =
+                    clamp(
+                        state.rep + 2,
+                        0,
+                        100
+                    );
+
+                closeModal();
+
+                addLog(
+                    "Đạt Trung chọn nhẫn nhịn. Uy tín tăng."
+                );
+
+            };
+
+
+            $("dealEvent").onclick = () => {
+
+                if(Math.random() < .55){
+
+                    state.money += 1000000;
+
+                    addLog(
+                        "Đòi tiền thành công: +1 triệu.",
+                        "good"
+                    );
+
+                }else{
+
+                    state.money =
+                        Math.max(
+                            0,
+                            state.money - 500000
+                        );
+
+                    addLog(
+                        "Không thành công và mất 500.000đ.",
+                        "bad"
+                    );
+
+                }
+
+                closeModal();
+
+                render();
+
+            };
+
+
+            return;
+
+        }
+
+
+        if(r < .14){
+
+            state.events++;
+
+
+            const tip =
+                500000 +
+                Math.floor(
+                    Math.random()*4
+                )*500000;
+
+
+            openModal(`
+
+                <h2>💎 KHÁCH SỘP!</h2>
+
+                <p>
+                    Một nhóm khách gọi rất nhiều món.
+                </p>
+
+                <p class="gold">
+                    TIP: +${money(tip)}
+                </p>
+
+                <button id="richTip">
+                    NHẬN TIP
+                </button>
+
+            `);
+
+
+            $("richTip").onclick = () => {
+
+                state.money += tip;
+
+                state.tips += tip;
+
+                state.rep =
+                    clamp(
+                        state.rep + 4,
+                        0,
+                        100
+                    );
+
+                closeModal();
+
+                render();
+
+                addLog(
+                    `Khách sộp tip ${money(tip)}!`,
+                    "good"
+                );
+
+            };
+
+
+            return;
+
+        }
+
+
+        if(Math.random() < .3){
+
+            state.rep =
+                clamp(
+                    state.rep + 1,
+                    0,
+                    100
+                );
+
+            addLog(
+                "Một ngày yên bình. Uy tín tăng nhẹ.",
+                "good"
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       END DAY
+    ===================================================== */
+
+    function endDay(){
+
+        if(!state) return;
+
+        if(state.gameOver || state.won)
+            return;
+
+
+        if(!$("modal").classList.contains("hidden")){
+
+            addLog(
+                "Hãy đóng cửa sổ hiện tại trước khi kết ngày.",
+                "bad"
+            );
+
+            return;
+
+        }
+
+
+        const operatingCost =
+            300000 +
+            state.level*100000;
+
+
+        state.money -=
+            operatingCost;
+
+
+        if(state.money < 0){
+
+            state.money = 0;
+
+            state.rep =
+                clamp(
+                    state.rep - 4,
+                    0,
+                    100
+                );
+
+            addLog(
+                "Chi phí vận hành làm tiền mặt về 0.",
+                "bad"
+            );
+
+        }
+
+
+        if(state.day % 6 === 0){
+
+            debtCollector();
+
+        }else{
+
+            randomEvent();
+
+        }
+
+
+        if(state.day < 30){
+
+            state.day++;
+
+            render();
+
+            addLog(
+                `Bắt đầu ngày ${state.day}.`
+            );
+
+        }else{
+
+            render();
+
+            setTimeout(
+                finishGame,
+                150
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       FINISH GAME
+    ===================================================== */
+
+    function finishGame(){
+
+        if(state.debt <= 0){
+
+            state.won = true;
+
+
+            const score =
+                state.money +
+                state.paid +
+                state.tips +
+                state.rep*100000;
+
+
+            saveRank(score);
+
+
+            openModal(`
+
+                <h2>🏆 CHIẾN THẮNG!</h2>
+
+                <p>
+                    Đạt Trung đã trả hết
+                    khoản nợ.
+                </p>
+
+                <div class="card">
+
+                    <p>
+                        💵 Tiền còn lại:
+                        <b>${money(state.money)}</b>
+                    </p>
+
+                    <p>
+                        💳 Đã trả:
+                        <b>${money(state.paid)}</b>
+                    </p>
+
+                    <p>
+                        ⭐ Uy tín:
+                        <b>${state.rep}</b>
+                    </p>
+
+                    <p>
+                        📊 Điểm:
+                        <b>${money(score)}</b>
+                    </p>
+
+                </div>
+
+                <button id="finishRank">
+                    🏆 XEM BXH
+                </button>
+
+                <button
+                    id="finishMenu"
+                    class="secondary"
+                >
+                    VỀ MENU
+                </button>
+
+            `);
+
+
+            $("finishRank").onclick = () => {
+
+                closeModal();
+
+                showRanks();
+
+            };
+
+
+            $("finishMenu").onclick =
+                restartGame;
+
+            return;
+
+        }
+
+
+        state.gameOver = true;
+
+
+        const score =
+            Math.max(
+                0,
+                state.money +
+                state.paid +
+                state.tips
+            );
+
+
+        saveRank(score);
+
+
+        openModal(`
+
+            <h2>💀 HẾT THÁNG</h2>
+
+            <p>
+                Ngày 30 đã kết thúc.
+            </p>
+
+            <p>
+                Vẫn còn nợ:
+                <b>${money(state.debt)}</b>
+            </p>
+
+            <div class="card">
+
+                <p>
+                    💵 Tiền:
+                    <b>${money(state.money)}</b>
+                </p>
+
+                <p>
+                    💳 Đã trả:
+                    <b>${money(state.paid)}</b>
+                </p>
+
+                <p>
+                    📊 Điểm:
+                    <b>${money(score)}</b>
+                </p>
+
+            </div>
+
+            <button id="loseRank">
+                🏆 XEM BXH
+            </button>
+
+            <button
+                id="loseRestart"
+                class="danger"
+            >
+                CHƠI LẠI
+            </button>
+
+        `);
+
+
+        $("loseRank").onclick = () => {
+
+            closeModal();
+
+            showRanks();
+
+        };
+
+
+        $("loseRestart").onclick =
+            restartGame;
+
+    }
+
+
+    /* =====================================================
+       RESTART
+    ===================================================== */
+
+    function restartGame(){
+
+        location.reload();
+
+    }
+
+
+    /* =====================================================
+       GAME START
+    ===================================================== */
+
+    function startGame(){
+
+        let name =
+            $("playerName")
+            .value
+            .trim();
+
+
+        if(!name){
+
+            name = "Player";
+
+        }
+
+
+        name =
+            name
+            .replace(/\s+/g," ")
+            .slice(0,16);
+
+
+        state =
+            createState(name);
+
+
+        player.x = 360;
+
+        player.y = 350;
+
+
+        $("log").innerHTML = "";
+
+
+        running = true;
+
+        lastTime = 0;
+
+
+        showScreen(
+            $("gameScreen")
+        );
+
+
+        render();
+
+
+        addLog(
+            "Ngày 1: Đạt Trung tiếp quản sạp."
+        );
+
+        addLog(
+            "Khoản nợ ban đầu: 360 triệu.",
+            "bad"
+        );
+
+        addLog(
+            "Mẹo: cứ 6 ngày ông chủ nợ sẽ tới."
+        );
+
+    }
+
+
+    /* =====================================================
+       KEYBOARD
+    ===================================================== */
+
+    window.addEventListener(
+        "keydown",
+        event => {
+
+            if(
+                [
+                    "ArrowUp",
+                    "ArrowDown",
+                    "ArrowLeft",
+                    "ArrowRight",
+                    "w",
+                    "a",
+                    "s",
+                    "d",
+                    "W",
+                    "A",
+                    "S",
+                    "D"
+                ].includes(event.key)
+            ){
+
+                event.preventDefault();
+
+            }
+
+
+            if(
+                event.key === "ArrowUp" ||
+                event.key === "w" ||
+                event.key === "W"
+            )
+                keys.up = true;
+
+
+            if(
+                event.key === "ArrowDown" ||
+                event.key === "s" ||
+                event.key === "S"
+            )
+                keys.down = true;
+
+
+            if(
+                event.key === "ArrowLeft" ||
+                event.key === "a" ||
+                event.key === "A"
+            )
+                keys.left = true;
+
+
+            if(
+                event.key === "ArrowRight" ||
+                event.key === "d" ||
+                event.key === "D"
+            )
+                keys.right = true;
+
+        }
+    );
+
+
+    window.addEventListener(
+        "keyup",
+        event => {
+
+            if(
+                event.key === "ArrowUp" ||
+                event.key === "w" ||
+                event.key === "W"
+            )
+                keys.up = false;
+
+
+            if(
+                event.key === "ArrowDown" ||
+                event.key === "s" ||
+                event.key === "S"
+            )
+                keys.down = false;
+
+
+            if(
+                event.key === "ArrowLeft" ||
+                event.key === "a" ||
+                event.key === "A"
+            )
+                keys.left = false;
+
+
+            if(
+                event.key === "ArrowRight" ||
+                event.key === "d" ||
+                event.key === "D"
+            )
+                keys.right = false;
+
+        }
+    );
+
+
+    /* =====================================================
+       TOUCH CONTROL
+    ===================================================== */
+
+    document
+        .querySelectorAll(
+            "#touch button[data-key]"
+        )
+        .forEach(button => {
+
+            const key =
+                button.dataset.key;
+
+
+            const start = event => {
+
+                event.preventDefault();
+
+                keys[key] = true;
+
+            };
+
+
+            const stop = event => {
+
+                event.preventDefault();
+
+                keys[key] = false;
+
+            };
+
+
+            button.addEventListener(
+                "pointerdown",
+                start
+            );
+
+            button.addEventListener(
+                "pointerup",
+                stop
+            );
+
+            button.addEventListener(
+                "pointercancel",
+                stop
+            );
+
+            button.addEventListener(
+                "pointerleave",
+                stop
+            );
+
+        });
+
+
+    /* =====================================================
+       BUTTON EVENTS
+    ===================================================== */
+
+    $("playButton").onclick = () => {
+
+        showScreen(
+            $("nameScreen")
+        );
+
+        setTimeout(
+            () => $("playerName").focus(),
+            50
+        );
+
+    };
+
+
+    $("backNameButton").onclick = () => {
+
+        showScreen(
+            $("startScreen")
+        );
+
+    };
+
+
+    $("startGameButton").onclick =
+        startGame;
+
+
+    $("playerName").addEventListener(
+        "keydown",
+        event => {
+
+            if(event.key === "Enter"){
+
+                startGame();
+
+            }
+
+        }
+    );
+
+
+    $("rankButton").onclick =
+        showRanks;
+
+
+    $("helpButton").onclick =
+        showHelp;
+
+
+    $("marketButton").onclick =
+        showMarket;
+
+
+    $("shopButton").onclick =
+        openShop;
+
+
+    $("debtButton").onclick =
+        showDebt;
+
+
+    $("upgradeButton").onclick =
+        upgrade;
+
+
+    $("inventoryButton").onclick =
+        showInventory;
+
+
+    $("nextDayButton").onclick =
+        endDay;
+
+
+    /* =====================================================
+       MAIN MENU
+    ===================================================== */
+
+    $("menuButton").onclick = () => {
+
+        openModal(`
+
+            <h2>☰ MENU</h2>
+
+            <div class="menuBtns">
+
+                <button id="resumeGame">
+                    TIẾP TỤC
+                </button>
+
+                <button
+                    id="menuRank"
+                    class="secondary"
+                >
+                    🏆 BẢNG XẾP HẠNG
+                </button>
+
+                <button
+                    id="restartGame"
+                    class="danger"
+                >
+                    CHƠI LẠI
+                </button>
+
+            </div>
+
+        `);
+
+
+        $("resumeGame").onclick =
+            closeModal;
+
+
+        $("menuRank").onclick = () => {
+
+            closeModal();
+
+            showRanks();
+
+        };
+
+
+        $("restartGame").onclick =
+            restartGame;
+
+    };
+
+
+    /* =====================================================
+       MODAL BACKDROP
+    ===================================================== */
+
+    $("modal").addEventListener(
+        "click",
+        event => {
+
+            if(
+                event.target ===
+                $("modal")
+            ){
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if(event.key === "Escape"){
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       STARTUP
+    ===================================================== */
+
+    setTimeout(() => {
+
+        $("loading").classList.add(
+            "hidden"
+        );
+
+    },1200);
+
+
+    /* Start render loop */
+
+    animationId =
+        requestAnimationFrame(
+            gameLoop
+        );
+
+
 })();
 </script>
+
 </body>
 </html>
