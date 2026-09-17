@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Thịt Chó Ông Trung - V2</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#171717;color:#f4f1e8;font-family:system-ui,Arial,sans-serif;overflow-x:hidden}
+button,input{font:inherit}
+button{border:0;border-radius:12px;padding:12px 14px;background:#d99b38;color:#171717;font-weight:800;cursor:pointer;min-height:44px}
+button.secondary{background:#343434;color:#eee}
+button.danger{background:#b84c42;color:white}
+button:disabled{opacity:.45;cursor:not-allowed}
+#game{max-width:900px;margin:auto;min-height:100vh;background:#202020}
+.screen{padding:20px;min-height:100vh}
+.hidden{display:none!important}
+h1,h2,h3{margin:0 0 10px}
+p{line-height:1.45}
+.title{text-align:center;padding-top:9vh}
+.title h1{font-size:clamp(34px,9vw,72px);line-height:1;color:#e3aa49;text-shadow:3px 3px #000}
+.subtitle{color:#cfc6b4}
+.card{background:#2b2b2b;border:1px solid #464646;border-radius:18px;padding:16px;margin:12px 0}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.center{justify-content:center}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat{background:#292929;border-radius:12px;padding:10px;text-align:center}
+.stat b{display:block;font-size:18px;color:#f0b85b}
+.bar{height:10px;background:#111;border-radius:10px;overflow:hidden}
+.bar>i{display:block;height:100%;background:#e3aa49}
+#canvasWrap{position:relative;background:#111;border-radius:18px;overflow:hidden;border:1px solid #555}
+canvas{display:block;width:100%;height:auto;image-rendering:auto}
+#touch{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;max-width:330px;margin-left:auto;margin-right:auto}
+#touch button{background:#333;color:#eee;font-size:20px}
+#touch .blank{visibility:hidden}
+.actiongrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.small{font-size:13px;color:#bdb7aa}
+.good{color:#8bd38b}.bad{color:#f08075}.gold{color:#f2bd5b}
+.modal{position:fixed;inset:0;background:#000b;display:flex;align-items:center;justify-content:center;padding:16px;z-index:10}
+.modalBox{width:min(560px,100%);max-height:90vh;overflow:auto;background:#242424;border:1px solid #555;border-radius:18px;padding:18px}
+.menuBtns{display:grid;gap:10px;max-width:420px;margin:25px auto}
+input{width:100%;padding:13px;border-radius:12px;border:1px solid #666;background:#151515;color:#fff}
+.table{width:100%;border-collapse:collapse}.table td,.table th{padding:9px;border-bottom:1px solid #444;text-align:left}
+.log{max-height:170px;overflow:auto;font-size:13px}
+.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#3b3324;color:#efc36d;font-size:12px}
+@media(max-width:620px){.stats{grid-template-columns:repeat(2,1fr)}.screen{padding:12px}.actiongrid{grid-template-columns:1fr}.title{padding-top:5vh}}
+</style>
+</head>
+<body>
+<div id="game">
+<section id="start" class="screen">
+  <div class="title">
+    <div style="font-size:64px">🐕</div>
+    <h1>THỊT CHÓ<br>ÔNG TRUNG</h1>
+    <p class="subtitle">V2 • 30 NGÀY SINH TỒN KINH DOANH</p>
+  </div>
+  <div class="card">
+    <h3>📖 Cốt truyện</h3>
+    <p>Khi bố mẹ đi du lịch, Đạt Trung bất ngờ được giao sạp hàng của bố cùng khoản nợ <b>360.000.000đ</b>. Bạn phải quản lý vốn, nhập hàng, phục vụ khách và trả nợ trước khi tháng kết thúc.</p>
+    <p class="small">Đây là mô phỏng hư cấu mang tính hài hước; các lựa chọn hàng hóa chỉ là cơ chế game.</p>
+  </div>
+  <div class="menuBtns">
+    <button id="playBtn">▶ VÀO GAME</button>
+    <button id="rankBtn" class="secondary">🏆 BẢNG XẾP HẠNG</button>
+    <button id="helpBtn" class="secondary">❔ HƯỚNG DẪN</button>
+  </div>
+</section>
+
+<section id="nameScreen" class="screen hidden">
+  <div class="title" style="padding-top:7vh">
+    <div style="font-size:55px">📝</div>
+    <h2>Đặt tên trên bảng xếp hạng</h2>
+    <p class="small">Tên nhân vật chính vẫn luôn là <b>Đạt Trung</b>.</p>
+  </div>
+  <div class="card">
+    <label for="playerName">Tên BXH</label>
+    <input id="playerName" maxlength="16" placeholder="Ví dụ: Long">
+    <div class="row" style="margin-top:12px">
+      <button id="startGameBtn">BẮT ĐẦU</button>
+      <button id="backNameBtn" class="secondary">QUAY LẠI</button>
+    </div>
+  </div>
+</section>
+
+<section id="gameScreen" class="screen hidden">
+  <div class="row" style="justify-content:space-between;margin-bottom:10px">
+    <div><b style="color:#e5b45d">THỊT CHÓ ÔNG TRUNG</b><div class="small">Đạt Trung • Người chơi: <span id="uiName"></span></div></div>
+    <button id="menuBtn" class="secondary">☰</button>
+  </div>
+  <div class="stats">
+    <div class="stat">💵 TIỀN<b id="money"></b></div>
+    <div class="stat">💳 NỢ<b id="debt"></b></div>
+    <div class="stat">📅 NGÀY<b id="day"></b></div>
+    <div class="stat">⭐ UY TÍN<b id="rep"></b></div>
+  </div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><span>📌 Mục tiêu: trả hết nợ trước ngày 30</span><span class="badge" id="upgradeText"></span></div>
+    <div class="bar"><i id="debtBar"></i></div>
+  </div>
+
+  <div id="canvasWrap"><canvas id="world" width="720" height="430"></canvas></div>
+  <div id="touch">
+    <button class="blank">•</button><button data-key="up">▲</button><button class="blank">•</button>
+    <button data-key="left">◀</button><button data-key="down">▼</button><button data-key="right">▶</button>
+  </div>
+
+  <div class="card">
+    <h3>🛒 Quản lý</h3>
+    <div class="actiongrid">
+      <button id="marketBtn">📦 NHẬP HÀNG</button>
+      <button id="shopBtn">🍲 MỞ SẠP</button>
+      <button id="debtBtn">💳 TRẢ NỢ</button>
+      <button id="upgradeBtn">🔧 NÂNG CẤP</button>
+      <button id="inventoryBtn" class="secondary">📦 KHO</button>
+      <button id="nextDayBtn" class="secondary">🌙 KẾT NGÀY</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📜 Nhật ký</h3>
+    <div id="log" class="log"></div>
+  </div>
+</section>
+</div>
+
+<div id="modal" class="modal hidden"><div class="modalBox" id="modalBox"></div></div>
+
+<script>
+(() => {
+"use strict";
+const $=id=>document.getElementById(id);
+const fmt=n=>Math.round(n).toLocaleString("vi-VN")+"đ";
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+const key="ot_v2_rank";
+
+let state=null;
+let keys={up:false,down:false,left:false,right:false};
+const canvas=$("world"),ctx=canvas.getContext("2d");
+let player={x:360,y:275};
+
+const goods={
+ fresh:{name:"Hàng tươi",buy:2000000,quality:5,stock:0,desc:"Đắt hơn nhưng ổn định.",risk:0.03},
+ cheap:{name:"Hàng giá rẻ",buy:1200000,quality:2,stock:0,desc:"Rẻ, nhưng có rủi ro chất lượng.",risk:0.22}
+};
+const recipes=[
+ {name:"Phần cơ bản",need:{fresh:1},base:350000},
+ {name:"Thịt + rau",need:{fresh:1},base:500000,veg:true},
+ {name:"Thịt + mắm tôm",need:{fresh:1},base:650000,sauce:true},
+ {name:"Đặc biệt",need:{fresh:2},base:1200000,veg:true,sauce:true}
+];
+
+function newState(name){
+ return {name,day:1,money:10000000,debt:360000000,rep:60,level:1,stock:{fresh:3,cheap:0},sales:0,spent:0,paid:0,tips:0,events:0,served:0,fail:0,gameOver:false,won:false};
+}
+function log(t,cls=""){const d=document.createElement("div");d.className=cls;d.textContent="• "+t;$("log").prepend(d)}
+function saveRank(score){
+ let arr=[];try{arr=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}
+ arr.push({name:state.name,score,day:state.day,date:new Date().toLocaleDateString("vi-VN")});
+ arr.sort((a,b)=>b.score-a.score);arr=arr.slice(0,10);
+ try{localStorage.setItem(key,JSON.stringify(arr))}catch(e){}
+}
+function ranks(){
+ let arr=[];try{arr=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}
+ let rows=arr.length?arr.map((r,i)=>`<tr><td>${i+1}</td><td>${escapeHtml(r.name)}</td><td>${fmt(r.score)}</td><td>Ngày ${r.day}</td></tr>`).join(""):`<tr><td colspan="4">Chưa có kỷ lục.</td></tr>`;
+ openModal(`<h2>🏆 Bảng xếp hạng</h2><table class="table"><tr><th>#</th><th>Tên</th><th>Điểm tiền</th><th>Ngày</th></tr>${rows}</table><br><button id="closeRank" class="secondary">ĐÓNG</button>`);
+ $("closeRank").onclick=closeModal;
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function openModal(html){$("modalBox").innerHTML=html;$("modal").classList.remove("hidden")}
+function closeModal(){$("modal").classList.add("hidden")}
+
+function render(){
+ if(!state)return;
+ $("uiName").textContent=state.name;
+ $("money").textContent=fmt(state.money);
+ $("debt").textContent=fmt(state.debt);
+ $("day").textContent=state.day+"/30";
+ $("rep").textContent=state.rep;
+ $("upgradeText").textContent="Sạp Lv."+state.level;
+ $("debtBar").style.width=(100-clamp(state.debt/360000000*100,0,100))+"%";
+}
+function draw(){
+ ctx.clearRect(0,0,720,430);
+ ctx.fillStyle="#52624c";ctx.fillRect(0,0,720,430);
+ ctx.fillStyle="#8a7756";ctx.fillRect(0,170,720,100);
+ ctx.fillStyle="#6f6148";ctx.fillRect(0,280,720,150);
+ // stalls/buildings
+ ctx.fillStyle="#3a3a3a";ctx.fillRect(30,30,180,105);
+ ctx.fillStyle="#d59a3a";ctx.fillRect(50,65,140,55);
+ ctx.fillStyle="#222";ctx.font="bold 20px Arial";ctx.textAlign="center";ctx.fillText("KHU NHẬP HÀNG",120,98);
+ ctx.fillStyle="#5b3b28";ctx.fillRect(265,55,190,95);
+ ctx.fillStyle="#e5ad4e";ctx.fillRect(280,70,160,35);
+ ctx.fillStyle="#211b15";ctx.font="bold 18px Arial";ctx.fillText("SẠP ÔNG TRUNG",360,94);
+ ctx.fillStyle="#333";ctx.fillRect(500,40,175,110);
+ ctx.fillStyle="#aaa";ctx.font="bold 16px Arial";ctx.fillText("KHU KHÁCH",587,98);
+ // NPC dog
+ ctx.font="42px sans-serif";ctx.fillText("🐕",95,335);
+ ctx.font="13px Arial";ctx.fillStyle="#fff";ctx.fillText("Béo",95,358);
+ // customers
+ const n=clamp(2+state.rep/35,2,5);
+ for(let i=0;i<n;i++){let x=500+(i%3)*65,y=225+Math.floor(i/3)*55;ctx.font="30px sans-serif";ctx.fillText(i%2?"👩":"👨",x,y)}
+ // player 3/4 cartoon
+ ctx.fillStyle="#e9c39b";ctx.beginPath();ctx.arc(player.x,player.y-28,18,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle="#222";ctx.fillRect(player.x-18,player.y-12,36,43);
+ ctx.fillStyle="#4d78a8";ctx.fillRect(player.x-17,player.y-5,34,20);
+ ctx.fillStyle="#f2f2f2";ctx.font="12px Arial";ctx.fillText("ĐẠT",player.x,player.y+4);
+ ctx.fillStyle="#222";ctx.beginPath();ctx.arc(player.x-6,player.y-30,2.5,0,Math.PI*2);ctx.arc(player.x+6,player.y-30,2.5,0,Math.PI*2);ctx.fill();
+ ctx.font="11px Arial";ctx.textAlign="left";ctx.fillStyle="#fff";ctx.fillText("Đạt Trung",player.x-30,player.y+50);
+ requestAnimationFrame(draw);
+}
+function move(){
+ const speed=3;
+ if(keys.up)player.y-=speed;if(keys.down)player.y+=speed;if(keys.left)player.x-=speed;if(keys.right)player.x+=speed;
+ player.x=clamp(player.x,25,695);player.y=clamp(player.y,175,400);
+}
+setInterval(move,16);
+
+document.querySelectorAll("#touch button[data-key]").forEach(b=>{
+ const k=b.dataset.key;
+ ["pointerdown"].forEach(ev=>b.addEventListener(ev,e=>{e.preventDefault();keys[k]=true}));
+ ["pointerup","pointercancel","pointerleave"].forEach(ev=>b.addEventListener(ev,e=>{keys[k]=false}));
+});
+window.addEventListener("keydown",e=>{if(e.key==="ArrowUp")keys.up=true;if(e.key==="ArrowDown")keys.down=true;if(e.key==="ArrowLeft")keys.left=true;if(e.key==="ArrowRight")keys.right=true});
+window.addEventListener("keyup",e=>{if(e.key==="ArrowUp")keys.up=false;if(e.key==="ArrowDown")keys.down=false;if(e.key==="ArrowLeft")keys.left=false;if(e.key==="ArrowRight")keys.right=false});
+
+$("playBtn").onclick=()=>$("nameScreen").classList.remove("hidden");
+$("rankBtn").onclick=ranks;
+$("helpBtn").onclick=()=>openModal(`<h2>❔ Cách chơi</h2>
+<p>Quản lý tiền trong 30 ngày. Nhập hàng, mở sạp để phục vụ khách, trả nợ và nâng cấp.</p>
+<ul><li>Cứ mỗi 6 ngày ông chủ nợ đến đòi tiền.</li><li>Cuối ngày có thể trả một phần nợ.</li><li>Khách Lv cao trả nhiều hơn nhưng yêu cầu khó hơn.</li><li>Hàng giá rẻ giúp tiết kiệm vốn nhưng có rủi ro bị đánh giá xấu.</li><li>Đến ngày 30 phải thanh toán toàn bộ nợ.</li></ul><button id="helpClose" class="secondary">ĐÓNG</button>`);
+$("modal").addEventListener("click",e=>{if(e.target===$("modal"))closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+$("helpClose")?.addEventListener("click",closeModal);
+
+$("backNameBtn").onclick=()=>{$("nameScreen").classList.add("hidden")};
+$("startGameBtn").onclick=()=>{
+ let name=$("playerName").value.trim().slice(0,16)||"Player";
+ state=newState(name);
+ $("start").classList.add("hidden");$("nameScreen").classList.add("hidden");$("gameScreen").classList.remove("hidden");
+ $("log").innerHTML="";player={x:360,y:275};render();
+ log("Ngày 1: Đạt Trung tiếp quản sạp. Khoản nợ ban đầu 360 triệu.");
+ log("Mẹo: đừng tiêu sạch tiền; cứ 6 ngày ông chủ nợ sẽ xuất hiện.");
+};
+
+$("menuBtn").onclick=()=>openModal(`<h2>☰ Menu</h2><div class="menuBtns">
+<button id="resume">TIẾP TỤC</button><button id="rank2" class="secondary">🏆 BẢNG XẾP HẠNG</button><button id="restart" class="danger">CHƠI LẠI</button></div>`);
+$("resume").onclick=closeModal;$("rank2").onclick=()=>{closeModal();ranks()};$("restart").onclick=()=>location.reload();
+
+$("marketBtn").onclick=market;
+function market(){
+ const f=goods.fresh,c=goods.cheap;
+ openModal(`<h2>📦 Nhập hàng</h2>
+ <p class="small">Tiền hiện có: ${fmt(state.money)}</p>
+ <div class="card"><b>${f.name}</b><p>${f.desc}</p><p>Giá: <b>${fmt(f.buy)}</b>/đơn vị</p><button id="buyFresh">MUA 1</button> <button id="buyFresh3" class="secondary">MUA 3</button></div>
+ <div class="card"><b>${c.name}</b><p>${c.desc}</p><p>Giá: <b>${fmt(c.buy)}</b>/đơn vị</p><button id="buyCheap">MUA 1</button> <button id="buyCheap3" class="secondary">MUA 3</button></div>
+ <button id="marketClose" class="secondary">ĐÓNG</button>`);
+ const buy=(type,n)=>{let g=goods[type],cost=g.buy*n;if(state.money<cost){log("Không đủ tiền nhập hàng.","bad");return}state.money-=cost;state.stock[type]+=n;state.spent+=cost;render();log(`Nhập ${n} ${g.name}, tốn ${fmt(cost)}.`);market()};
+ $("buyFresh").onclick=()=>buy("fresh",1);$("buyFresh3").onclick=()=>buy("fresh",3);
+ $("buyCheap").onclick=()=>buy("cheap",1);$("buyCheap3").onclick=()=>buy("cheap",3);
+ $("marketClose").onclick=closeModal;
+}
+$("inventoryBtn").onclick=()=>openModal(`<h2>📦 Kho hàng</h2><p>Hàng tươi: <b>${state.stock.fresh}</b></p><p>Hàng giá rẻ: <b>${state.stock.cheap}</b></p><p>Khách đã phục vụ: ${state.served} • Món lỗi: ${state.fail}</p><button id="invClose" class="secondary">ĐÓNG</button>`),setTimeout(()=>$("invClose").onclick=closeModal,0);
+
+$("shopBtn").onclick=shop;
+function customerLevel(){return clamp(1+Math.floor((state.day-1)/4)+Math.floor(state.level/2),1,9)}
+function shop(){
+ const lv=customerLevel();
+ const options=recipes.filter(r=>r.need.fresh<=state.stock.fresh+state.stock.cheap);
+ const pool=options.length?options:recipes;
+ let order=pool[Math.floor(Math.random()*pool.length)];
+ let use="fresh";
+ if(state.stock.fresh<=0&&state.stock.cheap>0)use="cheap";
+ if(order.need.fresh>state.stock.fresh && state.stock.cheap>=order.need.fresh)use="cheap";
+ if((order.need.fresh*1)>state.stock.fresh+state.stock.cheap){openModal(`<h2>😅 Hết hàng</h2><p>Khách đang chờ nhưng kho không đủ để làm món.</p><button id="sc" class="secondary">ĐÓNG</button>`);$("sc").onclick=closeModal;return}
+ let price=Math.round(order.base*(1+lv*.10)*(0.9+Math.random()*.25));
+ let quality=use==="fresh"?5:2;
+ let risk=use==="fresh"?0.04:0.22;
+ const difficult=lv>=6 && Math.random()<.35;
+ if(difficult){order=recipes[3];if(state.stock.fresh<2&&state.stock.cheap<2){order=recipes[0]}}
+ openModal(`<h2>👤 Khách Lv.${lv}</h2><p>"Cho tôi <b>${order.name}</b>!"</p><p>Thanh toán dự kiến: <b>${fmt(price)}</b></p>
+ <div class="card"><p>Kho: tươi ${state.stock.fresh} • giá rẻ ${state.stock.cheap}</p><p class="small">Chọn nguyên liệu cho món này:</p>
+ <button id="serveFresh">DÙNG HÀNG TƯƠI</button> <button id="serveCheap" class="secondary">DÙNG HÀNG GIÁ RẺ</button></div>
+ <button id="shopCancel" class="secondary">KHÔNG PHỤC VỤ</button>`);
+ function serve(type){
+   let need=order.need.fresh;
+   if(state.stock[type]<need){log("Không đủ nguyên liệu để làm món.","bad");return}
+   state.stock[type]-=need;
+   let q=type==="fresh"?5:2;
+   let fail=Math.random()<(type==="cheap"?0.22:0.04);
+   if(fail){
+     state.fail++;state.rep=clamp(state.rep-(type==="cheap"?5:2),0,100);
+     state.money+=50000;state.served++;
+     closeModal();render();log(`Khách Lv.${lv} phát hiện vấn đề và chỉ trả 50.000đ. Uy tín giảm.`,`bad`);
+     dog();
+   }else{
+     let mult=1+(state.rep-50)/250;
+     let earn=Math.max(100000,Math.round(price*mult));
+     let tip=lv>=5&&Math.random()<.22?Math.round((100000+Math.random()*400000)*lv/3):0;
+     state.money+=earn+tip;state.sales+=earn;state.tips+=tip;state.served++;
+     state.rep=clamp(state.rep+(q>=5?1:0),0,100);
+     closeModal();render();log(`Bán ${order.name} cho khách Lv.${lv}: +${fmt(earn)}${tip?` + tip ${fmt(tip)}`:""}.`,"good");
+   }
+ }
+ $("serveFresh").onclick=()=>serve("fresh");$("serveCheap").onclick=()=>serve("cheap");$("shopCancel").onclick=closeModal;
+}
+function dog(){
+ if(Math.random()<.85)log("🐕 Béo ăn món lỗi: 'Để tôi xử lý cho!'","gold");
+}
+
+$("debtBtn").onclick=debtModal;
+function debtModal(){
+ if(state.debt<=0){openModal(`<h2>🎉 Hết nợ!</h2><p>Ông Trung đã thoát kiếp con nợ.</p><button id="dc" class="secondary">ĐÓNG</button>`);$("dc").onclick=closeModal;return}
+ openModal(`<h2>💳 Trả nợ</h2><p>Nợ hiện tại: <b>${fmt(state.debt)}</b></p><p>Tiền mặt: <b>${fmt(state.money)}</b></p>
+ <div class="row"><button id="p500">500K</button><button id="p1m">1 TRIỆU</button><button id="p5m">5 TRIỆU</button><button id="pAll" class="secondary">TRẢ TỐI ĐA</button></div>
+ <br><button id="dc2" class="secondary">ĐÓNG</button>`);
+ function pay(x){let a=Math.min(x,state.money,state.debt);if(a<=0){log("Không có tiền để trả nợ.","bad");return}state.money-=a;state.debt-=a;state.paid+=a;render();log(`Đã trả ${fmt(a)} tiền nợ.`);debtModal()}
+ $("p500").onclick=()=>pay(500000);$("p1m").onclick=()=>pay(1000000);$("p5m").onclick=()=>pay(5000000);$("pAll").onclick=()=>pay(state.money);$("dc2").onclick=closeModal;
+}
+
+$("upgradeBtn").onclick=upgrade;
+function upgrade(){
+ const costs=[0,8000000,20000000,45000000,90000000];
+ if(state.level>=4){openModal(`<h2>🔧 Đã tối đa</h2><p>Sạp đang ở cấp cao nhất.</p><button id="uc" class="secondary">ĐÓNG</button>`);$("uc").onclick=closeModal;return}
+ let cost=costs[state.level];
+ openModal(`<h2>🔧 Nâng cấp sạp</h2><p>Lv.${state.level} → Lv.${state.level+1}</p><p>Chi phí: <b>${fmt(cost)}</b></p><ul><li>Tăng lượng khách tiềm năng.</li><li>Tăng giá trị đơn hàng.</li><li>Mở cơ hội gặp khách Lv cao.</li></ul><button id="buyUp">NÂNG CẤP</button> <button id="upc" class="secondary">ĐÓNG</button>`);
+ $("buyUp").onclick=()=>{if(state.money<cost){log("Không đủ tiền nâng cấp.","bad");return}state.money-=cost;state.level++;render();log(`Sạp được nâng lên Lv.${state.level}.`,"good");upgrade()};
+ $("upc").onclick=closeModal;
+}
+
+$("nextDayBtn").onclick=endDay;
+function endDay(){
+ if(state.day>=30){finalCheck();return}
+ // daily operating cost
+ const cost=300000+state.level*100000;
+ state.money-=cost;
+ if(state.money<0){state.money=0;state.rep=clamp(state.rep-4,0,100);log("Chi phí vận hành khiến tiền mặt về 0.","bad")}
+ if(state.day%6===0)debtVisit();
+ else randomEvent();
+ state.day++;
+ render();
+ if(state.day>30)finalCheck();
+ else log(`Bắt đầu ngày ${state.day}. Chi phí vận hành ngày trước: ${fmt(cost)}.`);
+}
+function debtVisit(){
+ let due=Math.min(5000000+state.day*100000,state.debt);
+ openModal(`<h2>💼 Ông chủ nợ tới!</h2><p>"Đạt Trung! Ngày ${state.day} rồi. Đưa tiền đây!"</p><p>Khoản nợ hiện tại: <b>${fmt(state.debt)}</b></p>
+ <div class="actiongrid"><button id="dpay">💵 TRẢ ${fmt(Math.min(due,state.money))}</button><button id="promise" class="secondary">🙏 XIN CUỐI THÁNG</button><button id="fight" class="danger">🥊 ĐỐI ĐẦU</button></div>`);
+ $("dpay").onclick=()=>{let a=Math.min(due,state.money,state.debt);state.money-=a;state.debt-=a;state.paid+=a;closeModal();render();log(`Ông chủ nợ nhận ${fmt(a)}.`,"good")};
+ $("promise").onclick=()=>{state.rep=clamp(state.rep-1,0,100);closeModal();log("Ông chủ nợ đồng ý cho khất đến cuối tháng. Lãi áp lực tăng.");};
+ $("fight").onclick=()=>{let ok=Math.random()<.45;if(ok){state.debt+=2000000;state.rep=clamp(state.rep-7,0,100);closeModal();render();log("Đối đầu thất bại: khoản nợ tăng 2 triệu và uy tín giảm.","bad")}else{state.debt+=1000000;closeModal();render();log("Ông Trung bị kéo đi làm việc với luật sư. Nợ tăng 1 triệu.","bad")}};
+}
+function randomEvent(){
+ let r=Math.random();
+ if(r<0.075){
+   state.events++;
+   openModal(`<h2>🥊 Sự kiện hiếm: Nhóm khách quỵt</h2><p>Một nhóm khách định ăn xong rồi rời đi mà không thanh toán.</p><div class="actiongrid"><button id="ignore">😐 NHẪN NHỊN</button><button id="confront" class="danger">🥊 ĐỐI ĐẦU</button></div>`);
+   $("ignore").onclick=()=>{state.rep=clamp(state.rep+2,0,100);closeModal();log("Đạt Trung nhẫn nhịn. Uy tín tăng nhẹ nhưng không thu được tiền.")};
+   $("confront").onclick=()=>{let ok=Math.random()<.5;if(ok){state.money+=1000000;log("Đối đầu thành công: thu được 1 triệu.","good")}else{state.money=Math.max(0,state.money-1000000);log("Đối đầu thất bại: mất 1 triệu.","bad")}closeModal();render()};
+ }else if(r<0.11){
+   state.events++;
+   let tip=500000+Math.floor(Math.random()*4)*500000;
+   openModal(`<h2>💎 Khách sộp!</h2><p>Một nhóm khách sộp gọi rất nhiều món và để lại tip.</p><p class="gold">TIP: +${fmt(tip)}</p><button id="rich">NHẬN TIP</button>`);
+   $("rich").onclick=()=>{state.money+=tip;state.tips+=tip;state.rep=clamp(state.rep+4,0,100);closeModal();render();log(`Khách sộp tip ${fmt(tip)}!`,"good")};
+ }else{
+   // quiet day
+   if(Math.random()<.3){state.rep=clamp(state.rep+1,0,100);log("Một ngày yên bình. Uy tín tăng nhẹ.")}
+ }
+}
+function finalCheck(){
+ if(state.debt<=0){
+   state.won=true;
+   let score=state.money+state.paid+state.tips+state.rep*100000;
+   saveRank(score);
+   openModal(`<h2>🏆 CHIẾN THẮNG!</h2><p>Đạt Trung đã trả hết khoản nợ 360 triệu!</p><div class="card"><p>💵 Tiền còn lại: <b>${fmt(state.money)}</b></p><p>💳 Đã trả: <b>${fmt(state.paid)}</b></p><p>⭐ Uy tín: <b>${state.rep}</b></p><p>📊 Điểm BXH: <b>${fmt(score)}</b></p></div><button id="winRank">🏆 XEM BXH</button> <button id="winMenu" class="secondary">VỀ MENU</button>`);
+   $("winRank").onclick=()=>{closeModal();ranks()};$("winMenu").onclick=()=>location.reload();
+ }else{
+   state.gameOver=true;
+   let score=Math.max(0,state.money+state.paid+state.tips);
+   saveRank(score);
+   openModal(`<h2>💀 HẾT THÁNG</h2><p>Ngày 30 kết thúc nhưng vẫn còn <b>${fmt(state.debt)}</b> tiền nợ.</p><p>Trong thế giới game, Đạt Trung bị ông chủ nợ đưa đi “xử lý hợp đồng” và màn chơi kết thúc.</p><div class="card"><p>Điểm BXH: <b>${fmt(score)}</b></p></div><button id="loseRank">🏆 XEM BXH</button> <button id="loseRestart" class="danger">CHƠI LẠI</button>`);
+   $("loseRank").onclick=()=>{closeModal();ranks()};$("loseRestart").onclick=()=>location.reload();
+ }
+}
+render();draw();
+})();
+</script>
+</body>
+</html>
