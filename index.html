@@ -2,12 +2,12 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport"
+content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 
 <title>THỊT CHÓ ÔNG TRUNG</title>
 
 <style>
-
 *{
     box-sizing:border-box;
     margin:0;
@@ -36,6 +36,7 @@ canvas{
     max-height:100vh;
     background:#86b96a;
     border:2px solid #111;
+    image-rendering:auto;
 }
 
 #hud{
@@ -292,6 +293,34 @@ canvas{
     margin:10px 0;
 }
 
+/* màn hình tải ảnh */
+
+#loading{
+    position:absolute;
+    inset:0;
+    background:#111;
+    color:white;
+    z-index:200;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+#loadingBox{
+    width:min(400px,90vw);
+    padding:25px;
+}
+
+#loadingTitle{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:12px;
+}
+
+#loadingText{
+    color:#aaa;
+}
 </style>
 </head>
 
@@ -300,7 +329,6 @@ canvas{
 <div id="game">
 
 <canvas id="canvas" width="1100" height="619"></canvas>
-
 
 <div id="hud">
 
@@ -378,8 +406,7 @@ E - TƯƠNG TÁC
 Khách
 </div>
 
-<div id="dialogueText">
-</div>
+<div id="dialogueText"></div>
 
 <div id="dialogueHint">
 E để tiếp tục
@@ -588,21 +615,13 @@ NÂNG CẤP QUÁN
 
 <p>Khách sẽ ăn trong khoảng 30–50 giây.</p>
 
-<p>
-Sau khi ăn xong, khách sẽ chờ tại bàn.
-</p>
+<p>Sau khi ăn xong, khách sẽ chờ tại bàn.</p>
 
-<p>
-Đi tới khách và bấm E để đuổi khách về.
-</p>
+<p>Đi tới khách và bấm E để đuổi khách.</p>
 
-<p>
-Khách trả tiền rồi mới rời quán.
-</p>
+<p>Khách trả tiền rồi mới rời quán.</p>
 
-<p>
-Hết 15 phần thịt → nhập hàng.
-</p>
+<p>Hết 15 phần thịt → nhập hàng.</p>
 
 <button class="close" onclick="closePanels()">
 ĐÓNG
@@ -623,14 +642,30 @@ Hết 15 phần thịt → nhập hàng.
 
 </div>
 
+
+<div id="loading">
+
+<div id="loadingBox">
+
+<div id="loadingTitle">
+ĐANG TẢI HÌNH ẢNH...
+</div>
+
+<div id="loadingText">
+0 / 11
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 
 <script>
 
-
 /* =========================================================
-   CƠ BẢN
+   CANVAS
 ========================================================= */
 
 const canvas=document.getElementById("canvas");
@@ -638,6 +673,137 @@ const ctx=canvas.getContext("2d");
 
 const W=1100;
 const H=619;
+
+
+/* =========================================================
+   HỆ THỐNG ẢNH PNG
+   Các file nằm cùng thư mục với index.html
+========================================================= */
+
+const images={};
+
+const imageFiles=[
+    "01.png",
+    "02.png",
+    "03.png",
+    "04.png",
+    "05.png",
+    "06.png",
+    "07.png",
+    "08.png",
+    "09.png",
+    "10.png",
+    "11.png"
+];
+
+let imagesLoaded=0;
+let imagesReady=false;
+
+
+/*
+    Tạo Image() MỘT LẦN DUY NHẤT.
+    Không tạo ảnh trong draw().
+*/
+
+function loadImages(){
+
+    return new Promise((resolve,reject)=>{
+
+        let failed=false;
+
+        for(const file of imageFiles){
+
+            const img=new Image();
+
+            img.onload=()=>{
+
+                imagesLoaded++;
+
+                document.getElementById(
+                    "loadingText"
+                ).textContent=
+                    imagesLoaded+
+                    " / "+
+                    imageFiles.length;
+
+                if(imagesLoaded===imageFiles.length){
+
+                    imagesReady=true;
+
+                    resolve();
+
+                }
+
+            };
+
+            img.onerror=()=>{
+
+                if(!failed){
+
+                    failed=true;
+
+                    reject(
+                        new Error(
+                            "Không tìm thấy "+file
+                        )
+                    );
+
+                }
+
+            };
+
+            img.src=file;
+
+            images[file]=img;
+
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+   CẤU HÌNH KÍCH THƯỚC ẢNH
+========================================================= */
+
+/*
+    Bạn có thể chỉnh các số này nếu ảnh của bạn
+    quá to hoặc quá nhỏ.
+
+    Không cần sửa tên file.
+*/
+
+
+const IMAGE_CONFIG={
+
+    restaurant:{
+        x:400,
+        y:45,
+        w:330,
+        h:195
+    },
+
+    warehouse:{
+        x:55,
+        y:60,
+        w:250,
+        h:165
+    },
+
+    road:{
+        x:0,
+        y:255,
+        w:1100,
+        h:45
+    },
+
+    player:{
+        w:54,
+        h:54
+    }
+
+};
 
 
 /* =========================================================
@@ -683,15 +849,66 @@ const game={
 };
 
 
+/* =========================================================
+   PLAYER
+========================================================= */
+
 const player={
 
     x:350,
 
     y:360,
 
-    speed:2.7
+    speed:2.7,
+
+    direction:"down"
 
 };
+
+
+/*
+    direction:
+
+    down
+    up
+    left
+    right
+*/
+
+
+function getPlayerImage(){
+
+    const carry=!!game.heldFood;
+
+    if(carry){
+
+        if(player.direction==="up")
+            return images["08.png"];
+
+        if(player.direction==="left")
+            return images["09.png"];
+
+        if(player.direction==="right")
+            return images["10.png"];
+
+        return images["07.png"];
+
+    }else{
+
+        if(player.direction==="up")
+            return images["04.png"];
+
+        if(player.direction==="left")
+            return images["05.png"];
+
+        if(player.direction==="right")
+            return images["06.png"];
+
+        return images["03.png"];
+
+    }
+
+}
 
 
 /* =========================================================
@@ -784,52 +1001,6 @@ const tables=[
 
 
 /* =========================================================
-   DECORATION
-   QUAN TRỌNG:
-   Không có animation.
-   Không random trong draw.
-========================================================= */
-
-const decorations=[
-
-    {x:40,y:350,type:"tree"},
-    {x:110,y:410,type:"tree"},
-    {x:185,y:350,type:"tree"},
-    {x:270,y:500,type:"tree"},
-    {x:360,y:390,type:"tree"},
-    {x:470,y:530,type:"tree"},
-    {x:590,y:410,type:"tree"},
-    {x:680,y:500,type:"tree"},
-
-    {x:70,y:500,type:"bush"},
-    {x:150,y:550,type:"bush"},
-    {x:240,y:430,type:"bush"},
-    {x:330,y:550,type:"bush"},
-    {x:430,y:350,type:"bush"},
-    {x:520,y:550,type:"bush"},
-    {x:650,y:350,type:"bush"},
-    {x:710,y:550,type:"bush"},
-
-    {x:50,y:390,type:"flower"},
-    {x:135,y:470,type:"flower"},
-    {x:225,y:560,type:"flower"},
-    {x:315,y:350,type:"flower"},
-    {x:390,y:470,type:"flower"},
-    {x:560,y:500,type:"flower"},
-    {x:630,y:450,type:"flower"},
-    {x:720,y:380,type:"flower"},
-
-    {x:90,y:450,type:"rock"},
-    {x:200,y:390,type:"rock"},
-    {x:300,y:530,type:"rock"},
-    {x:455,y:390,type:"rock"},
-    {x:610,y:550,type:"rock"},
-    {x:700,y:450,type:"rock"}
-
-];
-
-
-/* =========================================================
    KHÁCH
 ========================================================= */
 
@@ -887,7 +1058,7 @@ const spawnPoints=[
 
 
 /* =========================================================
-   HÀM TIỆN ÍCH
+   TIỆN ÍCH
 ========================================================= */
 
 function clamp(n,min,max){
@@ -942,20 +1113,12 @@ function getFreeTable(){
 
 function spawnCustomer(){
 
-    if(
-        customers.length>=
-        game.maxCustomers
-    ){
+    if(customers.length>=game.maxCustomers){
 
         return;
 
     }
 
-
-    /*
-        70% khách ăn
-        30% khách đi ngang
-    */
 
     const wantsShop=
         Math.random()<0.70;
@@ -967,11 +1130,6 @@ function spawnCustomer(){
     if(wantsShop){
 
         table=getFreeTable();
-
-
-        /*
-            hết bàn thì không spawn khách ăn
-        */
 
         if(!table){
 
@@ -1050,10 +1208,6 @@ function spawnCustomer(){
         table.customer=c.id;
 
 
-        /*
-            Đi tới ghế phía dưới bàn
-        */
-
         c.targetX=
             table.x+
             table.w/2;
@@ -1080,11 +1234,6 @@ function spawnCustomer(){
 
     }else{
 
-        /*
-            Khách đi ngang:
-            đi sang phía đối diện.
-        */
-
         if(spawn.x<500){
 
             c.targetX=1130;
@@ -1094,7 +1243,6 @@ function spawnCustomer(){
             c.targetX=-30;
 
         }
-
 
         c.targetY=spawn.y;
 
@@ -1112,14 +1260,10 @@ function spawnCustomer(){
 
 function moveCustomer(c){
 
-    const dx=
-        c.targetX-c.x;
+    const dx=c.targetX-c.x;
+    const dy=c.targetY-c.y;
 
-    const dy=
-        c.targetY-c.y;
-
-    const dist=
-        Math.hypot(dx,dy);
+    const dist=Math.hypot(dx,dy);
 
 
     if(dist<1.5){
@@ -1129,13 +1273,8 @@ function moveCustomer(c){
     }
 
 
-    c.x+=
-        dx/dist*
-        c.speed;
-
-    c.y+=
-        dy/dist*
-        c.speed;
+    c.x+=dx/dist*c.speed;
+    c.y+=dy/dist*c.speed;
 
 
     return false;
@@ -1160,7 +1299,6 @@ function startDialogue(c){
 
     c.state="dialogue";
 
-
     showDialogue();
 
 }
@@ -1169,7 +1307,6 @@ function startDialogue(c){
 function showDialogue(){
 
     const d=game.dialogue;
-
 
     if(!d){
 
@@ -1180,16 +1317,13 @@ function showDialogue(){
 
     document.getElementById(
         "dialogueName"
-    ).textContent=
-        d.customer.type;
+    ).textContent=d.customer.type;
 
 
     document.getElementById(
         "dialogueText"
     ).textContent=
-        d.customer.dialogue[
-            d.index
-        ];
+        d.customer.dialogue[d.index];
 
 
     document.getElementById(
@@ -1210,7 +1344,6 @@ function nextDialogue(){
 
     const d=game.dialogue;
 
-
     d.index++;
 
 
@@ -1221,24 +1354,19 @@ function nextDialogue(){
 
         const c=d.customer;
 
-
         game.dialogue=null;
-
 
         document.getElementById(
             "dialogue"
         ).style.display="none";
 
-
         c.state="waiting_food";
 
         c.waitingTimer=50000;
 
-
         showMessage(
             "Khách đã gọi món."
         );
-
 
         return;
 
@@ -1251,13 +1379,12 @@ function nextDialogue(){
 
 
 /* =========================================================
-   TÌM KHÁCH GẦN NHẤT
+   KHÁCH GẦN NHẤT
 ========================================================= */
 
 function nearestCustomer(){
 
     let result=null;
-
     let best=75;
 
 
@@ -1301,7 +1428,7 @@ function nearestCustomer(){
 
 function nearShopDoor(){
 
-    return (
+    return(
 
         player.x>
         SHOP_DOOR.x-30 &&
@@ -1323,7 +1450,7 @@ function nearShopDoor(){
 
 
 /* =========================================================
-   LẤY MÓN TỰ ĐỘNG
+   LẤY MÓN
 ========================================================= */
 
 function takeFood(){
@@ -1347,9 +1474,7 @@ function takeFood(){
 
     for(const c of customers){
 
-        if(
-            c.state==="waiting_food"
-        ){
+        if(c.state==="waiting_food"){
 
             target=c;
             break;
@@ -1382,11 +1507,9 @@ function takeFood(){
 
     game.heldFood={
 
-        customerId:
-            target.id,
+        customerId:target.id,
 
-        customerName:
-            target.type
+        customerName:target.type
 
     };
 
@@ -1420,9 +1543,7 @@ function serveCustomer(c){
 
 
     if(
-        game.heldFood.customerId
-        !==
-        c.id
+        game.heldFood.customerId!==c.id
     ){
 
         showMessage(
@@ -1436,13 +1557,7 @@ function serveCustomer(c){
 
     game.heldFood=null;
 
-
     c.state="eating";
-
-
-    /*
-        30–50 giây
-    */
 
     c.eatingTimer=
         30000+
@@ -1461,22 +1576,14 @@ function serveCustomer(c){
 
 
 /* =========================================================
-   ĐUỔI KHÁCH SAU KHI ĂN
+   ĐUỔI KHÁCH
 ========================================================= */
 
 function dismissCustomer(c){
 
-    /*
-        Chỉ được đuổi khi ăn xong.
-    */
+    if(c.state!=="finished"){
 
-    if(
-        c.state!=="finished"
-    ){
-
-        if(
-            c.state==="eating"
-        ){
+        if(c.state==="eating"){
 
             showMessage(
                 "Khách vẫn đang ăn."
@@ -1488,10 +1595,6 @@ function dismissCustomer(c){
 
     }
 
-
-    /*
-        trả tiền
-    */
 
     if(!c.paid){
 
@@ -1510,29 +1613,16 @@ function dismissCustomer(c){
     }
 
 
-    /*
-        giải phóng bàn
-    */
-
     if(c.table){
 
         c.table.customer=null;
-
         c.table=null;
 
     }
 
 
-    /*
-        khách rời quán
-    */
-
     c.state="leaving";
 
-
-    /*
-        Chọn hướng ra.
-    */
 
     if(c.x<550){
 
@@ -1589,10 +1679,6 @@ function interact(){
     }
 
 
-    /*
-        Tiệm thịt
-    */
-
     const meatCenter={
 
         x:
@@ -1620,8 +1706,7 @@ function interact(){
     }
 
 
-    const c=
-        nearestCustomer();
+    const c=nearestCustomer();
 
 
     if(!c){
@@ -1631,11 +1716,6 @@ function interact(){
     }
 
 
-    /*
-        Ngồi:
-        bắt đầu nói chuyện
-    */
-
     if(c.state==="sitting"){
 
         startDialogue(c);
@@ -1644,12 +1724,6 @@ function interact(){
 
     }
 
-
-    /*
-        Chờ món:
-        không cần bấm E lấy món,
-        món được lấy ở cửa.
-    */
 
     if(c.state==="waiting_food"){
 
@@ -1670,10 +1744,6 @@ function interact(){
     }
 
 
-    /*
-        ĐANG ĂN
-    */
-
     if(c.state==="eating"){
 
         showMessage(
@@ -1685,16 +1755,9 @@ function interact(){
     }
 
 
-    /*
-        ĂN XONG:
-        E để đuổi khách.
-    */
-
     if(c.state==="finished"){
 
         dismissCustomer(c);
-
-        return;
 
     }
 
@@ -1702,7 +1765,7 @@ function interact(){
 
 
 /* =========================================================
-   CẬP NHẬT KHÁCH
+   UPDATE KHÁCH
 ========================================================= */
 
 function updateCustomers(delta){
@@ -1713,13 +1776,8 @@ function updateCustomers(delta){
         i--
     ){
 
-        const c=
-            customers[i];
+        const c=customers[i];
 
-
-        /* ---------------------------------------------
-           ĐI VÀO
-        --------------------------------------------- */
 
         if(c.state==="walking"){
 
@@ -1744,56 +1802,16 @@ function updateCustomers(delta){
         }
 
 
-        /* ---------------------------------------------
-           NGỒI
-        --------------------------------------------- */
-
-        else if(c.state==="sitting"){
-
-            /*
-                Chờ người chơi nói chuyện.
-            */
-
-        }
-
-
-        /* ---------------------------------------------
-           DIALOGUE
-        --------------------------------------------- */
-
-        else if(c.state==="dialogue"){
-
-            /*
-                Đợi E.
-            */
-
-        }
-
-
-        /* ---------------------------------------------
-           CHỜ MÓN
-        --------------------------------------------- */
-
-        else if(
-            c.state==="waiting_food"
-        ){
+        else if(c.state==="waiting_food"){
 
             c.waitingTimer-=delta;
 
 
-            if(
-                c.waitingTimer<=0
-            ){
-
-                /*
-                    Nếu món đang cầm là của khách này,
-                    bỏ món đó.
-                */
+            if(c.waitingTimer<=0){
 
                 if(
                     game.heldFood &&
-                    game.heldFood.customerId===
-                    c.id
+                    game.heldFood.customerId===c.id
                 ){
 
                     game.heldFood=null;
@@ -1802,7 +1820,6 @@ function updateCustomers(delta){
 
 
                 leaveWithoutPay(c);
-
 
                 showMessage(
                     "Khách chờ quá lâu và bỏ về."
@@ -1813,29 +1830,19 @@ function updateCustomers(delta){
         }
 
 
-        /* ---------------------------------------------
-           ĂN
-        --------------------------------------------- */
-
         else if(c.state==="eating"){
 
             c.eatingTimer-=delta;
 
 
-            /*
-                Ăn xong nhưng KHÔNG tự rời.
-            */
-
-            if(
-                c.eatingTimer<=0
-            ){
+            if(c.eatingTimer<=0){
 
                 c.state="finished";
 
 
                 showMessage(
                     c.type+
-                    " đã ăn xong. Đi tới khách và nhấn E."
+                    " đã ăn xong. Nhấn E để đuổi khách."
                 );
 
             }
@@ -1843,33 +1850,10 @@ function updateCustomers(delta){
         }
 
 
-        /* ---------------------------------------------
-           ĐÃ ĂN XONG
-        --------------------------------------------- */
-
-        else if(c.state==="finished"){
-
-            /*
-                đứng tại bàn,
-                chờ người chơi E.
-            */
-
-        }
-
-
-        /* ---------------------------------------------
-           RỜI
-        --------------------------------------------- */
-
         else if(c.state==="leaving"){
 
             moveCustomer(c);
 
-
-            /*
-                Xóa khách khi đã thật sự
-                ra khỏi màn hình.
-            */
 
             if(
                 c.x<-60 ||
@@ -1896,7 +1880,6 @@ function leaveWithoutPay(c){
     if(c.table){
 
         c.table.customer=null;
-
         c.table=null;
 
     }
@@ -1937,8 +1920,7 @@ document.addEventListener(
     "keydown",
     e=>{
 
-        const k=
-            e.key.toLowerCase();
+        const k=e.key.toLowerCase();
 
         keys[k]=true;
 
@@ -1977,6 +1959,7 @@ function updatePlayer(){
     ){
 
         dy=-1;
+        player.direction="up";
 
     }
 
@@ -1987,6 +1970,7 @@ function updatePlayer(){
     ){
 
         dy=1;
+        player.direction="down";
 
     }
 
@@ -1997,6 +1981,7 @@ function updatePlayer(){
     ){
 
         dx=-1;
+        player.direction="left";
 
     }
 
@@ -2007,6 +1992,7 @@ function updatePlayer(){
     ){
 
         dx=1;
+        player.direction="right";
 
     }
 
@@ -2031,16 +2017,16 @@ function updatePlayer(){
     player.x=
         clamp(
             player.x,
-            10,
-            W-10
+            25,
+            W-25
         );
 
 
     player.y=
         clamp(
             player.y,
-            15,
-            H-10
+            35,
+            H-25
         );
 
 }
@@ -2050,7 +2036,7 @@ function updatePlayer(){
    MOBILE
 ========================================================= */
 
-function bindMove(id,key){
+function bindMove(id,key,direction){
 
     const el=
         document.getElementById(id);
@@ -2061,6 +2047,8 @@ function bindMove(id,key){
         e.preventDefault();
 
         keys[key]=true;
+
+        player.direction=direction;
 
     }
 
@@ -2080,21 +2068,32 @@ function bindMove(id,key){
         {passive:false}
     );
 
+
     el.addEventListener(
         "touchend",
         stop,
         {passive:false}
     );
 
+
+    el.addEventListener(
+        "touchcancel",
+        stop,
+        {passive:false}
+    );
+
+
     el.addEventListener(
         "mousedown",
         start
     );
 
+
     el.addEventListener(
         "mouseup",
         stop
     );
+
 
     el.addEventListener(
         "mouseleave",
@@ -2104,10 +2103,10 @@ function bindMove(id,key){
 }
 
 
-bindMove("up","w");
-bindMove("down","s");
-bindMove("left","a");
-bindMove("right","d");
+bindMove("up","w","up");
+bindMove("down","s","down");
+bindMove("left","a","left");
+bindMove("right","d","right");
 
 
 document
@@ -2119,13 +2118,70 @@ document
 
 
 /* =========================================================
-   VẼ NỀN
+   VẼ ẢNH GIỮ ĐÚNG TỶ LỆ
+========================================================= */
+
+function drawImageContain(
+    img,
+    x,
+    y,
+    w,
+    h
+){
+
+    if(!img || !img.complete){
+
+        return;
+
+    }
+
+
+    const ratio=
+        Math.min(
+            w/img.naturalWidth,
+            h/img.naturalHeight
+        );
+
+
+    const dw=
+        img.naturalWidth*
+        ratio;
+
+
+    const dh=
+        img.naturalHeight*
+        ratio;
+
+
+    const dx=
+        x+
+        (w-dw)/2;
+
+
+    const dy=
+        y+
+        (h-dh)/2;
+
+
+    ctx.drawImage(
+        img,
+        dx,
+        dy,
+        dw,
+        dh
+    );
+
+}
+
+
+/* =========================================================
+   NỀN
 ========================================================= */
 
 function drawBackground(){
 
     /*
-        Cỏ
+        cỏ nền
     */
 
     ctx.fillStyle="#86b96a";
@@ -2139,44 +2195,27 @@ function drawBackground(){
 
 
     /*
-        đường
+        ĐƯỜNG - 11.png
     */
 
-    ctx.fillStyle="#737373";
-
-    ctx.fillRect(
-        ROAD.x,
-        ROAD.y,
-        ROAD.w,
-        ROAD.h
-    );
+    const roadImg=images["11.png"];
 
 
-    /*
-        vạch đường cố định,
-        không animation
-    */
+    if(roadImg){
 
-    ctx.fillStyle="#dedede";
-
-    for(
-        let x=10;
-        x<W;
-        x+=55
-    ){
-
-        ctx.fillRect(
-            x,
-            ROAD.y+21,
-            28,
-            3
+        ctx.drawImage(
+            roadImg,
+            ROAD.x,
+            ROAD.y,
+            ROAD.w,
+            ROAD.h
         );
 
     }
 
 
     /*
-        khu bàn ăn
+        khu ăn uống
     */
 
     ctx.fillStyle="#9bc77b";
@@ -2204,257 +2243,23 @@ function drawBackground(){
 
 
 /* =========================================================
-   VẼ CÂY
+   CỬA HÀNG - 01.png
 ========================================================= */
 
-function drawTree(x,y){
+function drawRestaurant(){
 
-    /*
-        bóng cố định
-    */
+    const img=images["01.png"];
 
-    ctx.fillStyle="#0002";
 
-    ctx.beginPath();
+    if(img){
 
-    ctx.ellipse(
-        x,
-        y+19,
-        19,
-        6,
-        0,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-
-    /*
-        thân
-    */
-
-    ctx.fillStyle="#68472d";
-
-    ctx.fillRect(
-        x-4,
-        y-2,
-        8,
-        25
-    );
-
-
-    /*
-        tán
-    */
-
-    ctx.fillStyle="#397638";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x,
-        y-10,
-        19,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-
-    ctx.fillStyle="#4f8d45";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x-12,
-        y-3,
-        12,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x+12,
-        y-3,
-        12,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-}
-
-
-/* =========================================================
-   BỤI CÂY
-========================================================= */
-
-function drawBush(x,y){
-
-    ctx.fillStyle="#4d8a43";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x,
-        y,
-        10,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-
-    ctx.fillStyle="#609a50";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x+8,
-        y-3,
-        7,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-}
-
-
-/* =========================================================
-   HOA
-   KHÔNG NHẤP NHÁY
-========================================================= */
-
-function drawFlower(x,y){
-
-    /*
-        màu cố định.
-        Không Math.random().
-    */
-
-    ctx.fillStyle="#4c8b45";
-
-    ctx.fillRect(
-        x,
-        y,
-        2,
-        8
-    );
-
-
-    ctx.fillStyle="#e4bd55";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x+1,
-        y,
-        3,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-}
-
-
-/* =========================================================
-   ĐÁ
-========================================================= */
-
-function drawRock(x,y){
-
-    ctx.fillStyle="#777";
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        x-6,
-        y+3
-    );
-
-    ctx.lineTo(
-        x-3,
-        y-4
-    );
-
-    ctx.lineTo(
-        x+4,
-        y-5
-    );
-
-    ctx.lineTo(
-        x+7,
-        y+3
-    );
-
-    ctx.closePath();
-
-    ctx.fill();
-
-}
-
-
-/* =========================================================
-   VẼ DECOR
-========================================================= */
-
-function drawDecorations(){
-
-    /*
-        Chỉ khoảng 30 vật,
-        không tạo lại mỗi frame.
-    */
-
-    for(const d of decorations){
-
-        if(d.type==="tree"){
-
-            drawTree(
-                d.x,
-                d.y
-            );
-
-        }
-
-        else if(d.type==="bush"){
-
-            drawBush(
-                d.x,
-                d.y
-            );
-
-        }
-
-        else if(d.type==="flower"){
-
-            drawFlower(
-                d.x,
-                d.y
-            );
-
-        }
-
-        else{
-
-            drawRock(
-                d.x,
-                d.y
-            );
-
-        }
+        drawImageContain(
+            img,
+            IMAGE_CONFIG.restaurant.x,
+            IMAGE_CONFIG.restaurant.y,
+            IMAGE_CONFIG.restaurant.w,
+            IMAGE_CONFIG.restaurant.h
+        );
 
     }
 
@@ -2462,198 +2267,25 @@ function drawDecorations(){
 
 
 /* =========================================================
-   QUÁN
-========================================================= */
-
-function drawRestaurant(){
-
-    ctx.fillStyle="#c58b58";
-
-    ctx.fillRect(
-        RESTAURANT.x,
-        RESTAURANT.y,
-        RESTAURANT.w,
-        RESTAURANT.h
-    );
-
-
-    /*
-        mái
-    */
-
-    ctx.fillStyle="#713737";
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        RESTAURANT.x-15,
-        RESTAURANT.y
-    );
-
-    ctx.lineTo(
-        RESTAURANT.x+
-        RESTAURANT.w/2,
-        RESTAURANT.y-45
-    );
-
-    ctx.lineTo(
-        RESTAURANT.x+
-        RESTAURANT.w+15,
-        RESTAURANT.y
-    );
-
-    ctx.closePath();
-
-    ctx.fill();
-
-
-    /*
-        bảng hiệu
-    */
-
-    ctx.fillStyle="#f0d169";
-
-    ctx.fillRect(
-        RESTAURANT.x+25,
-        RESTAURANT.y+17,
-        RESTAURANT.w-50,
-        50
-    );
-
-
-    ctx.fillStyle="#222";
-
-    ctx.font="bold 19px Arial";
-
-    ctx.textAlign="center";
-
-    ctx.fillText(
-        "THỊT CHÓ ÔNG TRUNG",
-        RESTAURANT.x+
-        RESTAURANT.w/2,
-        RESTAURANT.y+48
-    );
-
-
-    /*
-        cửa sổ
-    */
-
-    ctx.fillStyle="#77a9b7";
-
-    ctx.fillRect(
-        RESTAURANT.x+30,
-        RESTAURANT.y+88,
-        85,
-        48
-    );
-
-    ctx.fillRect(
-        RESTAURANT.x+215,
-        RESTAURANT.y+88,
-        85,
-        48
-    );
-
-
-    /*
-        cửa
-    */
-
-    ctx.fillStyle="#4b3528";
-
-    ctx.fillRect(
-        SHOP_DOOR.x,
-        RESTAURANT.y+92,
-        SHOP_DOOR.w,
-        83
-    );
-
-
-    ctx.fillStyle="#eee";
-
-    ctx.font="11px Arial";
-
-    ctx.fillText(
-        "CỬA",
-        SHOP_DOOR.x+
-        SHOP_DOOR.w/2,
-        RESTAURANT.y+88
-    );
-
-}
-
-
-/* =========================================================
-   TIỆM THỊT
+   NHÀ KHO - 02.png
 ========================================================= */
 
 function drawMeatShop(){
 
-    ctx.fillStyle="#a95e4b";
-
-    ctx.fillRect(
-        MEAT_SHOP.x,
-        MEAT_SHOP.y,
-        MEAT_SHOP.w,
-        MEAT_SHOP.h
-    );
+    const img=images["02.png"];
 
 
-    ctx.fillStyle="#71352f";
+    if(img){
 
-    ctx.fillRect(
-        MEAT_SHOP.x-7,
-        MEAT_SHOP.y-20,
-        MEAT_SHOP.w+14,
-        30
-    );
+        drawImageContain(
+            img,
+            IMAGE_CONFIG.warehouse.x,
+            IMAGE_CONFIG.warehouse.y,
+            IMAGE_CONFIG.warehouse.w,
+            IMAGE_CONFIG.warehouse.h
+        );
 
-
-    ctx.fillStyle="#ffe8a8";
-
-    ctx.font="bold 16px Arial";
-
-    ctx.textAlign="center";
-
-    ctx.fillText(
-        "TIỆM BÁN THỊT",
-        MEAT_SHOP.x+
-        MEAT_SHOP.w/2,
-        MEAT_SHOP.y+1
-    );
-
-
-    ctx.fillStyle="#694b37";
-
-    ctx.fillRect(
-        MEAT_SHOP.x+60,
-        MEAT_SHOP.y+48,
-        130,
-        70
-    );
-
-
-    ctx.fillStyle="#ddd";
-
-    ctx.fillRect(
-        MEAT_SHOP.x+20,
-        MEAT_SHOP.y+125,
-        210,
-        9
-    );
-
-
-    ctx.fillStyle="#fff";
-
-    ctx.font="11px Arial";
-
-    ctx.fillText(
-        "KHU NHẬP HÀNG",
-        MEAT_SHOP.x+
-        MEAT_SHOP.w/2,
-        MEAT_SHOP.y+140
-    );
+    }
 
 }
 
@@ -2696,19 +2328,13 @@ function drawTable(t){
     );
 
 
-    /*
-        bát
-    */
-
     ctx.fillStyle="#eee";
 
     ctx.beginPath();
 
     ctx.arc(
-        t.x+
-        t.w/2,
-        t.y+
-        t.h/2,
+        t.x+t.w/2,
+        t.y+t.h/2,
         9,
         0,
         Math.PI*2
@@ -2742,17 +2368,14 @@ function drawChairs(){
     for(const t of tables){
 
         drawChair(
-            t.x+
-            t.w/2,
+            t.x+t.w/2,
             t.y-17
         );
 
 
         drawChair(
-            t.x+
-            t.w/2,
-            t.y+
-            t.h+17
+            t.x+t.w/2,
+            t.y+t.h+17
         );
 
     }
@@ -2761,18 +2384,36 @@ function drawChairs(){
 
 
 /* =========================================================
-   PLAYER
+   PLAYER - DÙNG PNG
 ========================================================= */
 
 function drawPlayer(){
 
-    ctx.fillStyle="#0003";
+    const img=getPlayerImage();
+
+
+    if(!img){
+
+        return;
+
+    }
+
+
+    const size=
+        IMAGE_CONFIG.player.w;
+
+
+    /*
+        Bóng nhỏ dưới chân.
+    */
+
+    ctx.fillStyle="#0002";
 
     ctx.beginPath();
 
     ctx.ellipse(
         player.x,
-        player.y+18,
+        player.y+22,
         16,
         6,
         0,
@@ -2783,76 +2424,17 @@ function drawPlayer(){
     ctx.fill();
 
 
-    ctx.fillStyle="#263b68";
-
-    ctx.fillRect(
-        player.x-10,
-        player.y-2,
-        20,
-        23
-    );
-
-
-    ctx.fillStyle="#dfae80";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        player.x,
-        player.y-13,
-        10,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-
-    ctx.fillStyle="#34281f";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        player.x,
-        player.y-18,
-        10,
-        Math.PI,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-
     /*
-        món đang cầm
+        PNG ĐẠT
     */
 
-    if(game.heldFood){
-
-        ctx.fillStyle="#eee";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            player.x+21,
-            player.y-7,
-            10,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
-
-        ctx.fillStyle="#b46c37";
-
-        ctx.fillRect(
-            player.x+15,
-            player.y-10,
-            12,
-            7
-        );
-
-    }
+    ctx.drawImage(
+        img,
+        player.x-size/2,
+        player.y-size/2,
+        size,
+        size
+    );
 
 }
 
@@ -2864,10 +2446,6 @@ function drawPlayer(){
 function drawCustomers(){
 
     for(const c of customers){
-
-        /*
-            bóng
-        */
 
         ctx.fillStyle="#0002";
 
@@ -2886,10 +2464,6 @@ function drawCustomers(){
         ctx.fill();
 
 
-        /*
-            thân
-        */
-
         ctx.fillStyle=c.color;
 
         ctx.fillRect(
@@ -2899,10 +2473,6 @@ function drawCustomers(){
             21
         );
 
-
-        /*
-            đầu
-        */
 
         ctx.fillStyle="#dfae86";
 
@@ -2918,10 +2488,6 @@ function drawCustomers(){
 
         ctx.fill();
 
-
-        /*
-            trạng thái
-        */
 
         if(c.state==="waiting_food"){
 
@@ -2957,11 +2523,6 @@ function drawCustomers(){
         }
 
 
-        /*
-            Ăn xong:
-            hiện E
-        */
-
         if(c.state==="finished"){
 
             ctx.fillStyle="#ffd84d";
@@ -2984,7 +2545,7 @@ function drawCustomers(){
 
 
 /* =========================================================
-   MŨI TÊN MÓN ĂN
+   MŨI TÊN MÓN
 ========================================================= */
 
 function drawFoodTarget(){
@@ -3021,19 +2582,11 @@ function drawFoodTarget(){
     }
 
 
-    /*
-        đường đơn giản,
-        không animation.
-    */
-
     ctx.strokeStyle="#ffe05a";
 
     ctx.lineWidth=2;
 
-    ctx.setLineDash([
-        5,
-        5
-    ]);
+    ctx.setLineDash([5,5]);
 
 
     ctx.beginPath();
@@ -3077,19 +2630,19 @@ function draw(){
 
     drawBackground();
 
-    drawDecorations();
-
     drawRestaurant();
 
     drawMeatShop();
 
     drawChairs();
 
+
     for(const t of tables){
 
         drawTable(t);
 
     }
+
 
     drawCustomers();
 
@@ -3101,7 +2654,7 @@ function draw(){
 
 
 /* =========================================================
-   INTERACTION UI
+   UI TƯƠNG TÁC
 ========================================================= */
 
 function updateInteraction(){
@@ -3121,8 +2674,7 @@ function updateInteraction(){
     }
 
 
-    const c=
-        nearestCustomer();
+    const c=nearestCustomer();
 
 
     if(c){
@@ -3156,10 +2708,6 @@ function updateInteraction(){
 
     }
 
-
-    /*
-        tiệm thịt
-    */
 
     const meatCenter={
 
@@ -3202,17 +2750,10 @@ function updateInteraction(){
 
 function updateTime(delta){
 
-    /*
-        1 giây thật = 1 phút trong game
-    */
-
-    game.minute+=
-        delta/1000;
+    game.minute+=delta/1000;
 
 
-    if(
-        game.minute>=1440
-    ){
+    if(game.minute>=1440){
 
         game.minute=480;
 
@@ -3247,11 +2788,6 @@ function updateSpawn(delta){
         game.spawnTimer=0;
 
 
-        /*
-            khoảng cách spawn lớn hơn
-            để giảm tải.
-        */
-
         game.nextSpawn=
             8000+
             Math.random()*5000;
@@ -3272,8 +2808,7 @@ function updateHUD(){
 
     document.getElementById(
         "day"
-    ).textContent=
-        game.day;
+    ).textContent=game.day;
 
 
     const h=
@@ -3500,9 +3035,7 @@ function buyMeat(type){
         500000;
 
 
-    if(
-        game.money<price
-    ){
+    if(game.money<price){
 
         showMessage(
             "Không đủ tiền."
@@ -3549,9 +3082,7 @@ function payDebt(amount){
         );
 
 
-    if(
-        game.money<amount
-    ){
+    if(game.money<amount){
 
         showMessage(
             "Không đủ tiền."
@@ -3595,9 +3126,7 @@ function upgrade(){
         5000000;
 
 
-    if(
-        game.money<price
-    ){
+    if(game.money<price){
 
         showMessage(
             "Không đủ tiền."
@@ -3611,6 +3140,7 @@ function upgrade(){
     game.money-=price;
 
     game.shopLevel++;
+
 
     game.reputation=
         Math.min(
@@ -3656,8 +3186,7 @@ function getScores(){
 
 function saveScore(){
 
-    const list=
-        getScores();
+    const list=getScores();
 
 
     list.push({
@@ -3691,9 +3220,7 @@ function saveScore(){
 
 function showLeaderboard(){
 
-    const list=
-        getScores();
-
+    const list=getScores();
 
     let html="";
 
@@ -3762,9 +3289,7 @@ function showMessage(text,time=2300){
     el.style.display="block";
 
 
-    clearTimeout(
-        messageTimer
-    );
+    clearTimeout(messageTimer);
 
 
     messageTimer=
@@ -3813,9 +3338,7 @@ function startGame(){
         performance.now();
 
 
-    requestAnimationFrame(
-        loop
-    );
+    requestAnimationFrame(loop);
 
 }
 
@@ -3866,12 +3389,6 @@ function loop(time){
         time-game.lastTime;
 
 
-    /*
-        Không cho delta quá lớn.
-        Giúp tránh game nhảy lung tung
-        khi tab bị treo.
-    */
-
     if(delta>100){
 
         delta=100;
@@ -3899,20 +3416,65 @@ function loop(time){
     draw();
 
 
-    requestAnimationFrame(
-        loop
-    );
+    requestAnimationFrame(loop);
 
 }
 
 
 /* =========================================================
-   VẼ BAN ĐẦU
+   KHỞI ĐỘNG
 ========================================================= */
 
-updateHUD();
+async function init(){
 
-draw();
+    /*
+        Vẽ nền tạm trong lúc tải.
+    */
+
+    ctx.fillStyle="#111";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    try{
+
+        await loadImages();
+
+
+        document.getElementById(
+            "loading"
+        ).style.display="none";
+
+
+        updateHUD();
+
+        draw();
+
+    }catch(error){
+
+        document.getElementById(
+            "loadingTitle"
+        ).textContent=
+            "LỖI TẢI ẢNH";
+
+
+        document.getElementById(
+            "loadingText"
+        ).textContent=
+            error.message+
+            "\n\nHãy kiểm tra các file PNG.";
+
+    }
+
+}
+
+
+init();
 
 </script>
 
