@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
 <title>THỊT CHÓ ÔNG TRUNG</title>
 
 <style>
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -17,15 +19,14 @@ body{
     background:#111;
     overflow:hidden;
     font-family:Arial,sans-serif;
-    color:white;
 }
 
 #game{
     width:100vw;
     height:100vh;
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
     position:relative;
 }
 
@@ -39,7 +40,7 @@ canvas{
 
 #hud{
     position:absolute;
-    top:8px;
+    top:7px;
     left:50%;
     transform:translateX(-50%);
     width:min(1060px,96vw);
@@ -50,16 +51,17 @@ canvas{
 }
 
 .hud{
-    background:#171717dd;
+    background:#171717e8;
+    color:white;
     border:1px solid #777;
+    border-radius:6px;
     padding:5px 8px;
-    border-radius:7px;
     font-size:12px;
 }
 
 #buttons{
     position:absolute;
-    top:70px;
+    top:65px;
     right:8px;
     display:flex;
     flex-direction:column;
@@ -67,62 +69,61 @@ canvas{
     z-index:30;
 }
 
-button{
-    cursor:pointer;
-}
-
 .gameBtn{
     background:#202020e8;
     color:white;
-    border:1px solid #aaa;
-    border-radius:7px;
+    border:1px solid #888;
+    border-radius:6px;
     padding:7px 10px;
     font-size:11px;
 }
 
 #message{
     position:absolute;
-    bottom:105px;
     left:50%;
+    bottom:105px;
     transform:translateX(-50%);
     background:#151515ed;
+    color:white;
     border:1px solid #aaa;
-    padding:9px 15px;
     border-radius:8px;
+    padding:9px 15px;
     display:none;
-    z-index:50;
+    z-index:70;
     text-align:center;
 }
 
 #interaction{
     position:absolute;
-    bottom:155px;
     left:50%;
+    bottom:155px;
     transform:translateX(-50%);
-    background:#151515ed;
+    background:#111e;
     border:2px solid white;
-    padding:8px 15px;
     border-radius:8px;
+    color:white;
+    padding:8px 15px;
     display:none;
-    z-index:50;
+    z-index:70;
 }
 
 #dialogue{
     position:absolute;
-    bottom:12px;
     left:50%;
+    bottom:10px;
     transform:translateX(-50%);
     width:min(720px,90vw);
     background:#181818f5;
-    border:2px solid #ddd;
+    color:white;
+    border:2px solid #aaa;
     border-radius:12px;
     padding:14px;
     display:none;
-    z-index:80;
+    z-index:90;
 }
 
 #dialogueName{
-    color:#ffd65a;
+    color:#ffd45a;
     font-weight:bold;
     margin-bottom:7px;
 }
@@ -140,57 +141,57 @@ button{
 
 #mobile{
     position:absolute;
+    bottom:10px;
     left:10px;
-    bottom:12px;
-    width:150px;
-    height:150px;
-    z-index:40;
+    width:145px;
+    height:145px;
+    z-index:50;
 }
 
 .move{
     position:absolute;
-    width:48px;
-    height:48px;
-    border:2px solid white;
-    border-radius:9px;
+    width:45px;
+    height:45px;
     background:#222d;
     color:white;
+    border:2px solid white;
+    border-radius:8px;
     font-size:20px;
     touch-action:none;
 }
 
 #up{
+    left:50px;
     top:0;
-    left:51px;
 }
 
 #down{
+    left:50px;
     bottom:0;
-    left:51px;
 }
 
 #left{
-    top:51px;
     left:0;
+    top:50px;
 }
 
 #right{
-    top:51px;
     right:0;
+    top:50px;
 }
 
 #eBtn{
     position:absolute;
     right:18px;
-    bottom:25px;
-    width:85px;
-    height:85px;
+    bottom:20px;
+    width:80px;
+    height:80px;
     border-radius:50%;
+    border:3px solid white;
     background:#222e;
     color:white;
-    border:3px solid white;
-    z-index:40;
     font-weight:bold;
+    z-index:50;
 }
 
 #start{
@@ -198,8 +199,8 @@ button{
     inset:0;
     background:radial-gradient(circle,#555,#111 70%);
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
     z-index:100;
 }
 
@@ -207,9 +208,10 @@ button{
     width:min(430px,90vw);
     background:#202020;
     border:2px solid #aaa;
-    border-radius:15px;
+    border-radius:14px;
     padding:25px;
     text-align:center;
+    color:white;
 }
 
 .startBox h1{
@@ -218,7 +220,7 @@ button{
 
 .startBox p{
     color:#aaa;
-    margin-bottom:20px;
+    margin-bottom:18px;
 }
 
 .startBox input{
@@ -227,16 +229,16 @@ button{
     background:#111;
     color:white;
     border:1px solid #777;
-    border-radius:8px;
-    margin-bottom:8px;
+    border-radius:7px;
+    margin-bottom:7px;
 }
 
 .big{
     width:100%;
-    padding:12px;
-    border:0;
-    border-radius:8px;
+    padding:11px;
     margin-top:7px;
+    border:0;
+    border-radius:7px;
     background:#eee;
     color:#111;
     font-weight:bold;
@@ -244,22 +246,23 @@ button{
 
 .panel{
     position:absolute;
-    width:min(560px,90vw);
-    max-height:80vh;
-    overflow:auto;
     left:50%;
     top:50%;
     transform:translate(-50%,-50%);
+    width:min(550px,90vw);
+    max-height:80vh;
+    overflow:auto;
     background:#191919;
+    color:white;
     border:2px solid #aaa;
-    border-radius:13px;
+    border-radius:12px;
     padding:20px;
-    z-index:90;
+    z-index:95;
     display:none;
 }
 
 .panel h2{
-    margin-bottom:15px;
+    margin-bottom:14px;
 }
 
 .panel p{
@@ -269,12 +272,12 @@ button{
 
 .panel button{
     width:100%;
-    padding:10px;
-    margin-top:8px;
-    border-radius:7px;
+    padding:9px;
+    margin-top:7px;
     background:#303030;
     color:white;
-    border:1px solid #888;
+    border:1px solid #777;
+    border-radius:7px;
 }
 
 .close{
@@ -285,21 +288,10 @@ button{
 .option{
     border:1px solid #666;
     border-radius:8px;
-    padding:12px;
+    padding:11px;
     margin:10px 0;
 }
 
-@media(max-width:700px){
-    .hud{
-        font-size:9px;
-        padding:4px 6px;
-    }
-
-    .gameBtn{
-        font-size:9px;
-        padding:5px 7px;
-    }
-}
 </style>
 </head>
 
@@ -309,70 +301,71 @@ button{
 
 <canvas id="canvas" width="1100" height="619"></canvas>
 
+
 <div id="hud">
 
-    <div class="hud">
-        Ngày <b id="day">1</b>/30
-    </div>
+<div class="hud">
+Ngày <b id="day">1</b>/30
+</div>
 
-    <div class="hud">
-        <b id="time">08:00</b>
-    </div>
+<div class="hud">
+<b id="time">08:00</b>
+</div>
 
-    <div class="hud">
-        Tiền: <b id="money">10.000.000đ</b>
-    </div>
+<div class="hud">
+Tiền: <b id="money">10.000.000đ</b>
+</div>
 
-    <div class="hud">
-        Nợ: <b id="debt">360.000.000đ</b>
-    </div>
+<div class="hud">
+Nợ: <b id="debt">360.000.000đ</b>
+</div>
 
-    <div class="hud">
-        Danh tiếng: <b id="rep">60</b>
-    </div>
+<div class="hud">
+Danh tiếng: <b id="rep">60</b>
+</div>
 
-    <div class="hud">
-        Thịt: <b id="meat">15/15</b>
-    </div>
+<div class="hud">
+Thịt: <b id="meat">15/15</b>
+</div>
 
-    <div class="hud">
-        Khách: <b id="customers">0</b>
-    </div>
+<div class="hud">
+Khách: <b id="customers">0</b>
+</div>
 
 </div>
 
 
 <div id="buttons">
 
-    <button class="gameBtn" onclick="openPanel('menuPanel')">
-        MENU
-    </button>
+<button class="gameBtn" onclick="openPanel('menuPanel')">
+MENU
+</button>
 
-    <button class="gameBtn" onclick="openInventory()">
-        KHO
-    </button>
+<button class="gameBtn" onclick="openInventory()">
+KHO
+</button>
 
-    <button class="gameBtn" onclick="openMeatShop()">
-        NHẬP HÀNG
-    </button>
+<button class="gameBtn" onclick="openMeatShop()">
+NHẬP HÀNG
+</button>
 
-    <button class="gameBtn" onclick="openDebt()">
-        TRẢ NỢ
-    </button>
+<button class="gameBtn" onclick="openDebt()">
+TRẢ NỢ
+</button>
 
-    <button class="gameBtn" onclick="openUpgrade()">
-        NÂNG CẤP
-    </button>
+<button class="gameBtn" onclick="openUpgrade()">
+NÂNG CẤP
+</button>
 
-    <button class="gameBtn" onclick="showLeaderboard()">
-        BXH
-    </button>
+<button class="gameBtn" onclick="showLeaderboard()">
+BXH
+</button>
 
 </div>
 
 
 <div id="interaction">
-    E - TƯƠNG TÁC
+E - TƯƠNG TÁC
 </div>
 
 
@@ -381,263 +374,252 @@ button{
 
 <div id="dialogue">
 
-    <div id="dialogueName">Khách</div>
+<div id="dialogueName">
+Khách
+</div>
 
-    <div id="dialogueText"></div>
+<div id="dialogueText">
+</div>
 
-    <div id="dialogueHint">
-        E để tiếp tục
-    </div>
+<div id="dialogueHint">
+E để tiếp tục
+</div>
 
 </div>
 
 
 <div id="mobile">
 
-    <button class="move" id="up">▲</button>
-    <button class="move" id="down">▼</button>
-    <button class="move" id="left">◀</button>
-    <button class="move" id="right">▶</button>
+<button class="move" id="up">▲</button>
+<button class="move" id="down">▼</button>
+<button class="move" id="left">◀</button>
+<button class="move" id="right">▶</button>
 
 </div>
 
+
 <button id="eBtn">
-    E<br>TƯƠNG TÁC
+E<br>TƯƠNG TÁC
 </button>
 
 
 <div id="start">
 
-    <div class="startBox">
+<div class="startBox">
 
-        <h1>THỊT CHÓ ÔNG TRUNG</h1>
+<h1>THỊT CHÓ ÔNG TRUNG</h1>
 
-        <p>
-            Mô phỏng quản lý quán ăn 2D
-        </p>
+<p>
+Mô phỏng quản lý quán ăn 2D
+</p>
 
-        <input
-            id="nameInput"
-            maxlength="18"
-            placeholder="Tên trên BXH">
+<input
+id="nameInput"
+maxlength="18"
+placeholder="Tên trên BXH">
 
-        <button class="big" onclick="startGame()">
-            VÀO GAME
-        </button>
+<button class="big" onclick="startGame()">
+VÀO GAME
+</button>
 
-        <button class="big" onclick="showGuide()">
-            HƯỚNG DẪN
-        </button>
+<button class="big" onclick="showGuide()">
+HƯỚNG DẪN
+</button>
 
-        <button class="big" onclick="showLeaderboard()">
-            BẢNG XẾP HẠNG
-        </button>
+<button class="big" onclick="showLeaderboard()">
+BẢNG XẾP HẠNG
+</button>
 
-    </div>
+</div>
 
 </div>
 
 
 <div class="panel" id="menuPanel">
 
-    <h2>THỰC ĐƠN</h2>
+<h2>MENU</h2>
 
-    <p>Món bình dân — 90.000đ</p>
-    <p>Món truyền thống — 120.000đ</p>
-    <p>Món đặc biệt — 150.000đ</p>
+<p>Món bình dân — 90.000đ</p>
+<p>Món truyền thống — 120.000đ</p>
+<p>Món đặc biệt — 150.000đ</p>
 
-    <button class="close" onclick="closePanels()">
-        ĐÓNG
-    </button>
+<button class="close" onclick="closePanels()">
+ĐÓNG
+</button>
 
 </div>
 
 
 <div class="panel" id="inventoryPanel">
 
-    <h2>KHO</h2>
+<h2>KHO</h2>
 
-    <p>Thịt: <b id="invMeat">15</b>/15</p>
+<p>
+Thịt:
+<b id="invMeat">15</b>/15
+</p>
 
-    <p>
-        Đang cầm:
-        <b id="invFood">Không</b>
-    </p>
+<p>
+Đang cầm:
+<b id="invFood">Không</b>
+</p>
 
-    <p>
-        Đã phục vụ:
-        <b id="invServed">0</b>
-    </p>
+<p>
+Đã phục vụ:
+<b id="invServed">0</b>
+</p>
 
-    <button class="close" onclick="closePanels()">
-        ĐÓNG
-    </button>
+<button class="close" onclick="closePanels()">
+ĐÓNG
+</button>
 
 </div>
 
 
 <div class="panel" id="meatPanel">
 
-    <h2>TIỆM BÁN THỊT</h2>
+<h2>TIỆM BÁN THỊT</h2>
 
-    <p>
-        Kho:
-        <b id="shopStock">15</b>/15
-    </p>
+<p>
+Kho:
+<b id="shopStock">15</b>/15
+</p>
 
-    <div class="option">
+<div class="option">
 
-        <b>THỊT TƯƠI</b>
+<b>THỊT TƯƠI</b>
 
-        <p>2.000.000đ</p>
+<p>2.000.000đ</p>
 
-        <p>
-            Hàng chất lượng ổn định.
-        </p>
+<button onclick="buyMeat('fresh')">
+MUA THỊT TƯƠI
+</button>
 
-        <button onclick="buyMeat('fresh')">
-            MUA THỊT TƯƠI
-        </button>
-
-    </div>
+</div>
 
 
-    <div class="option">
+<div class="option">
 
-        <b>THỊT GIÁ RẺ</b>
+<b>THỊT GIÁ RẺ</b>
 
-        <p>500.000đ</p>
+<p>500.000đ</p>
 
-        <p>
-            Rẻ đúng 4 lần thịt tươi.
-        </p>
+<button onclick="buyMeat('cheap')">
+MUA THỊT GIÁ RẺ
+</button>
 
-        <button onclick="buyMeat('cheap')">
-            MUA THỊT GIÁ RẺ
-        </button>
+</div>
 
-    </div>
-
-
-    <button class="close" onclick="closePanels()">
-        ĐÓNG
-    </button>
+<button class="close" onclick="closePanels()">
+ĐÓNG
+</button>
 
 </div>
 
 
 <div class="panel" id="debtPanel">
 
-    <h2>TRẢ NỢ</h2>
+<h2>TRẢ NỢ</h2>
 
-    <p>
-        Nợ hiện tại:
-        <b id="panelDebt"></b>
-    </p>
+<p>
+Nợ:
+<b id="panelDebt"></b>
+</p>
 
-    <button onclick="payDebtAmount(1000000)">
-        TRẢ 1.000.000đ
-    </button>
+<button onclick="payDebt(1000000)">
+TRẢ 1.000.000đ
+</button>
 
-    <button onclick="payDebtAmount(10000000)">
-        TRẢ 10.000.000đ
-    </button>
+<button onclick="payDebt(10000000)">
+TRẢ 10.000.000đ
+</button>
 
-    <button onclick="payDebtAmount(50000000)">
-        TRẢ 50.000.000đ
-    </button>
+<button onclick="payDebt(50000000)">
+TRẢ 50.000.000đ
+</button>
 
-    <button onclick="payDebtAmount(game.debt)">
-        TRẢ HẾT
-    </button>
+<button onclick="payDebt(game.debt)">
+TRẢ HẾT
+</button>
 
-    <button class="close" onclick="closePanels()">
-        ĐÓNG
-    </button>
+<button class="close" onclick="closePanels()">
+ĐÓNG
+</button>
 
 </div>
 
 
 <div class="panel" id="upgradePanel">
 
-    <h2>NÂNG CẤP</h2>
+<h2>NÂNG CẤP</h2>
 
-    <p>
-        Cấp quán:
-        <b id="levelText">1</b>
-    </p>
+<p>
+Cấp quán:
+<b id="levelText">1</b>
+</p>
 
-    <p>
-        Giá:
-        <b id="upgradePrice"></b>
-    </p>
+<p>
+Giá:
+<b id="upgradePrice"></b>
+</p>
 
-    <button onclick="upgrade()">
-        NÂNG CẤP QUÁN
-    </button>
+<button onclick="upgrade()">
+NÂNG CẤP QUÁN
+</button>
 
-    <button class="close" onclick="closePanels()">
-        ĐÓNG
-    </button>
+<button class="close" onclick="closePanels()">
+ĐÓNG
+</button>
 
 </div>
 
 
 <div class="panel" id="guidePanel">
 
-    <h2>HƯỚNG DẪN</h2>
+<h2>HƯỚNG DẪN</h2>
 
-    <p>WASD / phím mũi tên: di chuyển.</p>
+<p>WASD hoặc phím mũi tên để di chuyển.</p>
 
-    <p>E: nói chuyện với khách.</p>
+<p>Đi tới khách và bấm E để nói chuyện.</p>
 
-    <p>
-        Sau khi khách gọi món,
-        đi qua cửa quán để tự lấy 1 món.
-    </p>
+<p>Đi qua cửa quán để tự lấy món.</p>
 
-    <p>
-        Mang món tới đúng khách rồi
-        bấm E một lần.
-    </p>
+<p>Mang món tới đúng khách và bấm E.</p>
 
-    <p>
-        Mỗi khách ăn từ 30–50 giây.
-    </p>
+<p>Khách sẽ ăn trong khoảng 30–50 giây.</p>
 
-    <p>
-        Ăn xong khách thanh toán,
-        đứng dậy và đi khỏi bản đồ.
-    </p>
+<p>
+Sau khi ăn xong, khách sẽ chờ tại bàn.
+</p>
 
-    <p>
-        Hết 15 món → đi tới tiệm thịt.
-    </p>
+<p>
+Đi tới khách và bấm E để đuổi khách về.
+</p>
 
-    <p>
-        Thịt tươi: 2.000.000đ.
-    </p>
+<p>
+Khách trả tiền rồi mới rời quán.
+</p>
 
-    <p>
-        Thịt giá rẻ: 500.000đ.
-    </p>
+<p>
+Hết 15 phần thịt → nhập hàng.
+</p>
 
-    <button class="close" onclick="closePanels()">
-        ĐÓNG
-    </button>
+<button class="close" onclick="closePanels()">
+ĐÓNG
+</button>
 
 </div>
 
 
 <div class="panel" id="leaderboardPanel">
 
-    <h2>BẢNG XẾP HẠNG</h2>
+<h2>BẢNG XẾP HẠNG</h2>
 
-    <div id="leaderboard"></div>
+<div id="leaderboard"></div>
 
-    <button class="close" onclick="closePanels()">
-        ĐÓNG
-    </button>
+<button class="close" onclick="closePanels()">
+ĐÓNG
+</button>
 
 </div>
 
@@ -646,6 +628,11 @@ button{
 
 <script>
 
+
+/* =========================================================
+   CƠ BẢN
+========================================================= */
+
 const canvas=document.getElementById("canvas");
 const ctx=canvas.getContext("2d");
 
@@ -653,9 +640,9 @@ const W=1100;
 const H=619;
 
 
-/* =====================================================
-GAME STATE
-===================================================== */
+/* =========================================================
+   GAME
+========================================================= */
 
 const game={
 
@@ -685,9 +672,9 @@ const game={
 
     spawnTimer:0,
 
-    nextSpawn:6500,
+    nextSpawn:8000,
 
-    maxCustomers:5,
+    maxCustomers:4,
 
     lastTime:0,
 
@@ -707,25 +694,9 @@ const player={
 };
 
 
-/* =====================================================
-MAP
-===================================================== */
-
-/*
-    KHU VỰC:
-
-    ┌───────────────┬───────────────────────────────┐
-    │ TIỆM THỊT     │       QUÁN ÔNG TRUNG         │
-    │               │                               │
-    ├───────────────┴───────────────────────────────┤
-    │                 ĐƯỜNG                         │
-    ├───────────────────────────────┬───────────────┤
-    │ CỎ                            │ KHU BÀN ĂN     │
-    │ cây / hoa / đá                │ bàn + ghế      │
-    │                               │                │
-    └───────────────────────────────┴───────────────┘
-*/
-
+/* =========================================================
+   MAP
+========================================================= */
 
 const ROAD={
     x:0,
@@ -759,10 +730,6 @@ const DINING={
 };
 
 
-/*
-    Cửa quán
-*/
-
 const SHOP_DOOR={
     x:540,
     y:240,
@@ -771,9 +738,9 @@ const SHOP_DOOR={
 };
 
 
-/* =====================================================
-TABLES
-===================================================== */
+/* =========================================================
+   BÀN
+========================================================= */
 
 const tables=[
 
@@ -816,277 +783,55 @@ const tables=[
 ];
 
 
-/* =====================================================
-DECORATION SAFE ZONES
-===================================================== */
+/* =========================================================
+   DECORATION
+   QUAN TRỌNG:
+   Không có animation.
+   Không random trong draw.
+========================================================= */
 
-/*
-    Chỉ được phép đặt đồ trang trí
-    trong những vùng này.
-*/
+const decorations=[
 
-const grassZones=[
+    {x:40,y:350,type:"tree"},
+    {x:110,y:410,type:"tree"},
+    {x:185,y:350,type:"tree"},
+    {x:270,y:500,type:"tree"},
+    {x:360,y:390,type:"tree"},
+    {x:470,y:530,type:"tree"},
+    {x:590,y:410,type:"tree"},
+    {x:680,y:500,type:"tree"},
 
-    /*
-        bãi cỏ trái phía dưới
-    */
+    {x:70,y:500,type:"bush"},
+    {x:150,y:550,type:"bush"},
+    {x:240,y:430,type:"bush"},
+    {x:330,y:550,type:"bush"},
+    {x:430,y:350,type:"bush"},
+    {x:520,y:550,type:"bush"},
+    {x:650,y:350,type:"bush"},
+    {x:710,y:550,type:"bush"},
 
-    {
-        x:15,
-        y:315,
-        w:730,
-        h:285
-    },
+    {x:50,y:390,type:"flower"},
+    {x:135,y:470,type:"flower"},
+    {x:225,y:560,type:"flower"},
+    {x:315,y:350,type:"flower"},
+    {x:390,y:470,type:"flower"},
+    {x:560,y:500,type:"flower"},
+    {x:630,y:450,type:"flower"},
+    {x:720,y:380,type:"flower"},
 
-    /*
-        bãi cỏ nhỏ phía trên
-    */
-
-    {
-        x:320,
-        y:15,
-        w:60,
-        h:220
-    },
-
-    /*
-        góc phải dưới khu ăn
-    */
-
-    {
-        x:1065,
-        y:315,
-        w:30,
-        h:280
-    }
-
-];
-
-
-/*
-    Các vùng tuyệt đối không được trang trí.
-*/
-
-const forbidden=[
-
-    ROAD,
-
-    RESTAURANT,
-
-    MEAT_SHOP,
-
-    DINING,
-
-    SHOP_DOOR,
-
-    {
-        x:0,
-        y:0,
-        w:1100,
-        h:55
-    },
-
-    {
-        x:0,
-        y:590,
-        w:1100,
-        h:29
-    }
+    {x:90,y:450,type:"rock"},
+    {x:200,y:390,type:"rock"},
+    {x:300,y:530,type:"rock"},
+    {x:455,y:390,type:"rock"},
+    {x:610,y:550,type:"rock"},
+    {x:700,y:450,type:"rock"}
 
 ];
 
 
-/*
-    Vùng quanh bàn.
-*/
-
-for(const t of tables){
-
-    forbidden.push({
-
-        x:t.x-45,
-        y:t.y-45,
-        w:t.w+90,
-        h:t.h+90
-
-    });
-
-}
-
-
-/* =====================================================
-DECORATION GENERATOR
-===================================================== */
-
-const decorations=[];
-
-
-function insideRect(x,y,r,padding=0){
-
-    return (
-
-        x>=r.x-padding &&
-        x<=r.x+r.w+padding &&
-        y>=r.y-padding &&
-        y<=r.y+r.h+padding
-
-    );
-
-}
-
-
-function validDecoration(x,y){
-
-    /*
-        phải nằm trong ít nhất 1
-        grass zone
-    */
-
-    let inGrass=false;
-
-    for(const z of grassZones){
-
-        if(insideRect(x,y,z)){
-
-            inGrass=true;
-            break;
-
-        }
-
-    }
-
-    if(!inGrass){
-
-        return false;
-
-    }
-
-
-    /*
-        không được nằm trong forbidden
-    */
-
-    for(const f of forbidden){
-
-        if(insideRect(x,y,f,8)){
-
-            return false;
-
-        }
-
-    }
-
-
-    return true;
-
-}
-
-
-function createDecorations(){
-
-    decorations.length=0;
-
-
-    const types=[
-        "tree",
-        "tree",
-        "bush",
-        "bush",
-        "flower",
-        "flower",
-        "rock"
-    ];
-
-
-    let attempts=0;
-
-
-    while(
-        decorations.length<75 &&
-        attempts<5000
-    ){
-
-        attempts++;
-
-
-        const x=
-            10+
-            Math.random()*
-            (W-20);
-
-        const y=
-            10+
-            Math.random()*
-            (H-20);
-
-
-        if(!validDecoration(x,y)){
-
-            continue;
-
-        }
-
-
-        /*
-            không cho đồ trang trí
-            chồng lên nhau
-        */
-
-        let tooClose=false;
-
-
-        for(const d of decorations){
-
-            const dist=
-                Math.hypot(
-                    x-d.x,
-                    y-d.y
-                );
-
-
-            if(dist<24){
-
-                tooClose=true;
-                break;
-
-            }
-
-        }
-
-
-        if(tooClose){
-
-            continue;
-
-        }
-
-
-        decorations.push({
-
-            x,
-            y,
-
-            type:
-                types[
-                    Math.floor(
-                        Math.random()*
-                        types.length
-                    )
-                ]
-
-        });
-
-    }
-
-}
-
-
-createDecorations();
-
-
-/* =====================================================
-CUSTOMER TYPES
-===================================================== */
+/* =========================================================
+   KHÁCH
+========================================================= */
 
 const customerTypes=[
 
@@ -1107,7 +852,7 @@ const customerTypes=[
     {
         name:"Khách trẻ",
         color:"#43a875",
-        speed:1.25,
+        speed:1.2,
         money:120000
     },
 
@@ -1123,63 +868,74 @@ const customerTypes=[
         color:"#8768ce",
         speed:1,
         money:300000
-
     }
 
 ];
 
-
-/* =====================================================
-SPAWN / EXIT POINTS
-===================================================== */
-
-const spawnPoints=[
-
-    {
-        x:15,
-        y:330
-    },
-
-    {
-        x:15,
-        y:550
-    },
-
-    {
-        x:1085,
-        y:330
-    },
-
-    {
-        x:1085,
-        y:550
-    },
-
-    {
-        x:330,
-        y:310
-    },
-
-    {
-        x:750,
-        y:310
-    }
-
-];
-
-
-/* =====================================================
-CUSTOMERS
-===================================================== */
 
 const customers=[];
 
 
-function freeTable(){
+const spawnPoints=[
 
-    return tables.find(
-        t=>t.customer===null
+    {x:10,y:330},
+    {x:10,y:550},
+    {x:1090,y:330},
+    {x:1090,y:550}
+
+];
+
+
+/* =========================================================
+   HÀM TIỆN ÍCH
+========================================================= */
+
+function clamp(n,min,max){
+
+    return Math.max(
+        min,
+        Math.min(max,n)
     );
+
+}
+
+
+function money(n){
+
+    return Math.floor(n)
+        .toLocaleString("vi-VN")
+        +"đ";
+
+}
+
+
+function distance(a,b){
+
+    return Math.hypot(
+        a.x-b.x,
+        a.y-b.y
+    );
+
+}
+
+
+/* =========================================================
+   SPAWN KHÁCH
+========================================================= */
+
+function getFreeTable(){
+
+    for(const t of tables){
+
+        if(t.customer===null){
+
+            return t;
+
+        }
+
+    }
+
+    return null;
 
 }
 
@@ -1202,20 +958,26 @@ function spawnCustomer(){
     */
 
     const wantsShop=
-        Math.random()<.70;
+        Math.random()<0.70;
 
 
-    if(
-        wantsShop &&
-        !freeTable()
-    ){
+    let table=null;
+
+
+    if(wantsShop){
+
+        table=getFreeTable();
+
 
         /*
-            Không có bàn:
-            khách tiếp tục đi ngang
+            hết bàn thì không spawn khách ăn
         */
 
-        return;
+        if(!table){
+
+            return;
+
+        }
 
     }
 
@@ -1238,7 +1000,7 @@ function spawnCustomer(){
         ];
 
 
-    const customer={
+    const c={
 
         id:
             Date.now()+
@@ -1260,11 +1022,11 @@ function spawnCustomer(){
 
         money:type.money,
 
-        wantsShop,
+        wantsShop:wantsShop,
 
         state:"walking",
 
-        table:null,
+        table:table,
 
         dialogueIndex:0,
 
@@ -1272,7 +1034,9 @@ function spawnCustomer(){
 
         eatingTimer:0,
 
-        leaving:false,
+        waitingTimer:0,
+
+        paid:false,
 
         exitX:0,
 
@@ -1281,39 +1045,30 @@ function spawnCustomer(){
     };
 
 
-    if(wantsShop){
+    if(table){
 
-        const table=
-            freeTable();
-
-
-        table.customer=
-            customer.id;
-
-
-        customer.table=
-            table;
+        table.customer=c.id;
 
 
         /*
-            Đi vào phía dưới bàn.
+            Đi tới ghế phía dưới bàn
         */
 
-        customer.targetX=
+        c.targetX=
             table.x+
             table.w/2;
 
-        customer.targetY=
+        c.targetY=
             table.y+
             table.h+
-            25;
+            24;
 
 
-        customer.dialogue=[
+        c.dialogue=[
 
             "Cho tôi xem thực đơn với.",
 
-            Math.random()<.5
+            Math.random()<0.5
                 ?
                 "Hôm nay có món gì ngon?"
                 :
@@ -1326,37 +1081,36 @@ function spawnCustomer(){
     }else{
 
         /*
-            khách đi ngang
+            Khách đi ngang:
+            đi sang phía đối diện.
         */
 
-        const exit=
-            spawnPoints[
-                Math.floor(
-                    Math.random()*
-                    spawnPoints.length
-                )
-            ];
+        if(spawn.x<500){
+
+            c.targetX=1130;
+
+        }else{
+
+            c.targetX=-30;
+
+        }
 
 
-        customer.targetX=
-            exit.x;
-
-        customer.targetY=
-            exit.y;
+        c.targetY=spawn.y;
 
     }
 
 
-    customers.push(customer);
+    customers.push(c);
 
 }
 
 
-/* =====================================================
-CUSTOMER MOVE
-===================================================== */
+/* =========================================================
+   DI CHUYỂN KHÁCH
+========================================================= */
 
-function moveTowards(c){
+function moveCustomer(c){
 
     const dx=
         c.targetX-c.x;
@@ -1368,7 +1122,7 @@ function moveTowards(c){
         Math.hypot(dx,dy);
 
 
-    if(dist<1){
+    if(dist<1.5){
 
         return true;
 
@@ -1389,9 +1143,9 @@ function moveTowards(c){
 }
 
 
-/* =====================================================
-START DIALOGUE
-===================================================== */
+/* =========================================================
+   DIALOGUE
+========================================================= */
 
 function startDialogue(c){
 
@@ -1414,8 +1168,7 @@ function startDialogue(c){
 
 function showDialogue(){
 
-    const d=
-        game.dialogue;
+    const d=game.dialogue;
 
 
     if(!d){
@@ -1455,8 +1208,7 @@ function nextDialogue(){
     }
 
 
-    const d=
-        game.dialogue;
+    const d=game.dialogue;
 
 
     d.index++;
@@ -1467,8 +1219,7 @@ function nextDialogue(){
         d.customer.dialogue.length
     ){
 
-        const c=
-            d.customer;
+        const c=d.customer;
 
 
         game.dialogue=null;
@@ -1479,19 +1230,13 @@ function nextDialogue(){
         ).style.display="none";
 
 
-        c.state=
-            "waiting_food";
+        c.state="waiting_food";
 
-
-        c.orderPrice=
-            90000+
-            Math.floor(
-                Math.random()*3
-            )*30000;
+        c.waitingTimer=50000;
 
 
         showMessage(
-            "Khách đã gọi món. Đi lấy món."
+            "Khách đã gọi món."
         );
 
 
@@ -1505,21 +1250,22 @@ function nextDialogue(){
 }
 
 
-/* =====================================================
-NEAREST CUSTOMER
-===================================================== */
+/* =========================================================
+   TÌM KHÁCH GẦN NHẤT
+========================================================= */
 
 function nearestCustomer(){
 
-    let nearest=null;
+    let result=null;
 
-    let dist=Infinity;
+    let best=75;
 
 
     for(const c of customers){
 
         if(
-            c.state==="leaving"
+            c.state==="leaving" ||
+            c.state==="walking"
         ){
 
             continue;
@@ -1534,133 +1280,24 @@ function nearestCustomer(){
             );
 
 
-        if(d<dist){
+        if(d<best){
 
-            dist=d;
-            nearest=c;
+            best=d;
+            result=c;
 
         }
 
     }
 
 
-    if(
-        nearest &&
-        dist<75
-    ){
-
-        return nearest;
-
-    }
-
-
-    return null;
+    return result;
 
 }
 
 
-/* =====================================================
-INTERACTION
-===================================================== */
-
-function interact(){
-
-    if(!game.running){
-
-        return;
-
-    }
-
-
-    if(game.dialogue){
-
-        nextDialogue();
-
-        return;
-
-    }
-
-
-    /*
-        tiệm thịt
-    */
-
-    const meatCenter={
-
-        x:
-            MEAT_SHOP.x+
-            MEAT_SHOP.w/2,
-
-        y:
-            MEAT_SHOP.y+
-            MEAT_SHOP.h/2
-
-    };
-
-
-    if(
-        Math.hypot(
-            player.x-meatCenter.x,
-            player.y-meatCenter.y
-        )<145
-    ){
-
-        openMeatShop();
-
-        return;
-
-    }
-
-
-    const c=
-        nearestCustomer();
-
-
-    if(!c){
-
-        return;
-
-    }
-
-
-    if(
-        c.state==="sitting" ||
-        c.state==="waiting_food"
-    ){
-
-        if(
-            c.state==="sitting"
-        ){
-
-            startDialogue(c);
-
-            return;
-
-        }
-
-
-        /*
-            phục vụ
-        */
-
-        if(
-            c.state==="waiting_food"
-        ){
-
-            serveCustomer(c);
-
-            return;
-
-        }
-
-    }
-
-}
-
-
-/* =====================================================
-SHOP DOOR
-===================================================== */
+/* =========================================================
+   CỬA QUÁN
+========================================================= */
 
 function nearShopDoor(){
 
@@ -1678,16 +1315,16 @@ function nearShopDoor(){
 
         player.y<
         SHOP_DOOR.y+
-        SHOP_DOOR.h+20
+        SHOP_DOOR.h+25
 
     );
 
 }
 
 
-/* =====================================================
-GET FOOD
-===================================================== */
+/* =========================================================
+   LẤY MÓN TỰ ĐỘNG
+========================================================= */
 
 function takeFood(){
 
@@ -1705,12 +1342,21 @@ function takeFood(){
     }
 
 
-    const target=
-        customers.find(
-            c=>
-                c.state===
-                "waiting_food"
-        );
+    let target=null;
+
+
+    for(const c of customers){
+
+        if(
+            c.state==="waiting_food"
+        ){
+
+            target=c;
+            break;
+
+        }
+
+    }
 
 
     if(!target){
@@ -1723,7 +1369,7 @@ function takeFood(){
     if(game.meat<=0){
 
         showMessage(
-            "HẾT THỊT! Đi nhập hàng."
+            "HẾT THỊT! Hãy đi nhập hàng."
         );
 
         return;
@@ -1756,16 +1402,16 @@ function takeFood(){
 }
 
 
-/* =====================================================
-SERVE
-===================================================== */
+/* =========================================================
+   PHỤC VỤ
+========================================================= */
 
 function serveCustomer(c){
 
     if(!game.heldFood){
 
         showMessage(
-            "Bạn chưa có món."
+            "Bạn chưa cầm món."
         );
 
         return;
@@ -1780,7 +1426,7 @@ function serveCustomer(c){
     ){
 
         showMessage(
-            "Món này không phải của khách này!"
+            "Món này không phải của khách này."
         );
 
         return;
@@ -1814,9 +1460,250 @@ function serveCustomer(c){
 }
 
 
-/* =====================================================
-CUSTOMER UPDATE
-===================================================== */
+/* =========================================================
+   ĐUỔI KHÁCH SAU KHI ĂN
+========================================================= */
+
+function dismissCustomer(c){
+
+    /*
+        Chỉ được đuổi khi ăn xong.
+    */
+
+    if(
+        c.state!=="finished"
+    ){
+
+        if(
+            c.state==="eating"
+        ){
+
+            showMessage(
+                "Khách vẫn đang ăn."
+            );
+
+        }
+
+        return;
+
+    }
+
+
+    /*
+        trả tiền
+    */
+
+    if(!c.paid){
+
+        game.money+=c.money;
+
+        game.served++;
+
+        game.reputation=
+            Math.min(
+                100,
+                game.reputation+1
+            );
+
+        c.paid=true;
+
+    }
+
+
+    /*
+        giải phóng bàn
+    */
+
+    if(c.table){
+
+        c.table.customer=null;
+
+        c.table=null;
+
+    }
+
+
+    /*
+        khách rời quán
+    */
+
+    c.state="leaving";
+
+
+    /*
+        Chọn hướng ra.
+    */
+
+    if(c.x<550){
+
+        c.exitX=-50;
+
+    }else{
+
+        c.exitX=1150;
+
+    }
+
+
+    c.exitY=
+        clamp(
+            c.y,
+            315,
+            570
+        );
+
+
+    c.targetX=c.exitX;
+    c.targetY=c.exitY;
+
+
+    showMessage(
+        "Khách đã thanh toán và rời quán."
+    );
+
+
+    updateHUD();
+
+}
+
+
+/* =========================================================
+   INTERACT
+========================================================= */
+
+function interact(){
+
+    if(!game.running){
+
+        return;
+
+    }
+
+
+    if(game.dialogue){
+
+        nextDialogue();
+
+        return;
+
+    }
+
+
+    /*
+        Tiệm thịt
+    */
+
+    const meatCenter={
+
+        x:
+            MEAT_SHOP.x+
+            MEAT_SHOP.w/2,
+
+        y:
+            MEAT_SHOP.y+
+            MEAT_SHOP.h/2
+
+    };
+
+
+    if(
+        distance(
+            player,
+            meatCenter
+        )<140
+    ){
+
+        openMeatShop();
+
+        return;
+
+    }
+
+
+    const c=
+        nearestCustomer();
+
+
+    if(!c){
+
+        return;
+
+    }
+
+
+    /*
+        Ngồi:
+        bắt đầu nói chuyện
+    */
+
+    if(c.state==="sitting"){
+
+        startDialogue(c);
+
+        return;
+
+    }
+
+
+    /*
+        Chờ món:
+        không cần bấm E lấy món,
+        món được lấy ở cửa.
+    */
+
+    if(c.state==="waiting_food"){
+
+        if(game.heldFood){
+
+            serveCustomer(c);
+
+        }else{
+
+            showMessage(
+                "Hãy tới cửa quán lấy món."
+            );
+
+        }
+
+        return;
+
+    }
+
+
+    /*
+        ĐANG ĂN
+    */
+
+    if(c.state==="eating"){
+
+        showMessage(
+            "Khách vẫn đang ăn."
+        );
+
+        return;
+
+    }
+
+
+    /*
+        ĂN XONG:
+        E để đuổi khách.
+    */
+
+    if(c.state==="finished"){
+
+        dismissCustomer(c);
+
+        return;
+
+    }
+
+}
+
+
+/* =========================================================
+   CẬP NHẬT KHÁCH
+========================================================= */
 
 function updateCustomers(delta){
 
@@ -1830,16 +1717,14 @@ function updateCustomers(delta){
             customers[i];
 
 
-        /* ============================================
-           KHÁCH ĐANG ĐI VÀO
-        ============================================ */
+        /* ---------------------------------------------
+           ĐI VÀO
+        --------------------------------------------- */
 
-        if(
-            c.state==="walking"
-        ){
+        if(c.state==="walking"){
 
             const arrived=
-                moveTowards(c);
+                moveCustomer(c);
 
 
             if(arrived){
@@ -1859,13 +1744,11 @@ function updateCustomers(delta){
         }
 
 
-        /* ============================================
-           NGỒI CHỜ
-        ============================================ */
+        /* ---------------------------------------------
+           NGỒI
+        --------------------------------------------- */
 
-        else if(
-            c.state==="sitting"
-        ){
+        else if(c.state==="sitting"){
 
             /*
                 Chờ người chơi nói chuyện.
@@ -1874,47 +1757,38 @@ function updateCustomers(delta){
         }
 
 
-        /* ============================================
+        /* ---------------------------------------------
            DIALOGUE
-        ============================================ */
+        --------------------------------------------- */
 
-        else if(
-            c.state==="dialogue"
-        ){
+        else if(c.state==="dialogue"){
 
             /*
-                Đợi người chơi bấm E.
+                Đợi E.
             */
 
         }
 
 
-        /* ============================================
+        /* ---------------------------------------------
            CHỜ MÓN
-        ============================================ */
+        --------------------------------------------- */
 
         else if(
             c.state==="waiting_food"
         ){
 
-            /*
-                Nếu chờ quá lâu:
-                khách bỏ đi.
-            */
-
-            if(!c.waitTimer){
-
-                c.waitTimer=45000;
-
-            }
-
-
-            c.waitTimer-=delta;
+            c.waitingTimer-=delta;
 
 
             if(
-                c.waitTimer<=0
+                c.waitingTimer<=0
             ){
+
+                /*
+                    Nếu món đang cầm là của khách này,
+                    bỏ món đó.
+                */
 
                 if(
                     game.heldFood &&
@@ -1927,10 +1801,7 @@ function updateCustomers(delta){
                 }
 
 
-                releaseTable(c);
-
-
-                beginLeaving(c);
+                leaveWithoutPay(c);
 
 
                 showMessage(
@@ -1942,112 +1813,71 @@ function updateCustomers(delta){
         }
 
 
-        /* ============================================
+        /* ---------------------------------------------
            ĂN
-        ============================================ */
+        --------------------------------------------- */
 
-        else if(
-            c.state==="eating"
-        ){
+        else if(c.state==="eating"){
 
             c.eatingTimer-=delta;
 
 
             /*
-                HẾT THỜI GIAN ĂN
+                Ăn xong nhưng KHÔNG tự rời.
             */
 
             if(
                 c.eatingTimer<=0
             ){
 
-                finishEating(c);
+                c.state="finished";
+
+
+                showMessage(
+                    c.type+
+                    " đã ăn xong. Đi tới khách và nhấn E."
+                );
 
             }
 
         }
 
 
-        /* ============================================
-           THANH TOÁN
-        ============================================ */
+        /* ---------------------------------------------
+           ĐÃ ĂN XONG
+        --------------------------------------------- */
 
-        else if(
-            c.state==="paying"
-        ){
+        else if(c.state==="finished"){
 
             /*
-                Trạng thái này chỉ tồn tại
-                rất ngắn.
+                đứng tại bàn,
+                chờ người chơi E.
             */
-
-            payCustomer(c);
 
         }
 
 
-        /* ============================================
-           RỜI QUÁN
-        ============================================ */
+        /* ---------------------------------------------
+           RỜI
+        --------------------------------------------- */
 
-        else if(
-            c.state==="leaving"
-        ){
+        else if(c.state==="leaving"){
+
+            moveCustomer(c);
+
 
             /*
-                KHÁCH PHẢI ĐI HẲN RA KHỎI MAP.
+                Xóa khách khi đã thật sự
+                ra khỏi màn hình.
             */
 
-            const left=
-                moveTowards(c);
-
-
             if(
-                c.x<-50 ||
-                c.x>W+50 ||
-                c.y<-50 ||
-                c.y>H+50
+                c.x<-60 ||
+                c.x>1160
             ){
 
                 customers.splice(i,1);
 
-                continue;
-
-            }
-
-
-            /*
-                Nếu tới điểm thoát bên trong map,
-                đổi mục tiêu thành điểm ngoài map.
-            */
-
-            if(left){
-
-                if(
-                    c.exitX<50
-                ){
-
-                    c.targetX=-60;
-                    c.targetY=c.y;
-
-                }
-
-                else if(
-                    c.exitX>W-50
-                ){
-
-                    c.targetX=W+60;
-                    c.targetY=c.y;
-
-                }
-
-                else{
-
-                    c.targetX=c.x;
-                    c.targetY=-60;
-
-                }
-
             }
 
         }
@@ -2057,154 +1887,48 @@ function updateCustomers(delta){
 }
 
 
-/* =====================================================
-FINISH EATING
-===================================================== */
+/* =========================================================
+   KHÁCH BỎ VỀ
+========================================================= */
 
-function finishEating(c){
+function leaveWithoutPay(c){
 
-    c.state="paying";
+    if(c.table){
 
+        c.table.customer=null;
 
-    /*
-        Khách thanh toán ngay sau khi ăn.
-    */
-
-    payCustomer(c);
-
-}
-
-
-/* =====================================================
-PAY CUSTOMER
-===================================================== */
-
-function payCustomer(c){
-
-    game.money+=
-        c.money;
-
-
-    game.served++;
-
-
-    game.reputation=
-        Math.min(
-            100,
-            game.reputation+1
-        );
-
-
-    /*
-        QUAN TRỌNG:
-        giải phóng bàn ngay khi khách ăn xong.
-    */
-
-    releaseTable(c);
-
-
-    /*
-        Chuyển khách sang trạng thái
-        RỜI QUÁN.
-    */
-
-    beginLeaving(c);
-
-
-    showMessage(
-        c.type+
-        " ăn xong và trả "+
-        money(c.money)
-    );
-
-
-    updateHUD();
-
-}
-
-
-/* =====================================================
-RELEASE TABLE
-===================================================== */
-
-function releaseTable(c){
-
-    if(!c.table){
-
-        return;
+        c.table=null;
 
     }
 
-
-    const table=
-        tables.find(
-            t=>
-                t.id===
-                c.table.id
-        );
-
-
-    if(table){
-
-        table.customer=null;
-
-    }
-
-
-    c.table=null;
-
-}
-
-
-/* =====================================================
-BEGIN LEAVING
-===================================================== */
-
-function beginLeaving(c){
 
     c.state="leaving";
 
-    c.leaving=true;
-
-
-    /*
-        Chọn cửa ra dựa vào vị trí.
-    */
 
     if(c.x<550){
 
-        c.exitX=-60;
-
-        c.exitY=
-            clamp(
-                c.y,
-                315,
-                575
-            );
+        c.targetX=-60;
 
     }else{
 
-        c.exitX=W+60;
-
-        c.exitY=
-            clamp(
-                c.y,
-                315,
-                575
-            );
+        c.targetX=1160;
 
     }
 
 
-    c.targetX=c.exitX;
-    c.targetY=c.exitY;
+    c.targetY=
+        clamp(
+            c.y,
+            315,
+            570
+        );
 
 }
 
 
-/* =====================================================
-PLAYER
-===================================================== */
+/* =========================================================
+   PLAYER
+========================================================= */
 
 const keys={};
 
@@ -2289,8 +2013,8 @@ function updatePlayer(){
 
     if(dx && dy){
 
-        dx*=.707;
-        dy*=.707;
+        dx*=0.707;
+        dy*=0.707;
 
     }
 
@@ -2305,30 +2029,26 @@ function updatePlayer(){
 
 
     player.x=
-        Math.max(
+        clamp(
+            player.x,
             10,
-            Math.min(
-                W-10,
-                player.x
-            )
+            W-10
         );
 
 
     player.y=
-        Math.max(
-            20,
-            Math.min(
-                H-10,
-                player.y
-            )
+        clamp(
+            player.y,
+            15,
+            H-10
         );
 
 }
 
 
-/* =====================================================
-MOBILE
-===================================================== */
+/* =========================================================
+   MOBILE
+========================================================= */
 
 function bindMove(id,key){
 
@@ -2336,47 +2056,49 @@ function bindMove(id,key){
         document.getElementById(id);
 
 
-    const down=e=>{
+    function start(e){
 
         e.preventDefault();
 
         keys[key]=true;
 
-    };
+    }
 
 
-    const up=e=>{
+    function stop(e){
 
         e.preventDefault();
 
         keys[key]=false;
 
-    };
+    }
 
 
     el.addEventListener(
         "touchstart",
-        down
+        start,
+        {passive:false}
     );
 
     el.addEventListener(
         "touchend",
-        up
+        stop,
+        {passive:false}
     );
 
     el.addEventListener(
         "mousedown",
-        down
+        start
     );
 
     el.addEventListener(
         "mouseup",
-        up
+        stop
     );
 
     el.addEventListener(
         "mouseleave",
-        up
+        stop
     );
 
 }
@@ -2389,21 +2111,21 @@ bindMove("right","d");
 
 
 document
-    .getElementById("eBtn")
-    .addEventListener(
-        "click",
-        interact
-    );
+.getElementById("eBtn")
+.addEventListener(
+    "click",
+    interact
+);
 
 
-/* =====================================================
-DRAW BACKGROUND
-===================================================== */
+/* =========================================================
+   VẼ NỀN
+========================================================= */
 
 function drawBackground(){
 
     /*
-        toàn bộ là cỏ
+        Cỏ
     */
 
     ctx.fillStyle="#86b96a";
@@ -2431,60 +2153,30 @@ function drawBackground(){
 
 
     /*
-        viền đường
+        vạch đường cố định,
+        không animation
     */
 
-    ctx.fillStyle="#555";
+    ctx.fillStyle="#dedede";
 
-    ctx.fillRect(
-        0,
-        ROAD.y,
-        W,
-        4
-    );
+    for(
+        let x=10;
+        x<W;
+        x+=55
+    ){
 
-    ctx.fillRect(
-        0,
-        ROAD.y+ROAD.h-4,
-        W,
-        4
-    );
+        ctx.fillRect(
+            x,
+            ROAD.y+21,
+            28,
+            3
+        );
+
+    }
 
 
     /*
-        vạch giữa đường
-    */
-
-    ctx.strokeStyle="#ddd";
-
-    ctx.lineWidth=3;
-
-    ctx.setLineDash([
-        22,
-        18
-    ]);
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        0,
-        ROAD.y+
-        ROAD.h/2
-    );
-
-    ctx.lineTo(
-        W,
-        ROAD.y+
-        ROAD.h/2
-    );
-
-    ctx.stroke();
-
-    ctx.setLineDash([]);
-
-
-    /*
-        khu ăn uống
+        khu bàn ăn
     */
 
     ctx.fillStyle="#9bc77b";
@@ -2497,9 +2189,9 @@ function drawBackground(){
     );
 
 
-    ctx.strokeStyle="#6d9954";
+    ctx.strokeStyle="#6f9855";
 
-    ctx.lineWidth=3;
+    ctx.lineWidth=2;
 
     ctx.strokeRect(
         DINING.x,
@@ -2508,28 +2200,223 @@ function drawBackground(){
         DINING.h
     );
 
+}
+
+
+/* =========================================================
+   VẼ CÂY
+========================================================= */
+
+function drawTree(x,y){
 
     /*
-        lối vào khu ăn
+        bóng cố định
     */
 
-    ctx.fillStyle="#d0c09e";
+    ctx.fillStyle="#0002";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        x,
+        y+19,
+        19,
+        6,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    /*
+        thân
+    */
+
+    ctx.fillStyle="#68472d";
 
     ctx.fillRect(
-        850,
-        300,
-        35,
-        55
+        x-4,
+        y-2,
+        8,
+        25
     );
+
+
+    /*
+        tán
+    */
+
+    ctx.fillStyle="#397638";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y-10,
+        19,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.fillStyle="#4f8d45";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x-12,
+        y-3,
+        12,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x+12,
+        y-3,
+        12,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
 
 }
 
 
-/* =====================================================
-DECORATIONS DRAW
-===================================================== */
+/* =========================================================
+   BỤI CÂY
+========================================================= */
+
+function drawBush(x,y){
+
+    ctx.fillStyle="#4d8a43";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y,
+        10,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.fillStyle="#609a50";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x+8,
+        y-3,
+        7,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+}
+
+
+/* =========================================================
+   HOA
+   KHÔNG NHẤP NHÁY
+========================================================= */
+
+function drawFlower(x,y){
+
+    /*
+        màu cố định.
+        Không Math.random().
+    */
+
+    ctx.fillStyle="#4c8b45";
+
+    ctx.fillRect(
+        x,
+        y,
+        2,
+        8
+    );
+
+
+    ctx.fillStyle="#e4bd55";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x+1,
+        y,
+        3,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+}
+
+
+/* =========================================================
+   ĐÁ
+========================================================= */
+
+function drawRock(x,y){
+
+    ctx.fillStyle="#777";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x-6,
+        y+3
+    );
+
+    ctx.lineTo(
+        x-3,
+        y-4
+    );
+
+    ctx.lineTo(
+        x+4,
+        y-5
+    );
+
+    ctx.lineTo(
+        x+7,
+        y+3
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+}
+
+
+/* =========================================================
+   VẼ DECOR
+========================================================= */
 
 function drawDecorations(){
+
+    /*
+        Chỉ khoảng 30 vật,
+        không tạo lại mỗi frame.
+    */
 
     for(const d of decorations){
 
@@ -2574,191 +2461,11 @@ function drawDecorations(){
 }
 
 
-/* =====================================================
-TREE
-===================================================== */
-
-function drawTree(x,y){
-
-    ctx.fillStyle="#0002";
-
-    ctx.beginPath();
-
-    ctx.ellipse(
-        x,
-        y+23,
-        23,
-        7,
-        0,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-
-    ctx.fillStyle="#68462d";
-
-    ctx.fillRect(
-        x-5,
-        y,
-        10,
-        27
-    );
-
-
-    ctx.fillStyle="#397638";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x,
-        y-10,
-        22,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-
-    ctx.fillStyle="#55934a";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x-15,
-        y,
-        14,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x+15,
-        y,
-        14,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-}
-
-
-/* =====================================================
-BUSH
-===================================================== */
-
-function drawBush(x,y){
-
-    ctx.fillStyle="#4b8a43";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x,
-        y,
-        10,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-
-    ctx.fillStyle="#619d50";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x+8,
-        y-4,
-        7,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-}
-
-
-/* =====================================================
-FLOWER
-===================================================== */
-
-function drawFlower(x,y){
-
-    ctx.fillStyle="#4e9146";
-
-    ctx.fillRect(
-        x,
-        y,
-        2,
-        8
-    );
-
-
-    ctx.fillStyle=
-        Math.random()>.5
-        ?
-        "#f4d45e"
-        :
-        "#e87a85";
-
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x+1,
-        y,
-        3,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-}
-
-
-/* =====================================================
-ROCK
-===================================================== */
-
-function drawRock(x,y){
-
-    ctx.fillStyle="#777";
-
-    ctx.beginPath();
-
-    ctx.moveTo(x-6,y+3);
-    ctx.lineTo(x-3,y-4);
-    ctx.lineTo(x+4,y-6);
-    ctx.lineTo(x+7,y+3);
-    ctx.closePath();
-
-    ctx.fill();
-
-}
-
-
-/* =====================================================
-RESTAURANT
-===================================================== */
+/* =========================================================
+   QUÁN
+========================================================= */
 
 function drawRestaurant(){
-
-    /*
-        thân quán
-    */
 
     ctx.fillStyle="#c58b58";
 
@@ -2786,7 +2493,7 @@ function drawRestaurant(){
     ctx.lineTo(
         RESTAURANT.x+
         RESTAURANT.w/2,
-        RESTAURANT.y-48
+        RESTAURANT.y-45
     );
 
     ctx.lineTo(
@@ -2801,14 +2508,14 @@ function drawRestaurant(){
 
 
     /*
-        biển
+        bảng hiệu
     */
 
     ctx.fillStyle="#f0d169";
 
     ctx.fillRect(
         RESTAURANT.x+25,
-        RESTAURANT.y+18,
+        RESTAURANT.y+17,
         RESTAURANT.w-50,
         50
     );
@@ -2824,7 +2531,7 @@ function drawRestaurant(){
         "THỊT CHÓ ÔNG TRUNG",
         RESTAURANT.x+
         RESTAURANT.w/2,
-        RESTAURANT.y+49
+        RESTAURANT.y+48
     );
 
 
@@ -2832,7 +2539,7 @@ function drawRestaurant(){
         cửa sổ
     */
 
-    ctx.fillStyle="#79a9b7";
+    ctx.fillStyle="#77a9b7";
 
     ctx.fillRect(
         RESTAURANT.x+30,
@@ -2840,7 +2547,6 @@ function drawRestaurant(){
         85,
         48
     );
-
 
     ctx.fillRect(
         RESTAURANT.x+215,
@@ -2854,7 +2560,7 @@ function drawRestaurant(){
         cửa
     */
 
-    ctx.fillStyle="#4c3729";
+    ctx.fillStyle="#4b3528";
 
     ctx.fillRect(
         SHOP_DOOR.x,
@@ -2864,7 +2570,7 @@ function drawRestaurant(){
     );
 
 
-    ctx.fillStyle="#ddd";
+    ctx.fillStyle="#eee";
 
     ctx.font="11px Arial";
 
@@ -2878,9 +2584,9 @@ function drawRestaurant(){
 }
 
 
-/* =====================================================
-MEAT SHOP
-===================================================== */
+/* =========================================================
+   TIỆM THỊT
+========================================================= */
 
 function drawMeatShop(){
 
@@ -2897,14 +2603,14 @@ function drawMeatShop(){
     ctx.fillStyle="#71352f";
 
     ctx.fillRect(
-        MEAT_SHOP.x-8,
+        MEAT_SHOP.x-7,
         MEAT_SHOP.y-20,
-        MEAT_SHOP.w+16,
+        MEAT_SHOP.w+14,
         30
     );
 
 
-    ctx.fillStyle="#ffe9a9";
+    ctx.fillStyle="#ffe8a8";
 
     ctx.font="bold 16px Arial";
 
@@ -2952,29 +2658,21 @@ function drawMeatShop(){
 }
 
 
-/* =====================================================
-TABLE
-===================================================== */
+/* =========================================================
+   BÀN
+========================================================= */
 
 function drawTable(t){
 
-    /*
-        bóng
-    */
-
-    ctx.fillStyle="#0003";
+    ctx.fillStyle="#0002";
 
     ctx.fillRect(
         t.x+4,
-        t.y+5,
+        t.y+4,
         t.w,
         t.h
     );
 
-
-    /*
-        bàn
-    */
 
     ctx.fillStyle="#81512f";
 
@@ -2988,7 +2686,7 @@ function drawTable(t){
 
     ctx.strokeStyle="#4e311f";
 
-    ctx.lineWidth=3;
+    ctx.lineWidth=2;
 
     ctx.strokeRect(
         t.x,
@@ -3011,34 +2709,29 @@ function drawTable(t){
         t.w/2,
         t.y+
         t.h/2,
-        10,
+        9,
         0,
         Math.PI*2
     );
 
     ctx.fill();
 
-
-    ctx.strokeStyle="#aaa";
-
-    ctx.stroke();
-
 }
 
 
-/* =====================================================
-CHAIRS
-===================================================== */
+/* =========================================================
+   GHẾ
+========================================================= */
 
 function drawChair(x,y){
 
     ctx.fillStyle="#63452d";
 
     ctx.fillRect(
-        x-13,
-        y-8,
-        26,
-        16
+        x-12,
+        y-7,
+        24,
+        14
     );
 
 }
@@ -3051,7 +2744,7 @@ function drawChairs(){
         drawChair(
             t.x+
             t.w/2,
-            t.y-18
+            t.y-17
         );
 
 
@@ -3059,7 +2752,7 @@ function drawChairs(){
             t.x+
             t.w/2,
             t.y+
-            t.h+18
+            t.h+17
         );
 
     }
@@ -3067,21 +2760,21 @@ function drawChairs(){
 }
 
 
-/* =====================================================
-PLAYER
-===================================================== */
+/* =========================================================
+   PLAYER
+========================================================= */
 
 function drawPlayer(){
 
-    ctx.fillStyle="#0004";
+    ctx.fillStyle="#0003";
 
     ctx.beginPath();
 
     ctx.ellipse(
         player.x,
         player.y+18,
-        17,
-        7,
+        16,
+        6,
         0,
         0,
         Math.PI*2
@@ -3093,10 +2786,10 @@ function drawPlayer(){
     ctx.fillStyle="#263b68";
 
     ctx.fillRect(
-        player.x-11,
-        player.y-3,
-        22,
-        25
+        player.x-10,
+        player.y-2,
+        20,
+        23
     );
 
 
@@ -3106,8 +2799,8 @@ function drawPlayer(){
 
     ctx.arc(
         player.x,
-        player.y-14,
-        11,
+        player.y-13,
+        10,
         0,
         Math.PI*2
     );
@@ -3121,8 +2814,8 @@ function drawPlayer(){
 
     ctx.arc(
         player.x,
-        player.y-19,
-        11,
+        player.y-18,
+        10,
         Math.PI,
         Math.PI*2
     );
@@ -3141,72 +2834,8 @@ function drawPlayer(){
         ctx.beginPath();
 
         ctx.arc(
-            player.x+23,
+            player.x+21,
             player.y-7,
-            11,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
-
-
-        ctx.fillStyle="#b46c37";
-
-        ctx.fillRect(
-            player.x+17,
-            player.y-11,
-            13,
-            8
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-CUSTOMER DRAW
-===================================================== */
-
-function drawCustomers(){
-
-    for(const c of customers){
-
-        ctx.fillStyle="#0003";
-
-        ctx.beginPath();
-
-        ctx.ellipse(
-            c.x,
-            c.y+17,
-            14,
-            6,
-            0,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
-
-
-        ctx.fillStyle=c.color;
-
-        ctx.fillRect(
-            c.x-10,
-            c.y-2,
-            20,
-            22
-        );
-
-
-        ctx.fillStyle="#e1ae86";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            c.x,
-            c.y-13,
             10,
             0,
             Math.PI*2
@@ -3214,46 +2843,137 @@ function drawCustomers(){
 
         ctx.fill();
 
+        ctx.fillStyle="#b46c37";
+
+        ctx.fillRect(
+            player.x+15,
+            player.y-10,
+            12,
+            7
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   KHÁCH
+========================================================= */
+
+function drawCustomers(){
+
+    for(const c of customers){
 
         /*
-            chờ món
+            bóng
         */
 
-        if(
-            c.state==="waiting_food"
-        ){
+        ctx.fillStyle="#0002";
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+            c.x,
+            c.y+17,
+            13,
+            5,
+            0,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+
+        /*
+            thân
+        */
+
+        ctx.fillStyle=c.color;
+
+        ctx.fillRect(
+            c.x-9,
+            c.y-2,
+            18,
+            21
+        );
+
+
+        /*
+            đầu
+        */
+
+        ctx.fillStyle="#dfae86";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            c.x,
+            c.y-13,
+            9,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+
+        /*
+            trạng thái
+        */
+
+        if(c.state==="waiting_food"){
 
             ctx.fillStyle="#fff";
 
-            ctx.font="bold 14px Arial";
+            ctx.font="bold 12px Arial";
 
             ctx.textAlign="center";
 
             ctx.fillText(
                 "...",
                 c.x,
-                c.y-28
+                c.y-27
+            );
+
+        }
+
+
+        if(c.state==="eating"){
+
+            ctx.fillStyle="#fff";
+
+            ctx.font="10px Arial";
+
+            ctx.textAlign="center";
+
+            ctx.fillText(
+                "Đang ăn",
+                c.x,
+                c.y-27
             );
 
         }
 
 
         /*
-            đang ăn
+            Ăn xong:
+            hiện E
         */
 
-        if(
-            c.state==="eating"
-        ){
+        if(c.state==="finished"){
 
-            ctx.fillStyle="#fff";
+            ctx.fillStyle="#ffd84d";
 
-            ctx.font="11px Arial";
+            ctx.font="bold 12px Arial";
+
+            ctx.textAlign="center";
 
             ctx.fillText(
-                "Đang ăn",
+                "E - ĐUỔI KHÁCH",
                 c.x,
-                c.y-28
+                c.y-30
             );
 
         }
@@ -3263,9 +2983,9 @@ function drawCustomers(){
 }
 
 
-/* =====================================================
-FOOD TARGET LINE
-===================================================== */
+/* =========================================================
+   MŨI TÊN MÓN ĂN
+========================================================= */
 
 function drawFoodTarget(){
 
@@ -3276,28 +2996,43 @@ function drawFoodTarget(){
     }
 
 
-    const c=
-        customers.find(
-            c=>
-                c.id===
-                game.heldFood.customerId
-        );
+    let target=null;
 
 
-    if(!c){
+    for(const c of customers){
+
+        if(
+            c.id===
+            game.heldFood.customerId
+        ){
+
+            target=c;
+            break;
+
+        }
+
+    }
+
+
+    if(!target){
 
         return;
 
     }
 
 
+    /*
+        đường đơn giản,
+        không animation.
+    */
+
     ctx.strokeStyle="#ffe05a";
 
     ctx.lineWidth=2;
 
     ctx.setLineDash([
-        6,
-        6
+        5,
+        5
     ]);
 
 
@@ -3309,8 +3044,8 @@ function drawFoodTarget(){
     );
 
     ctx.lineTo(
-        c.x,
-        c.y
+        target.x,
+        target.y
     );
 
     ctx.stroke();
@@ -3321,22 +3056,22 @@ function drawFoodTarget(){
 
     ctx.fillStyle="#ffe05a";
 
-    ctx.font="bold 12px Arial";
+    ctx.font="bold 11px Arial";
 
     ctx.textAlign="center";
 
     ctx.fillText(
-        "PHỤC VỤ KHÁCH NÀY",
-        c.x,
-        c.y-43
+        "ĐÚNG KHÁCH",
+        target.x,
+        target.y-43
     );
 
 }
 
 
-/* =====================================================
-DRAW
-===================================================== */
+/* =========================================================
+   DRAW
+========================================================= */
 
 function draw(){
 
@@ -3365,13 +3100,13 @@ function draw(){
 }
 
 
-/* =====================================================
-INTERACTION UI
-===================================================== */
+/* =========================================================
+   INTERACTION UI
+========================================================= */
 
 function updateInteraction(){
 
-    const el=
+    const ui=
         document.getElementById(
             "interaction"
         );
@@ -3379,7 +3114,7 @@ function updateInteraction(){
 
     if(game.dialogue){
 
-        el.style.display="none";
+        ui.style.display="none";
 
         return;
 
@@ -3392,15 +3127,28 @@ function updateInteraction(){
 
     if(c){
 
+        if(c.state==="finished"){
+
+            ui.textContent=
+                "E - ĐUỔI KHÁCH";
+
+            ui.style.display="block";
+
+            return;
+
+        }
+
+
         if(
             c.state==="sitting" ||
-            c.state==="waiting_food"
+            c.state==="waiting_food" ||
+            c.state==="eating"
         ){
 
-            el.textContent=
+            ui.textContent=
                 "E - TƯƠNG TÁC";
 
-            el.style.display="block";
+            ui.style.display="block";
 
             return;
 
@@ -3409,7 +3157,11 @@ function updateInteraction(){
     }
 
 
-    const center={
+    /*
+        tiệm thịt
+    */
+
+    const meatCenter={
 
         x:
             MEAT_SHOP.x+
@@ -3423,53 +3175,35 @@ function updateInteraction(){
 
 
     if(
-        Math.hypot(
-            player.x-center.x,
-            player.y-center.y
-        )<145
+        distance(
+            player,
+            meatCenter
+        )<140
     ){
 
-        el.textContent=
+        ui.textContent=
             "E - NHẬP HÀNG";
 
-        el.style.display="block";
+        ui.style.display="block";
 
         return;
 
     }
 
 
-    el.style.display="none";
+    ui.style.display="none";
 
 }
 
 
-/* =====================================================
-AUTO FOOD
-===================================================== */
-
-function checkAutoFood(){
-
-    if(
-        !game.heldFood &&
-        nearShopDoor()
-    ){
-
-        takeFood();
-
-    }
-
-}
-
-
-/* =====================================================
-TIME
-===================================================== */
+/* =========================================================
+   THỜI GIAN
+========================================================= */
 
 function updateTime(delta){
 
     /*
-        1 giây thật = 1 phút game
+        1 giây thật = 1 phút trong game
     */
 
     game.minute+=
@@ -3496,9 +3230,9 @@ function updateTime(delta){
 }
 
 
-/* =====================================================
-SPAWN TIMER
-===================================================== */
+/* =========================================================
+   SPAWN TIMER
+========================================================= */
 
 function updateSpawn(delta){
 
@@ -3512,9 +3246,16 @@ function updateSpawn(delta){
 
         game.spawnTimer=0;
 
+
+        /*
+            khoảng cách spawn lớn hơn
+            để giảm tải.
+        */
+
         game.nextSpawn=
-            6500+
-            Math.random()*4500;
+            8000+
+            Math.random()*5000;
+
 
         spawnCustomer();
 
@@ -3523,18 +3264,9 @@ function updateSpawn(delta){
 }
 
 
-/* =====================================================
-HUD
-===================================================== */
-
-function money(n){
-
-    return Math.floor(n)
-        .toLocaleString("vi-VN")
-        +"đ";
-
-}
-
+/* =========================================================
+   HUD
+========================================================= */
 
 function updateHUD(){
 
@@ -3560,8 +3292,7 @@ function updateHUD(){
         "time"
     ).textContent=
         String(h).padStart(2,"0")
-        +":"
-        +
+        +":"+
         String(m).padStart(2,"0");
 
 
@@ -3628,18 +3359,37 @@ function updateHUD(){
 }
 
 
-/* =====================================================
-PANELS
-===================================================== */
+/* =========================================================
+   AUTO TAKE FOOD
+========================================================= */
+
+function autoTakeFood(){
+
+    if(
+        !game.heldFood &&
+        nearShopDoor()
+    ){
+
+        takeFood();
+
+    }
+
+}
+
+
+/* =========================================================
+   PANELS
+========================================================= */
 
 function closePanels(){
 
     document
-        .querySelectorAll(".panel")
-        .forEach(
-            p=>
-                p.style.display="none"
-        );
+    .querySelectorAll(".panel")
+    .forEach(
+        p=>{
+            p.style.display="none";
+        }
+    );
 
 }
 
@@ -3689,6 +3439,11 @@ function openDebt(){
 
 function openUpgrade(){
 
+    const price=
+        game.shopLevel*
+        5000000;
+
+
     document.getElementById(
         "levelText"
     ).textContent=
@@ -3698,10 +3453,7 @@ function openUpgrade(){
     document.getElementById(
         "upgradePrice"
     ).textContent=
-        money(
-            game.shopLevel*
-            5000000
-        );
+        money(price);
 
 
     openPanel(
@@ -3713,8 +3465,6 @@ function openUpgrade(){
 
 function showGuide(){
 
-    closePanels();
-
     openPanel(
         "guidePanel"
     );
@@ -3722,9 +3472,9 @@ function showGuide(){
 }
 
 
-/* =====================================================
-BUY MEAT
-===================================================== */
+/* =========================================================
+   NHẬP THỊT
+========================================================= */
 
 function buyMeat(type){
 
@@ -3775,9 +3525,9 @@ function buyMeat(type){
     showMessage(
         type==="fresh"
         ?
-        "Đã nhập 15 phần thịt tươi."
+        "Đã nhập thịt tươi."
         :
-        "Đã nhập 15 phần thịt giá rẻ."
+        "Đã nhập thịt giá rẻ."
     );
 
 
@@ -3786,11 +3536,11 @@ function buyMeat(type){
 }
 
 
-/* =====================================================
-DEBT
-===================================================== */
+/* =========================================================
+   TRẢ NỢ
+========================================================= */
 
-function payDebtAmount(amount){
+function payDebt(amount){
 
     amount=
         Math.min(
@@ -3834,9 +3584,9 @@ function payDebtAmount(amount){
 }
 
 
-/* =====================================================
-UPGRADE
-===================================================== */
+/* =========================================================
+   NÂNG CẤP
+========================================================= */
 
 function upgrade(){
 
@@ -3869,21 +3619,21 @@ function upgrade(){
         );
 
 
-    openUpgrade();
-
     updateHUD();
+
+    openUpgrade();
 
 
     showMessage(
-        "Nâng cấp thành công."
+        "Nâng cấp quán thành công."
     );
 
 }
 
 
-/* =====================================================
-LEADERBOARD
-===================================================== */
+/* =========================================================
+   BXH
+========================================================= */
 
 function getScores(){
 
@@ -3955,22 +3705,27 @@ function showLeaderboard(){
 
     }else{
 
-        list.forEach(
-            (p,i)=>{
+        for(
+            let i=0;
+            i<list.length;
+            i++
+        ){
 
-                html+=`
-                <p>
-                #${i+1}
-                <b>${p.name}</b>
-                —
-                ${money(p.money)}
-                —
-                ${p.served} khách
-                </p>
-                `;
+            const p=list[i];
 
-            }
-        );
+
+            html+=`
+            <p>
+            #${i+1}
+            <b>${p.name}</b>
+            —
+            ${money(p.money)}
+            —
+            ${p.served} khách
+            </p>
+            `;
+
+        }
 
     }
 
@@ -3987,9 +3742,12 @@ function showLeaderboard(){
 }
 
 
-/* =====================================================
-MESSAGE
-===================================================== */
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+let messageTimer=null;
+
 
 function showMessage(text,time=2300){
 
@@ -4005,11 +3763,11 @@ function showMessage(text,time=2300){
 
 
     clearTimeout(
-        showMessage.timer
+        messageTimer
     );
 
 
-    showMessage.timer=
+    messageTimer=
         setTimeout(
             ()=>{
                 el.style.display="none";
@@ -4020,19 +3778,19 @@ function showMessage(text,time=2300){
 }
 
 
-/* =====================================================
-START
-===================================================== */
+/* =========================================================
+   START
+========================================================= */
 
 function startGame(){
 
     game.name=
         document
-            .getElementById(
-                "nameInput"
-            )
-            .value
-            .trim()
+        .getElementById(
+            "nameInput"
+        )
+        .value
+        .trim()
         ||
         "Người chơi";
 
@@ -4047,8 +3805,12 @@ function startGame(){
 
     showMessage(
         "Bắt đầu ngày 1.",
-        3000
+        2500
     );
+
+
+    game.lastTime=
+        performance.now();
 
 
     requestAnimationFrame(
@@ -4058,9 +3820,9 @@ function startGame(){
 }
 
 
-/* =====================================================
-END
-===================================================== */
+/* =========================================================
+   END GAME
+========================================================= */
 
 function endGame(){
 
@@ -4070,14 +3832,14 @@ function endGame(){
 
 
     alert(
-        "ĐÃ HẾT 30 NGÀY!\n\n"+
+        "HẾT 30 NGÀY!\n\n"+
         "Tiền: "+
         money(game.money)+
         "\n"+
         "Nợ: "+
         money(game.debt)+
         "\n"+
-        "Khách đã phục vụ: "+
+        "Khách: "+
         game.served
     );
 
@@ -4087,9 +3849,9 @@ function endGame(){
 }
 
 
-/* =====================================================
-MAIN LOOP
-===================================================== */
+/* =========================================================
+   GAME LOOP
+========================================================= */
 
 function loop(time){
 
@@ -4100,18 +3862,21 @@ function loop(time){
     }
 
 
-    if(!game.lastTime){
+    let delta=
+        time-game.lastTime;
 
-        game.lastTime=time;
+
+    /*
+        Không cho delta quá lớn.
+        Giúp tránh game nhảy lung tung
+        khi tab bị treo.
+    */
+
+    if(delta>100){
+
+        delta=100;
 
     }
-
-
-    const delta=
-        Math.min(
-            time-game.lastTime,
-            100
-        );
 
 
     game.lastTime=time;
@@ -4125,7 +3890,7 @@ function loop(time){
 
     updateTime(delta);
 
-    checkAutoFood();
+    autoTakeFood();
 
     updateHUD();
 
@@ -4141,9 +3906,9 @@ function loop(time){
 }
 
 
-/* =====================================================
-INITIAL DRAW
-===================================================== */
+/* =========================================================
+   VẼ BAN ĐẦU
+========================================================= */
 
 updateHUD();
 
