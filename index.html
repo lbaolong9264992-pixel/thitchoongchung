@@ -2,30 +2,26 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>THỊT CHÓ ÔNG TRUNG</title>
 
 <style>
-
 *{
     box-sizing:border-box;
     user-select:none;
 }
 
-html,body{
+body{
     margin:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:#151515;
+    background:#171717;
+    color:white;
     font-family:Arial,sans-serif;
+    overflow:hidden;
 }
 
 #gameWrap{
     width:100vw;
     height:100vh;
-
     display:flex;
     justify-content:center;
     align-items:center;
@@ -33,360 +29,205 @@ html,body{
 
 #game{
     position:relative;
-
     width:min(1100px,100vw);
     aspect-ratio:16/9;
-
+    background:#222;
     overflow:hidden;
-
-    border:2px solid #444;
-
-    background:#6f9c5b;
+    border:2px solid #555;
 }
 
 canvas{
-    display:block;
-
     width:100%;
     height:100%;
-
+    display:block;
     image-rendering:auto;
 }
 
-
-/* =========================
-   HUD
-========================= */
-
 #hud{
     position:absolute;
-
-    top:10px;
-    left:10px;
-    right:10px;
-
+    top:12px;
+    left:12px;
+    right:12px;
     display:flex;
-    gap:7px;
-
+    gap:8px;
     flex-wrap:wrap;
-
     pointer-events:none;
-
-    z-index:20;
 }
 
 .stat{
-    padding:7px 11px;
-
-    border-radius:8px;
-
     background:rgba(0,0,0,.72);
-
     border:1px solid rgba(255,255,255,.2);
-
-    color:white;
-
+    border-radius:8px;
+    padding:7px 11px;
     font-size:14px;
-
-    box-shadow:
-        0 2px 8px rgba(0,0,0,.3);
+    box-shadow:0 2px 8px rgba(0,0,0,.3);
 }
-
-
-/* =========================
-   MESSAGE
-========================= */
 
 #message{
     position:absolute;
-
     left:50%;
     bottom:18px;
-
     transform:translateX(-50%);
-
-    min-width:260px;
-
+    background:rgba(0,0,0,.82);
     padding:10px 18px;
-
-    text-align:center;
-
-    background:rgba(0,0,0,.85);
-
-    color:white;
-
-    border:1px solid #888;
-
     border-radius:10px;
-
+    border:1px solid #777;
+    min-width:250px;
+    text-align:center;
     opacity:0;
-
     transition:.2s;
-
     pointer-events:none;
-
-    z-index:30;
 }
 
 #message.show{
     opacity:1;
 }
 
-
-/* =========================
-   INTERACTION
-========================= */
-
 #interaction{
     position:absolute;
-
     left:50%;
     bottom:75px;
-
     transform:translateX(-50%);
-
-    padding:9px 17px;
-
-    background:#f0bd4d;
-
+    background:#f2c14e;
     color:#111;
-
+    padding:9px 18px;
     border-radius:9px;
-
     font-weight:bold;
-
     display:none;
-
-    z-index:25;
 }
-
-
-/* =========================
-   SERVE BUTTON
-========================= */
-
-#serveBtn{
-    position:absolute;
-
-    right:20px;
-    bottom:25px;
-
-    width:110px;
-    height:52px;
-
-    border:0;
-
-    border-radius:12px;
-
-    background:#d99b38;
-
-    color:#111;
-
-    font-size:15px;
-
-    font-weight:bold;
-
-    display:none;
-
-    z-index:25;
-}
-
-#serveBtn:active{
-    transform:scale(.95);
-}
-
-
-/* =========================
-   MOBILE CONTROL
-========================= */
 
 #mobile{
     position:absolute;
-
-    left:15px;
     bottom:15px;
-
+    left:15px;
     width:145px;
     height:120px;
-
-    z-index:25;
 }
 
 .moveBtn{
     position:absolute;
-
     width:45px;
     height:45px;
-
+    border:0;
     border-radius:10px;
-
-    border:1px solid #777;
-
     background:rgba(0,0,0,.65);
-
     color:white;
-
     font-size:22px;
+    border:1px solid #777;
 }
 
 .moveBtn:active{
     background:#555;
 }
 
-#up{
-    left:50px;
-    top:0;
+#up{left:50px;top:0}
+#down{left:50px;bottom:0}
+#left{left:0;top:38px}
+#right{right:0;top:38px}
+
+#serveBtn{
+    position:absolute;
+    right:20px;
+    bottom:25px;
+    width:100px;
+    height:50px;
+    border:0;
+    border-radius:12px;
+    background:#d89b35;
+    color:#111;
+    font-weight:bold;
+    font-size:16px;
+    display:none;
 }
 
-#down{
-    left:50px;
-    bottom:0;
+#serveBtn:active{
+    transform:scale(.96);
 }
-
-#left{
-    left:0;
-    top:38px;
-}
-
-#right{
-    right:0;
-    top:38px;
-}
-
-
-/* =========================
-   START
-========================= */
 
 #startScreen{
     position:absolute;
-
     inset:0;
-
-    display:flex;
-
-    justify-content:center;
-    align-items:center;
-
     background:
-        linear-gradient(
-            rgba(0,0,0,.35),
-            rgba(0,0,0,.65)
-        );
-
-    z-index:100;
+        radial-gradient(circle at center,#684e2e,#1b1b1b 70%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:10;
 }
 
 .startBox{
     width:min(520px,90%);
-
-    padding:35px;
-
     text-align:center;
-
+    padding:35px;
+    background:rgba(0,0,0,.7);
+    border:2px solid #b8863b;
     border-radius:20px;
-
-    background:rgba(20,20,20,.88);
-
-    border:2px solid #c6943c;
 }
 
 .startBox h1{
-    margin:0 0 10px;
-
-    color:#f0c25d;
-
-    font-size:clamp(
-        25px,
-        5vw,
-        45px
-    );
+    margin:0 0 8px;
+    color:#f0c15b;
+    font-size:clamp(25px,5vw,45px);
 }
 
 .startBox p{
     color:#ddd;
-
     line-height:1.5;
 }
 
-#playerName{
+input{
     width:100%;
-
     padding:13px;
-
     margin:12px 0;
-
     border-radius:8px;
-
     border:1px solid #777;
-
     background:#222;
-
     color:white;
-
     font-size:16px;
 }
 
 .startBtn{
     width:100%;
-
     padding:14px;
-
     border:0;
-
     border-radius:9px;
-
-    background:#d99b38;
-
+    background:#d99c39;
     color:#111;
-
     font-size:18px;
-
     font-weight:bold;
+    cursor:pointer;
 }
-
-
-/* =========================
-   HELP
-========================= */
 
 #help{
     position:absolute;
-
     right:12px;
     bottom:12px;
-
-    padding:8px 11px;
-
-    background:rgba(0,0,0,.65);
-
+    background:rgba(0,0,0,.7);
+    padding:9px 12px;
     border-radius:8px;
-
-    color:#ddd;
-
     font-size:12px;
-
-    z-index:20;
+    color:#ddd;
 }
 
-
 @media(max-width:700px){
+    #hud{
+        top:5px;
+        left:5px;
+        right:5px;
+        gap:4px;
+    }
 
     .stat{
         font-size:11px;
-
         padding:5px 7px;
     }
 
     #help{
         display:none;
     }
-
 }
-
 </style>
 </head>
-
 
 <body>
 
@@ -394,164 +235,71 @@ canvas{
 
 <div id="game">
 
-<canvas
-    id="canvas"
-    width="1100"
-    height="619">
-</canvas>
-
-
-<!-- =========================
-     HUD
-========================= -->
+<canvas id="canvas" width="1100" height="619"></canvas>
 
 <div id="hud">
-
-    <div class="stat">
-        Ngày:
-        <b id="day">1</b>/30
-    </div>
-
-    <div class="stat">
-        Giờ:
-        <b id="time">08:00</b>
-    </div>
-
-    <div class="stat">
-        Tiền:
-        <b id="money">10.000.000đ</b>
-    </div>
-
-    <div class="stat">
-        Nợ:
-        <b id="debt">360.000.000đ</b>
-    </div>
-
-    <div class="stat">
-        Uy tín:
-        <b id="rep">60</b>
-    </div>
-
-    <div class="stat">
-        Khách:
-        <b id="customers">0</b>
-    </div>
-
+    <div class="stat">Ngày: <b id="day">1</b>/30</div>
+    <div class="stat">Giờ: <b id="time">08:00</b></div>
+    <div class="stat">Tiền: <b id="money">10.000.000đ</b></div>
+    <div class="stat">Nợ: <b id="debt">360.000.000đ</b></div>
+    <div class="stat">Uy tín: <b id="rep">60</b></div>
+    <div class="stat">Khách: <b id="customers">0</b></div>
 </div>
 
-
-<div id="interaction">
-    NHẤN E ĐỂ PHỤC VỤ
-</div>
-
+<div id="interaction">ĐANG PHỤC VỤ</div>
 
 <div id="message"></div>
 
-
-<button id="serveBtn">
-    PHỤC VỤ
-</button>
-
-
-<!-- =========================
-     MOBILE
-========================= -->
-
 <div id="mobile">
-
-    <button
-        class="moveBtn"
-        id="up">
-        ▲
-    </button>
-
-    <button
-        class="moveBtn"
-        id="left">
-        ◀
-    </button>
-
-    <button
-        class="moveBtn"
-        id="right">
-        ▶
-    </button>
-
-    <button
-        class="moveBtn"
-        id="down">
-        ▼
-    </button>
-
+    <button class="moveBtn" id="up">▲</button>
+    <button class="moveBtn" id="left">◀</button>
+    <button class="moveBtn" id="right">▶</button>
+    <button class="moveBtn" id="down">▼</button>
 </div>
 
+<button id="serveBtn">PHỤC VỤ</button>
 
 <div id="help">
-    WASD / Mũi tên: di chuyển · E: phục vụ
+    WASD / Mũi tên: di chuyển · E: phục vụ khách gần bạn
 </div>
-
-
-<!-- =========================
-     START
-========================= -->
 
 <div id="startScreen">
-
     <div class="startBox">
-
-        <h1>
-            THỊT CHÓ ÔNG TRUNG
-        </h1>
+        <h1>THỊT CHÓ ÔNG TRUNG</h1>
 
         <p>
-            Quản lý sạp ăn của Đạt Trung,
-            phục vụ khách và trả khoản nợ
-            360 triệu đồng.
+            Đạt Trung tiếp quản sạp gia đình.<br>
+            Quản lý khách hàng, tiền bạc và trả khoản nợ 360 triệu.
         </p>
 
-        <input
-            id="playerName"
-            maxlength="16"
-            placeholder="Tên trên bảng xếp hạng">
+        <input id="playerName"
+               maxlength="16"
+               placeholder="Tên trên bảng xếp hạng">
 
-        <button
-            class="startBtn"
-            onclick="startGame()">
-
+        <button class="startBtn" onclick="startGame()">
             VÀO GAME
-
         </button>
-
     </div>
-
 </div>
-
 
 </div>
 </div>
-
 
 <script>
 
 /* =========================================================
-   CANVAS
+   1. CANVAS
 ========================================================= */
 
-const canvas =
-    document.getElementById("canvas");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 
-const ctx =
-    canvas.getContext("2d");
-
-const W =
-    canvas.width;
-
-const H =
-    canvas.height;
+const W = canvas.width;
+const H = canvas.height;
 
 
 /* =========================================================
-   GAME
+   2. GAME STATE
 ========================================================= */
 
 const game = {
@@ -574,14 +322,9 @@ const game = {
 
     customerTimer:0,
 
-    nextCustomer:700,
+    nextCustomer:1000,
 
-    /*
-       TĂNG GẤP ĐÔI
-       so với bản cũ 10
-    */
-
-    maxCustomers:20,
+    maxCustomers:10,
 
     name:"Người chơi"
 
@@ -589,277 +332,216 @@ const game = {
 
 
 /* =========================================================
-   ẢNH
+   3. IMAGE SYSTEM
+   Sau này chỉ cần bỏ ảnh vào assets/
 ========================================================= */
 
 const images = {};
 
+function loadImage(name,path){
 
-/*
-    NỀN DƯỚI:
+    const img = new Image();
 
-    File 15.jpg nằm cùng thư mục
-    với index.html
-*/
+    img.src = path;
 
-const bottomBackground =
-    new Image();
+    images[name] = img;
 
-bottomBackground.src =
-    "15.jpg";
+}
 
 
 /*
-    NỀN TRÊN:
+    Ví dụ:
 
-    CHỈ CÒN 1 ẢNH.
+    loadImage(
+        "playerDown",
+        "assets/player/down.png"
+    );
 
-    Bạn tự tạo ảnh vừa khít
-    phần phía trên rồi đặt:
+    loadImage(
+        "customerMale",
+        "assets/npc/customers/male.png"
+    );
 
-    assets/background/top-background.png
+    Nếu ảnh không tồn tại,
+    game vẫn chạy bằng hình vẽ dự phòng.
 */
-
-const topBackground =
-    new Image();
-
-topBackground.src =
-    "assets/background/top-background.png";
-
-
-/*
-    QUÁN ĂN
-*/
-
-const shopImage =
-    new Image();
-
-shopImage.src =
-    "assets/shop/shop.png";
-
-
-/*
-    KHO NHẬP HÀNG
-*/
-
-const warehouseImage =
-    new Image();
-
-warehouseImage.src =
-    "assets/warehouse/warehouse.png";
-
-
-/*
-    NHÂN VẬT
-
-    Nếu chưa có ảnh thì game
-    sẽ tự dùng hình tạm.
-*/
-
-const playerImages = {
-
-    down:"assets/player/down.png",
-
-    up:"assets/player/up.png",
-
-    left:"assets/player/left.png",
-
-    right:"assets/player/right.png"
-
-};
 
 
 /* =========================================================
-   PLAYER
+   4. PLAYER
 ========================================================= */
 
 const player = {
 
     x:550,
 
-    y:520,
+    y:500,
 
-    speed:2.7,
+    speed:2.6,
 
     direction:"down",
 
-    radius:15
+    width:36,
+
+    height:46
 
 };
 
 
 /* =========================================================
-   INPUT
+   5. INPUT
 ========================================================= */
 
 const keys = {};
 
-window.addEventListener(
-    "keydown",
-    e=>{
+window.addEventListener("keydown",e=>{
 
-        keys[
-            e.key.toLowerCase()
-        ]=true;
+    keys[e.key.toLowerCase()] = true;
 
-        if(
-            e.key==="ArrowUp" ||
-            e.key==="ArrowDown" ||
-            e.key==="ArrowLeft" ||
-            e.key==="ArrowRight"
-        ){
-
-            e.preventDefault();
-
-        }
-
-        if(
-            e.key.toLowerCase()==="e"
-        ){
-
-            serveNearestCustomer();
-
-        }
-
+    if(
+        e.key==="ArrowUp" ||
+        e.key==="ArrowDown" ||
+        e.key==="ArrowLeft" ||
+        e.key==="ArrowRight"
+    ){
+        e.preventDefault();
     }
-);
 
-
-window.addEventListener(
-    "keyup",
-    e=>{
-
-        keys[
-            e.key.toLowerCase()
-        ]=false;
-
+    if(e.key.toLowerCase()==="e"){
+        serveNearestCustomer();
     }
-);
+
+});
+
+window.addEventListener("keyup",e=>{
+
+    keys[e.key.toLowerCase()] = false;
+
+});
 
 
 /* =========================================================
-   MOBILE
+   6. MOBILE CONTROL
 ========================================================= */
 
-const mobileKeys={
+function mobileKey(key){
+
+    keys[key]=true;
+
+}
+
+function mobileRelease(key){
+
+    keys[key]=false;
+
+}
+
+const mobileButtons = {
 
     up:"arrowup",
-
     down:"arrowdown",
-
     left:"arrowleft",
-
     right:"arrowright"
 
 };
 
-for(
-    const id in mobileKeys
-){
+for(const id in mobileButtons){
 
-    const button=
-        document.getElementById(id);
+    const btn=document.getElementById(id);
 
-    const key=
-        mobileKeys[id];
+    const key=mobileButtons[id];
 
-    button.addEventListener(
-        "pointerdown",
-        e=>{
+    btn.addEventListener("pointerdown",e=>{
 
-            e.preventDefault();
+        e.preventDefault();
 
-            keys[key]=true;
+        mobileKey(key);
 
-        }
-    );
+    });
 
-    button.addEventListener(
-        "pointerup",
-        e=>{
+    btn.addEventListener("pointerup",e=>{
 
-            e.preventDefault();
+        e.preventDefault();
 
-            keys[key]=false;
+        mobileRelease(key);
 
-        }
-    );
+    });
 
-    button.addEventListener(
-        "pointerleave",
-        ()=>{
+    btn.addEventListener("pointerleave",e=>{
 
-            keys[key]=false;
+        mobileRelease(key);
 
-        }
-    );
+    });
 
 }
 
 
 /* =========================================================
-   CẤU TRÚC MAP
+   7. MAP
 ========================================================= */
 
 /*
-    QUÁN ĂN:
-    BÊN TRÁI
-
-    KHO:
-    BÊN PHẢI
-
-    ĐÃ SỬA LẠI SO VỚI CODE CŨ.
-*/
-
-
-const SHOP = {
-
-    x:80,
-
-    y:145,
-
-    w:300,
-
-    h:150
-
-};
-
-
-const WAREHOUSE = {
-
-    x:720,
-
-    y:145,
-
-    w:300,
-
-    h:150
-
-};
-
-
-/*
-    Các vùng không thể đi xuyên.
+    Đây là bản đồ mẫu.
+    Sau này có thể thay bằng tile ảnh thật.
 */
 
 const obstacles = [
 
-    SHOP,
+    // Sạp
+    {
+        x:430,
+        y:145,
+        w:300,
+        h:150,
+        type:"shop"
+    },
 
-    WAREHOUSE
+    // Kho
+    {
+        x:820,
+        y:145,
+        w:190,
+        h:125,
+        type:"warehouse"
+    },
+
+    // Cây
+    {
+        x:90,
+        y:150,
+        w:60,
+        h:60,
+        type:"tree"
+    },
+
+    {
+        x:230,
+        y:90,
+        w:60,
+        h:60,
+        type:"tree"
+    },
+
+    {
+        x:930,
+        y:380,
+        w:60,
+        h:60,
+        type:"tree"
+    }
 
 ];
 
 
 /* =========================================================
-   BÀN
+   8. TABLES
 ========================================================= */
 
-const tables=[
+const tables = [
 
     {
-        x:400,
-        y:350,
+        x:350,
+        y:360,
         w:100,
         h:55,
         occupied:false,
@@ -867,8 +549,8 @@ const tables=[
     },
 
     {
-        x:550,
-        y:350,
+        x:510,
+        y:360,
         w:100,
         h:55,
         occupied:false,
@@ -876,8 +558,8 @@ const tables=[
     },
 
     {
-        x:700,
-        y:350,
+        x:670,
+        y:360,
         w:100,
         h:55,
         occupied:false,
@@ -885,7 +567,7 @@ const tables=[
     },
 
     {
-        x:400,
+        x:350,
         y:465,
         w:100,
         h:55,
@@ -894,7 +576,7 @@ const tables=[
     },
 
     {
-        x:550,
+        x:510,
         y:465,
         w:100,
         h:55,
@@ -903,7 +585,7 @@ const tables=[
     },
 
     {
-        x:700,
+        x:670,
         y:465,
         w:100,
         h:55,
@@ -915,14 +597,14 @@ const tables=[
 
 
 /* =========================================================
-   KHÁCH
+   9. CUSTOMER TYPES
 ========================================================= */
 
-const customerTypes=[
+const customerTypes = [
 
     {
         type:"male",
-        color:"#4c78a8",
+        color:"#4e79a7",
         speed:1.25,
         patience:80,
         money:120000
@@ -938,7 +620,7 @@ const customerTypes=[
 
     {
         type:"elderly",
-        color:"#888",
+        color:"#8a8a8a",
         speed:.85,
         patience:120,
         money:100000
@@ -946,7 +628,7 @@ const customerTypes=[
 
     {
         type:"child",
-        color:"#e3b63e",
+        color:"#e6b84a",
         speed:1.4,
         patience:70,
         money:60000
@@ -962,7 +644,7 @@ const customerTypes=[
 
     {
         type:"difficult",
-        color:"#aa5a4d",
+        color:"#a95a4d",
         speed:1.3,
         patience:50,
         money:200000
@@ -971,65 +653,160 @@ const customerTypes=[
 ];
 
 
+/* =========================================================
+   10. CUSTOMERS
+========================================================= */
+
 let customers=[];
 
 
 /* =========================================================
-   SPAWN POINTS
+   11. RANDOM SPAWN
 ========================================================= */
-
-/*
-    Khách spawn ở nhiều vị trí
-    xung quanh bản đồ.
-
-    Không spawn vào quán/kho.
-*/
 
 const spawnPoints=[
 
-    {x:25,y:320},
+    {x:40,y:330},
 
-    {x:25,y:520},
+    {x:40,y:550},
 
-    {x:200,y:585},
+    {x:300,y:580},
 
-    {x:500,y:585},
+    {x:780,y:580},
 
-    {x:900,y:585},
+    {x:1050,y:330},
 
-    {x:1075,y:320},
+    {x:1050,y:530},
 
-    {x:1075,y:520},
+    {x:350,y:50},
 
-    {x:250,y:35},
-
-    {x:500,y:35},
-
-    {x:900,y:35}
+    {x:700,y:50}
 
 ];
 
 
-/* =========================================================
-   RANDOM
-========================================================= */
+function spawnCustomer(){
 
-function randomItem(array){
+    if(customers.length>=game.maxCustomers){
 
-    return array[
-        Math.floor(
-            Math.random()*array.length
-        )
-    ];
+        return;
+
+    }
+
+    const spawn =
+        spawnPoints[
+            Math.floor(
+                Math.random()*spawnPoints.length
+            )
+        ];
+
+    const base =
+        customerTypes[
+            Math.floor(
+                Math.random()*customerTypes.length
+            )
+        ];
+
+    const customer={
+
+        id:Date.now()+Math.random(),
+
+        type:base.type,
+
+        color:base.color,
+
+        speed:base.speed,
+
+        patience:base.patience,
+
+        maxPatience:base.patience,
+
+        money:base.money,
+
+        x:spawn.x,
+
+        y:spawn.y,
+
+        targetX:spawn.x,
+
+        targetY:spawn.y,
+
+        state:"walking",
+
+        table:null,
+
+        timer:0,
+
+        walkTimer:0,
+
+        order:null,
+
+        served:false,
+
+        exitX:null,
+
+        exitY:null
+
+    };
+
+    /*
+       70% khách có ý định vào quán.
+       30% chỉ đi ngang.
+    */
+
+    customer.wantsShop =
+        Math.random()<.70;
+
+    customers.push(customer);
+
+    game.totalCustomers++;
 
 }
 
 
 /* =========================================================
-   DISTANCE
+   12. RANDOM WALK TARGET
 ========================================================= */
 
-function dist(a,b){
+function randomTarget(c){
+
+    let x;
+    let y;
+
+    /*
+       Nếu khách muốn vào quán,
+       mục tiêu đầu tiên là khu vực cửa.
+    */
+
+    if(
+        c.wantsShop &&
+        c.state==="walking"
+    ){
+
+        x=470+Math.random()*230;
+
+        y=310+Math.random()*50;
+
+    }else{
+
+        x=60+Math.random()*(W-120);
+
+        y=60+Math.random()*(H-120);
+
+    }
+
+    c.targetX=x;
+
+    c.targetY=y;
+
+}
+
+
+/* =========================================================
+   13. DISTANCE
+========================================================= */
+
+function distance(a,b){
 
     return Math.hypot(
         a.x-b.x,
@@ -1040,67 +817,42 @@ function dist(a,b){
 
 
 /* =========================================================
-   COLLISION MAP
+   14. COLLISION
 ========================================================= */
 
-function circleRectCollision(
-    x,
-    y,
-    radius,
-    rect
-){
+function circleRectCollision(x,y,r,rect){
 
-    const closestX =
-        Math.max(
-            rect.x,
-            Math.min(
-                x,
-                rect.x+rect.w
-            )
-        );
-
-    const closestY =
-        Math.max(
-            rect.y,
-            Math.min(
-                y,
-                rect.y+rect.h
-            )
-        );
-
-    const dx=
-        x-closestX;
-
-    const dy=
-        y-closestY;
-
-    return(
-        dx*dx+
-        dy*dy
-        <
-        radius*radius
+    const closestX=Math.max(
+        rect.x,
+        Math.min(x,rect.x+rect.w)
     );
+
+    const closestY=Math.max(
+        rect.y,
+        Math.min(y,rect.y+rect.h)
+    );
+
+    const dx=x-closestX;
+
+    const dy=y-closestY;
+
+    return dx*dx+dy*dy<r*r;
 
 }
 
 
-function blocked(
-    x,
-    y,
-    radius=15
-){
+function blocked(x,y){
 
-    for(
-        const obstacle
-        of obstacles
-    ){
+    const r=16;
+
+    for(const o of obstacles){
 
         if(
             circleRectCollision(
                 x,
                 y,
-                radius,
-                obstacle
+                r,
+                o
             )
         ){
 
@@ -1116,866 +868,384 @@ function blocked(
 
 
 /* =========================================================
-   KHÔNG CHO KHÁCH CHỒNG NHAU
-========================================================= */
-
-function customerBlocked(
-    x,
-    y,
-    current
-){
-
-    const minDistance=30;
-
-    for(
-        const other
-        of customers
-    ){
-
-        if(
-            other===current
-        ){
-
-            continue;
-
-        }
-
-        if(
-            other.state==="leaving"
-        ){
-
-            continue;
-
-        }
-
-        const d=
-            Math.hypot(
-                x-other.x,
-                y-other.y
-            );
-
-        if(
-            d<minDistance
-        ){
-
-            return true;
-
-        }
-
-    }
-
-    return false;
-
-}
-
-
-/* =========================================================
-   SPAWN CUSTOMER
-========================================================= */
-
-function spawnCustomer(){
-
-    if(
-        customers.length>=
-        game.maxCustomers
-    ){
-
-        return;
-
-    }
-
-
-    /*
-       Thử nhiều lần để tìm
-       điểm spawn không bị trùng.
-    */
-
-    for(
-        let attempt=0;
-        attempt<30;
-        attempt++
-    ){
-
-        const point=
-            randomItem(
-                spawnPoints
-            );
-
-        if(
-            customerBlocked(
-                point.x,
-                point.y,
-                null
-            )
-        ){
-
-            continue;
-
-        }
-
-        const type=
-            randomItem(
-                customerTypes
-            );
-
-
-        /*
-           65% vào quán
-           35% khách qua đường
-        */
-
-        const wantsShop=
-            Math.random()<0.65;
-
-
-        const customer={
-
-            id:
-                Date.now()+
-                Math.random(),
-
-            type:type.type,
-
-            color:type.color,
-
-            speed:type.speed,
-
-            patience:type.patience,
-
-            maxPatience:type.patience,
-
-            money:type.money,
-
-            x:point.x,
-
-            y:point.y,
-
-            targetX:point.x,
-
-            targetY:point.y,
-
-            state:"walking",
-
-            wantsShop,
-
-            table:null,
-
-            timer:0,
-
-            order:null,
-
-            exitX:null,
-
-            exitY:null,
-
-            wanderTimer:0,
-
-            passingTarget:null
-
-        };
-
-
-        /*
-           KHÁCH QUA ĐƯỜNG
-
-           Luôn có đích là một
-           điểm ở mép đối diện.
-
-           Không random target nữa,
-           tránh lỗi kẹt bên phải.
-        */
-
-        if(
-            !wantsShop
-        ){
-
-            setupPasserbyTarget(
-                customer,
-                point
-            );
-
-        }
-
-
-        customers.push(
-            customer
-        );
-
-        game.totalCustomers++;
-
-        return;
-
-    }
-
-}
-
-
-/* =========================================================
-   KHÁCH QUA ĐƯỜNG
-========================================================= */
-
-function setupPasserbyTarget(
-    c,
-    spawn
-){
-
-    /*
-       Đi qua bản đồ theo hướng
-       đối diện với vị trí spawn.
-    */
-
-    if(spawn.x<100){
-
-        c.targetX=W+80;
-
-        c.targetY=
-            80+
-            Math.random()*450;
-
-    }
-
-    else if(spawn.x>1000){
-
-        c.targetX=-80;
-
-        c.targetY=
-            80+
-            Math.random()*450;
-
-    }
-
-    else if(spawn.y<80){
-
-        c.targetX=
-            80+
-            Math.random()*940;
-
-        c.targetY=H+80;
-
-    }
-
-    else{
-
-        c.targetX=
-            80+
-            Math.random()*940;
-
-        c.targetY=-80;
-
-    }
-
-    c.passingTarget={
-        x:c.targetX,
-        y:c.targetY
-    };
-
-}
-
-
-/* =========================================================
-   BÀN
-========================================================= */
-
-function freeTable(){
-
-    const free=
-        tables.filter(
-            t=>!t.occupied
-        );
-
-    if(
-        free.length===0
-    ){
-
-        return null;
-
-    }
-
-    return randomItem(
-        free
-    );
-
-}
-
-
-/* =========================================================
-   TARGET KHÁCH VÀO QUÁN
-========================================================= */
-
-function setShopTarget(c){
-
-    /*
-       Đi vào khu vực trước sạp,
-       sau đó mới tìm bàn.
-    */
-
-    c.targetX=
-        300+
-        Math.random()*400;
-
-    c.targetY=
-        315;
-
-}
-
-
-/* =========================================================
-   MOVE CUSTOMER
+   15. MOVE CUSTOMER
 ========================================================= */
 
 function moveCustomer(c){
 
-    const dx=
-        c.targetX-c.x;
+    const dx=c.targetX-c.x;
 
-    const dy=
-        c.targetY-c.y;
+    const dy=c.targetY-c.y;
 
-    const distance=
-        Math.hypot(dx,dy);
+    const dist=Math.hypot(dx,dy);
 
+    if(dist<5){
 
-    if(
-        distance<5
-    ){
+        randomTarget(c);
 
-        return true;
+        return;
 
     }
 
+    const vx=dx/dist*c.speed;
 
-    let vx=
-        dx/distance*
-        c.speed;
+    const vy=dy/dist*c.speed;
 
-    let vy=
-        dy/distance*
-        c.speed;
+    let nx=c.x+vx;
 
+    let ny=c.y+vy;
 
-    /*
-       TRÁNH KHÁCH KHÁC
-    */
-
-    for(
-        const other
-        of customers
-    ){
-
-        if(
-            other===c ||
-            other.state==="leaving"
-        ){
-
-            continue;
-
-        }
-
-        const ox=
-            c.x-other.x;
-
-        const oy=
-            c.y-other.y;
-
-        const d=
-            Math.hypot(
-                ox,
-                oy
-            );
-
-        if(
-            d<45 &&
-            d>0
-        ){
-
-            const force=
-                (45-d)/45;
-
-            vx+=
-                ox/d*
-                force*
-                1.2;
-
-            vy+=
-                oy/d*
-                force*
-                1.2;
-
-        }
-
-    }
-
-
-    const length=
-        Math.hypot(
-            vx,
-            vy
-        );
-
-    if(
-        length>0
-    ){
-
-        vx=
-            vx/length*
-            c.speed;
-
-        vy=
-            vy/length*
-            c.speed;
-
-    }
-
-
-    const nx=
-        c.x+vx;
-
-    const ny=
-        c.y+vy;
-
-
-    /*
-       Không đi xuyên vật cản
-    */
-
-    if(
-        !blocked(
-            nx,
-            ny,
-            14
-        ) &&
-        !customerBlocked(
-            nx,
-            ny,
-            c
-        )
-    ){
+    if(!blocked(nx,ny)){
 
         c.x=nx;
 
         c.y=ny;
 
-        return false;
+    }else{
+
+        /*
+           Nếu bị chắn,
+           đổi hướng ngẫu nhiên.
+        */
+
+        c.targetX=
+            c.x+(Math.random()-.5)*180;
+
+        c.targetY=
+            c.y+(Math.random()-.5)*180;
 
     }
-
-
-    /*
-       Nếu bị chặn,
-       thử đi ngang.
-    */
-
-    const nx2=
-        c.x+vx;
-
-    const ny2=
-        c.y;
-
-    if(
-        !blocked(
-            nx2,
-            ny2,
-            14
-        ) &&
-        !customerBlocked(
-            nx2,
-            ny2,
-            c
-        )
-    ){
-
-        c.x=nx2;
-
-        return false;
-
-    }
-
-
-    const nx3=
-        c.x;
-
-    const ny3=
-        c.y+vy;
-
-    if(
-        !blocked(
-            nx3,
-            ny3,
-            14
-        ) &&
-        !customerBlocked(
-            nx3,
-            ny3,
-            c
-        )
-    ){
-
-        c.y=ny3;
-
-        return false;
-
-    }
-
-
-    /*
-       Nếu vẫn bị kẹt,
-       đổi target.
-    */
-
-    c.targetX=
-        Math.max(
-            20,
-            Math.min(
-                W-20,
-                c.x+
-                (Math.random()-.5)*
-                150
-            )
-        );
-
-    c.targetY=
-        Math.max(
-            20,
-            Math.min(
-                H-20,
-                c.y+
-                (Math.random()-.5)*
-                150
-            )
-        );
-
-    return false;
 
 }
 
 
 /* =========================================================
-   CUSTOMER AI
+   16. FIND FREE TABLE
 ========================================================= */
 
-function updateCustomer(
-    c,
-    dt
-){
+function findFreeTable(){
+
+    const free=
+        tables.filter(t=>!t.occupied);
+
+    if(free.length===0){
+
+        return null;
+
+    }
+
+    return free[
+        Math.floor(
+            Math.random()*free.length
+        )
+    ];
+
+}
+
+
+/* =========================================================
+   17. CUSTOMER AI
+========================================================= */
+
+function updateCustomer(c,dt){
 
     c.timer+=dt;
 
+    switch(c.state){
 
-    /* ======================
-       ĐI BỘ
-    ====================== */
+        /* ---------------------------------------------
+           ĐI BỘ
+        --------------------------------------------- */
 
-    if(
-        c.state==="walking"
-    ){
+        case"walking":{
 
-        moveCustomer(c);
+            moveCustomer(c);
 
+            /*
+               Nếu đến gần cửa hàng
+            */
 
-        /*
-           KHÁCH QUA ĐƯỜNG
-
-           Khi ra khỏi map -> xóa
-        */
-
-        if(
-            !c.wantsShop
-        ){
+            const nearShop =
+                c.x>450 &&
+                c.x<720 &&
+                c.y>280 &&
+                c.y<350;
 
             if(
-                c.x<-60 ||
-                c.x>W+60 ||
-                c.y<-60 ||
-                c.y>H+60
+                c.wantsShop &&
+                nearShop
+            ){
+
+                const table=findFreeTable();
+
+                if(table){
+
+                    c.table=table;
+
+                    table.occupied=true;
+
+                    table.customer=c;
+
+                    c.targetX=
+                        table.x+
+                        table.w/2;
+
+                    c.targetY=
+                        table.y+
+                        table.h/2+
+                        15;
+
+                    c.state="finding_table";
+
+                    c.timer=0;
+
+                }else{
+
+                    /*
+                       Không còn bàn.
+                       Khách đứng chờ
+                       hoặc bỏ đi.
+                    */
+
+                    if(c.timer>3000){
+
+                        leaveCustomer(c);
+
+                    }
+
+                }
+
+            }
+
+            /*
+               Khách không muốn vào
+               thì đi tiếp rồi biến mất.
+            */
+
+            if(
+                !c.wantsShop &&
+                (
+                    c.x<20 ||
+                    c.x>W-20 ||
+                    c.y<20 ||
+                    c.y>H-20
+                )
             ){
 
                 removeCustomer(c);
 
             }
 
-            return;
-
+            break;
         }
 
 
-        /*
-           KHÁCH MUỐN VÀO QUÁN
-        */
+        /* ---------------------------------------------
+           TÌM BÀN
+        --------------------------------------------- */
 
-        const nearShop=
+        case"finding_table":{
 
-            c.x>300 &&
-            c.x<800 &&
-            c.y>280 &&
-            c.y<350;
-
-
-        if(
-            nearShop
-        ){
-
-            const table=
-                freeTable();
-
-
-            if(table){
-
-                c.table=
-                    table;
-
-                table.occupied=true;
-
-                table.customer=c;
-
-                c.targetX=
-                    table.x+
-                    table.w/2;
-
-                c.targetY=
-                    table.y+
-                    table.h/2;
-
-                c.state=
-                    "finding_table";
-
-                c.timer=0;
-
-            }
-            else{
-
-                /*
-                   Hết bàn.
-
-                   Không đứng chết
-                   ở bên phải map.
-
-                   Chờ tối đa 5 giây,
-                   sau đó rời quán.
-                */
-
-                if(
-                    c.timer>5000
-                ){
-
-                    leaveCustomer(c);
-
-                }
-
-            }
-
-        }
-
-    }
-
-
-    /* ======================
-       TÌM BÀN
-    ====================== */
-
-    else if(
-        c.state==="finding_table"
-    ){
-
-        moveCustomer(c);
-
-
-        const d=
-            Math.hypot(
+            const d=Math.hypot(
                 c.targetX-c.x,
                 c.targetY-c.y
             );
 
+            if(d<8){
 
-        if(
-            d<10
-        ){
+                c.state="sitting";
 
-            c.state="sitting";
+                c.timer=0;
 
-            c.timer=0;
+            }else{
 
+                moveCustomer(c);
+
+            }
+
+            break;
         }
 
-    }
 
+        /* ---------------------------------------------
+           NGỒI
+        --------------------------------------------- */
 
-    /* ======================
-       NGỒI
-    ====================== */
+        case"sitting":{
 
-    else if(
-        c.state==="sitting"
-    ){
+            if(c.timer>1000){
 
-        if(
-            c.timer>1000
-        ){
+                c.state="ordering";
 
-            c.state="ordering";
+                c.timer=0;
 
-            c.timer=0;
+            }
 
+            break;
         }
 
-    }
+
+        /* ---------------------------------------------
+           GỌI MÓN
+        --------------------------------------------- */
+
+        case"ordering":{
+
+            if(c.timer>1000){
+
+                const dishes=[
+
+                    {
+                        name:"Phần cơ bản",
+                        price:350000
+                    },
+
+                    {
+                        name:"Thịt + rau",
+                        price:500000
+                    },
+
+                    {
+                        name:"Đặc biệt",
+                        price:650000
+                    }
+
+                ];
+
+                c.order=
+                    dishes[
+                        Math.floor(
+                            Math.random()*
+                            dishes.length
+                        )
+                    ];
+
+                c.state="waiting_food";
+
+                c.timer=0;
+
+            }
+
+            break;
+        }
 
 
-    /* ======================
-       GỌI MÓN
-    ====================== */
+        /* ---------------------------------------------
+           CHỜ PHỤC VỤ
+        --------------------------------------------- */
 
-    else if(
-        c.state==="ordering"
-    ){
+        case"waiting_food":{
 
-        if(
-            c.timer>1000
-        ){
+            c.patience-=dt/1000;
 
-            const dishes=[
+            /*
+               Nếu quá kiên nhẫn
+               thì khách bỏ đi.
+            */
 
-                {
-                    name:"Phần cơ bản",
-                    price:350000
-                },
+            if(c.patience<=0){
 
-                {
-                    name:"Thịt + rau",
-                    price:500000
-                },
+                game.reputation-=2;
 
-                {
-                    name:"Đặc biệt",
-                    price:650000
-                }
-
-            ];
-
-
-            c.order=
-                randomItem(
-                    dishes
+                showMessage(
+                    "Một khách mất kiên nhẫn và rời đi!"
                 );
 
+                leaveCustomer(c);
 
-            c.state=
-                "waiting_food";
+            }
 
-            c.timer=0;
-
+            break;
         }
 
-    }
 
+        /* ---------------------------------------------
+           ĂN
+        --------------------------------------------- */
 
-    /* ======================
-       CHỜ ĐỒ ĂN
-    ====================== */
+        case"eating":{
 
-    else if(
-        c.state==="waiting_food"
-    ){
+            if(c.timer>5000){
 
-        c.patience-=
-            dt/1000;
+                c.state="paying";
 
+                c.timer=0;
 
-        if(
-            c.patience<=0
-        ){
+            }
 
-            game.reputation-=2;
-
-            showMessage(
-                "Một khách mất kiên nhẫn và bỏ đi!"
-            );
-
-            leaveCustomer(c);
-
+            break;
         }
 
-    }
 
+        /* ---------------------------------------------
+           THANH TOÁN
+        --------------------------------------------- */
 
-    /* ======================
-       ĂN
-    ====================== */
+        case"paying":{
 
-    else if(
-        c.state==="eating"
-    ){
+            if(c.timer>1000){
 
-        if(
-            c.timer>5000
-        ){
+                const price=
+                    c.order?
+                    c.order.price:
+                    350000;
 
-            c.state="paying";
+                game.money+=price;
 
-            c.timer=0;
+                game.reputation+=1;
 
+                game.customersServed++;
+
+                showMessage(
+                    "+"+
+                    formatMoney(price)+
+                    " từ khách hàng"
+                );
+
+                c.state="leaving";
+
+                c.exitX=
+                    Math.random()<.5?
+                    -40:
+                    W+40;
+
+                c.exitY=
+                    80+
+                    Math.random()*
+                    450;
+
+                c.targetX=c.exitX;
+
+                c.targetY=c.exitY;
+
+                c.timer=0;
+
+            }
+
+            break;
         }
 
-    }
 
+        /* ---------------------------------------------
+           RỜI ĐI
+        --------------------------------------------- */
 
-    /* ======================
-       THANH TOÁN
-    ====================== */
+        case"leaving":{
 
-    else if(
-        c.state==="paying"
-    ){
+            moveCustomer(c);
 
-        if(
-            c.timer>1000
-        ){
+            if(
+                c.x<-20 ||
+                c.x>W+20 ||
+                c.y<-20 ||
+                c.y>H+20
+            ){
 
-            const price=
-                c.order?
-                c.order.price:
-                350000;
+                removeCustomer(c);
 
+            }
 
-            game.money+=price;
-
-            game.reputation+=1;
-
-            game.customersServed++;
-
-
-            showMessage(
-                "+"+
-                formatMoney(price)
-            );
-
-
-            leaveCustomer(c);
-
-        }
-
-    }
-
-
-    /* ======================
-       RỜI QUÁN
-    ====================== */
-
-    else if(
-        c.state==="leaving"
-    ){
-
-        moveCustomer(c);
-
-
-        if(
-            c.x<-70 ||
-            c.x>W+70 ||
-            c.y<-70 ||
-            c.y>H+70
-        ){
-
-            removeCustomer(c);
-
+            break;
         }
 
     }
@@ -1984,101 +1254,7 @@ function updateCustomer(
 
 
 /* =========================================================
-   LEAVE CUSTOMER
-========================================================= */
-
-function leaveCustomer(c){
-
-    if(
-        c.table
-    ){
-
-        c.table.occupied=false;
-
-        c.table.customer=null;
-
-        c.table=null;
-
-    }
-
-
-    c.state="leaving";
-
-
-    /*
-       Chọn lối ra gần nhất
-    */
-
-    const distances=[
-
-        {
-            x:-80,
-            y:c.y,
-            d:c.x
-        },
-
-        {
-            x:W+80,
-            y:c.y,
-            d:W-c.x
-        },
-
-        {
-            x:c.x,
-            y:-80,
-            d:c.y
-        },
-
-        {
-            x:c.x,
-            y:H+80,
-            d:H-c.y
-        }
-
-    ];
-
-
-    distances.sort(
-        (a,b)=>a.d-b.d
-    );
-
-
-    c.targetX=
-        distances[0].x;
-
-    c.targetY=
-        distances[0].y;
-
-}
-
-
-/* =========================================================
-   REMOVE
-========================================================= */
-
-function removeCustomer(c){
-
-    if(
-        c.table
-    ){
-
-        c.table.occupied=false;
-
-        c.table.customer=null;
-
-    }
-
-
-    customers=
-        customers.filter(
-            x=>x!==c
-        );
-
-}
-
-
-/* =========================================================
-   SERVE
+   18. SERVE CUSTOMER
 ========================================================= */
 
 function serveNearestCustomer(){
@@ -2087,31 +1263,21 @@ function serveNearestCustomer(){
 
     let nearestDistance=Infinity;
 
+    for(const c of customers){
 
-    for(
-        const c
-        of customers
-    ){
-
-        if(
-            c.state!=="waiting_food"
-        ){
+        if(c.state!=="waiting_food"){
 
             continue;
 
         }
 
-
         const d=
-            dist(
-                player,
-                c
+            Math.hypot(
+                player.x-c.x,
+                player.y-c.y
             );
 
-
-        if(
-            d<nearestDistance
-        ){
+        if(d<nearestDistance){
 
             nearestDistance=d;
 
@@ -2121,23 +1287,17 @@ function serveNearestCustomer(){
 
     }
 
-
-    if(
-        !nearest
-    ){
+    if(!nearest){
 
         showMessage(
-            "Không có khách cần phục vụ."
+            "Không có khách nào cần phục vụ gần bạn."
         );
 
         return;
 
     }
 
-
-    if(
-        nearestDistance>110
-    ){
+    if(nearestDistance>100){
 
         showMessage(
             "Hãy lại gần khách hơn."
@@ -2146,7 +1306,6 @@ function serveNearestCustomer(){
         return;
 
     }
-
 
     nearest.state="eating";
 
@@ -2161,74 +1320,101 @@ function serveNearestCustomer(){
 
 
 /* =========================================================
-   PLAYER
+   19. REMOVE CUSTOMER
+========================================================= */
+
+function removeCustomer(c){
+
+    if(c.table){
+
+        c.table.occupied=false;
+
+        c.table.customer=null;
+
+    }
+
+    customers=
+        customers.filter(
+            x=>x!==c
+        );
+
+}
+
+
+function leaveCustomer(c){
+
+    if(c.table){
+
+        c.table.occupied=false;
+
+        c.table.customer=null;
+
+        c.table=null;
+
+    }
+
+    c.state="leaving";
+
+    c.exitX=
+        Math.random()<.5?
+        -50:
+        W+50;
+
+    c.exitY=
+        70+
+        Math.random()*470;
+
+    c.targetX=c.exitX;
+
+    c.targetY=c.exitY;
+
+}
+
+
+/* =========================================================
+   20. PLAYER MOVEMENT
 ========================================================= */
 
 function updatePlayer(){
 
     let dx=0;
-
     let dy=0;
 
+    if(keys["w"]||keys["arrowup"]){
 
-    if(
-        keys["w"] ||
-        keys["arrowup"]
-    ){
-
-        dy--;
+        dy-=1;
 
         player.direction="up";
 
     }
 
+    if(keys["s"]||keys["arrowdown"]){
 
-    if(
-        keys["s"] ||
-        keys["arrowdown"]
-    ){
-
-        dy++;
+        dy+=1;
 
         player.direction="down";
 
     }
 
+    if(keys["a"]||keys["arrowleft"]){
 
-    if(
-        keys["a"] ||
-        keys["arrowleft"]
-    ){
-
-        dx--;
+        dx-=1;
 
         player.direction="left";
 
     }
 
+    if(keys["d"]||keys["arrowright"]){
 
-    if(
-        keys["d"] ||
-        keys["arrowright"]
-    ){
-
-        dx++;
+        dx+=1;
 
         player.direction="right";
 
     }
 
+    if(dx!==0||dy!==0){
 
-    if(
-        dx!==0 ||
-        dy!==0
-    ){
-
-        const len=
-            Math.hypot(
-                dx,
-                dy
-            );
+        const len=Math.hypot(dx,dy);
 
         dx/=len;
 
@@ -2236,41 +1422,28 @@ function updatePlayer(){
 
     }
 
-
     const nx=
         player.x+
-        dx*
-        player.speed;
+        dx*player.speed;
 
     const ny=
         player.y+
-        dy*
-        player.speed;
-
+        dy*player.speed;
 
     if(
-        nx>15 &&
-        nx<W-15 &&
-        !blocked(
-            nx,
-            player.y,
-            player.radius
-        )
+        nx>20 &&
+        nx<W-20 &&
+        !blocked(nx,player.y)
     ){
 
         player.x=nx;
 
     }
 
-
     if(
-        ny>15 &&
-        ny<H-15 &&
-        !blocked(
-            player.x,
-            ny,
-            player.radius
-        )
+        ny>20 &&
+        ny<H-20 &&
+        !blocked(player.x,ny)
     ){
 
         player.y=ny;
@@ -2281,34 +1454,26 @@ function updatePlayer(){
 
 
 /* =========================================================
-   TIME
+   21. TIME
 ========================================================= */
 
 let timeAccumulator=0;
-
 
 function updateTime(dt){
 
     timeAccumulator+=dt;
 
+    /*
+       1 giây thật = 1 phút game
+    */
 
-    if(
-        timeAccumulator>=1000
-    ){
-
-        /*
-           1 giây thật =
-           1 phút trong game
-        */
+    if(timeAccumulator>=1000){
 
         game.minute++;
 
         timeAccumulator=0;
 
-
-        if(
-            game.minute>=22*60
-        ){
+        if(game.minute>=22*60){
 
             endDay();
 
@@ -2320,31 +1485,29 @@ function updateTime(dt){
 
 
 /* =========================================================
-   SPAWN
+   22. CUSTOMER SPAWN TIMER
 ========================================================= */
 
 function updateSpawn(dt){
 
     game.customerTimer+=dt;
 
-
     if(
-        game.customerTimer>=
-        game.nextCustomer
+        game.customerTimer>=game.nextCustomer
     ){
 
         spawnCustomer();
 
         game.customerTimer=0;
 
-
         /*
-           Spawn nhanh hơn bản cũ.
+           Khoảng cách spawn thay đổi
+           để khách không xuất hiện đều nhau.
         */
 
         game.nextCustomer=
-            450+
-            Math.random()*1400;
+            900+
+            Math.random()*2500;
 
     }
 
@@ -2352,87 +1515,59 @@ function updateSpawn(dt){
 
 
 /* =========================================================
-   END DAY
+   23. END DAY
 ========================================================= */
 
 function endDay(){
 
-    if(
-        !game.running
-    ){
+    if(!game.running){
 
         return;
 
     }
-
 
     game.day++;
 
+    if(game.day>30){
 
-    if(
-        game.day>30
-    ){
+        game.day=30;
 
         game.running=false;
 
-        alert(
-            "KẾT THÚC 30 NGÀY\n\n"+
-            "Tiền: "+
-            formatMoney(
-                game.money
-            )+
-            "\n"+
-            "Nợ còn lại: "+
-            formatMoney(
-                game.debt
-            )
+        showMessage(
+            "Đã kết thúc 30 ngày!"
         );
+
+        setTimeout(()=>{
+
+            alert(
+                "KẾT THÚC GAME\n\n"+
+                "Tiền: "+
+                formatMoney(game.money)+
+                "\n"+
+                "Nợ còn lại: "+
+                formatMoney(game.debt)
+            );
+
+        },300);
 
         return;
 
     }
 
-
     game.minute=8*60;
 
+    /*
+       Chi phí vận hành.
+    */
 
     game.money-=400000;
 
-
-    if(
-        game.money<0
-    ){
+    if(game.money<0){
 
         game.money=0;
 
     }
-
-
-    /*
-       Xóa khách còn lại khi
-       sang ngày mới.
-    */
-
-    for(
-        const c
-        of customers
-    ){
-
-        if(
-            c.table
-        ){
-
-            c.table.occupied=false;
-
-            c.table.customer=null;
-
-        }
-
-    }
-
-
-    customers=[];
-
 
     showMessage(
         "Bắt đầu ngày "+
@@ -2443,113 +1578,150 @@ function endDay(){
 
 
 /* =========================================================
-   DRAW BACKGROUND
+   24. UPDATE
 ========================================================= */
 
-function drawBackground(){
+function update(dt){
+
+    if(!game.running){
+
+        return;
+
+    }
+
+    updatePlayer();
+
+    updateTime(dt);
+
+    updateSpawn(dt);
+
+    for(const c of [...customers]){
+
+        updateCustomer(c,dt);
+
+    }
+
+}
+
+
+/* =========================================================
+   25. DRAW BACKGROUND
+========================================================= */
+
+function drawMap(){
 
     /*
-       ============================================
-       PHẦN DƯỚI
-       ============================================
-
-       GỌI DUY NHẤT:
-
-       15.jpg
+       Mặt đất
     */
 
+    ctx.fillStyle="#8a9a68";
 
-    if(
-        bottomBackground.complete &&
-        bottomBackground.naturalWidth>0
-    ){
-
-        ctx.drawImage(
-            bottomBackground,
-            0,
-            170,
-            W,
-            H-170
-        );
-
-    }
-    else{
-
-        /*
-           Nếu 15.jpg chưa có,
-           dùng màu dự phòng.
-        */
-
-        ctx.fillStyle="#7faa69";
-
-        ctx.fillRect(
-            0,
-            170,
-            W,
-            H-170
-        );
-
-    }
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
 
 
     /*
-       ============================================
-       PHẦN TRÊN
-       ============================================
-
-       CHỈ GỌI 1 ẢNH.
-
-       top-background.png
-
-       Bạn tự tạo ảnh vừa khít.
+       Đường chính
     */
 
+    ctx.fillStyle="#626262";
 
-    if(
-        topBackground.complete &&
-        topBackground.naturalWidth>0
-    ){
+    ctx.fillRect(
+        0,
+        300,
+        W,
+        180
+    );
 
-        ctx.drawImage(
-            topBackground,
-            0,
-            0,
-            W,
-            175
-        );
+
+    /*
+       Vỉa hè
+    */
+
+    ctx.fillStyle="#b6b19f";
+
+    ctx.fillRect(
+        0,
+        270,
+        W,
+        30
+    );
+
+    ctx.fillRect(
+        0,
+        480,
+        W,
+        30
+    );
+
+
+    /*
+       Đường phụ
+    */
+
+    ctx.fillStyle="#6e6e6e";
+
+    ctx.fillRect(
+        760,
+        0,
+        100,
+        H
+    );
+
+
+    /*
+       Vạch đường
+    */
+
+    ctx.strokeStyle="#d7c56a";
+
+    ctx.lineWidth=3;
+
+    for(let x=20;x<W;x+=80){
+
+        ctx.beginPath();
+
+        ctx.moveTo(x,390);
+
+        ctx.lineTo(x+40,390);
+
+        ctx.stroke();
 
     }
-    else{
 
-        /*
-           Dự phòng nếu chưa có ảnh.
-        */
 
-        const sky=
-            ctx.createLinearGradient(
-                0,
-                0,
-                0,
-                175
-            );
+    /*
+       Cỏ trang trí
+    */
 
-        sky.addColorStop(
-            0,
-            "#73bce8"
-        );
+    ctx.fillStyle="#728457";
 
-        sky.addColorStop(
-            1,
-            "#cceeff"
-        );
+    for(let i=0;i<80;i++){
 
-        ctx.fillStyle=sky;
+        const x=
+            (i*137)%W;
+
+        const y=
+            (i*83)%H;
+
+        if(
+            y>280 &&
+            y<510
+        ){
+
+            continue;
+
+        }
 
         ctx.fillRect(
-            0,
-            0,
-            W,
-            175
+            x,
+            y,
+            2,
+            5
         );
 
     }
@@ -2558,205 +1730,192 @@ function drawBackground(){
 
 
 /* =========================================================
-   DRAW SHOP
+   26. DRAW SHOP
 ========================================================= */
 
 function drawShop(){
 
     /*
-       QUÁN ĂN Ở BÊN TRÁI
+       Sạp
     */
 
-    if(
-        shopImage.complete &&
-        shopImage.naturalWidth>0
-    ){
+    ctx.fillStyle="#8d552e";
 
-        ctx.drawImage(
-            shopImage,
-            SHOP.x,
-            SHOP.y,
-            SHOP.w,
-            SHOP.h
-        );
-
-    }
-    else{
-
-        /*
-           HÌNH DỰ PHÒNG
-        */
-
-        ctx.fillStyle="#92572f";
-
-        ctx.fillRect(
-            SHOP.x,
-            SHOP.y,
-            SHOP.w,
-            SHOP.h
-        );
+    ctx.fillRect(
+        430,
+        145,
+        300,
+        150
+    );
 
 
-        ctx.fillStyle="#b83232";
+    /*
+       Mái
+    */
 
-        ctx.fillRect(
-            SHOP.x-15,
-            SHOP.y-20,
-            SHOP.w+30,
-            35
-        );
+    ctx.fillStyle="#b52d27";
 
-
-        ctx.fillStyle="#f0c35b";
-
-        ctx.fillRect(
-            SHOP.x+30,
-            SHOP.y+25,
-            SHOP.w-60,
-            45
-        );
+    ctx.fillRect(
+        415,
+        125,
+        330,
+        35
+    );
 
 
-        ctx.fillStyle="#211";
+    /*
+       Bảng hiệu
+    */
 
-        ctx.font=
-            "bold 18px Arial";
+    ctx.fillStyle="#f0c15b";
 
-        ctx.textAlign="center";
+    ctx.fillRect(
+        455,
+        165,
+        250,
+        45
+    );
 
-        ctx.fillText(
-            "THỊT CHÓ ÔNG TRUNG",
-            SHOP.x+
-            SHOP.w/2,
-            SHOP.y+53
-        );
 
-    }
+    ctx.fillStyle="#241c12";
+
+    ctx.font="bold 19px Arial";
+
+    ctx.textAlign="center";
+
+    ctx.fillText(
+        "THỊT CHÓ",
+        580,
+        185
+    );
+
+    ctx.fillText(
+        "ÔNG TRUNG",
+        580,
+        204
+    );
+
+
+    /*
+       Quầy
+    */
+
+    ctx.fillStyle="#603b25";
+
+    ctx.fillRect(
+        455,
+        235,
+        250,
+        40
+    );
+
+
+    /*
+       Cửa
+    */
+
+    ctx.fillStyle="#2d2d2d";
+
+    ctx.fillRect(
+        560,
+        210,
+        60,
+        85
+    );
 
 }
 
 
 /* =========================================================
-   DRAW WAREHOUSE
+   27. DRAW WAREHOUSE
 ========================================================= */
 
 function drawWarehouse(){
 
-    /*
-       KHO NHẬP HÀNG Ở BÊN PHẢI
-    */
+    ctx.fillStyle="#706a60";
 
-    if(
-        warehouseImage.complete &&
-        warehouseImage.naturalWidth>0
-    ){
+    ctx.fillRect(
+        820,
+        145,
+        190,
+        125
+    );
 
-        ctx.drawImage(
-            warehouseImage,
-            WAREHOUSE.x,
-            WAREHOUSE.y,
-            WAREHOUSE.w,
-            WAREHOUSE.h
-        );
+    ctx.fillStyle="#d7b85d";
 
-    }
-    else{
+    ctx.fillRect(
+        840,
+        165,
+        150,
+        40
+    );
 
-        /*
-           HÌNH DỰ PHÒNG
-        */
+    ctx.fillStyle="#222";
 
-        ctx.fillStyle="#777";
+    ctx.font="bold 15px Arial";
 
-        ctx.fillRect(
-            WAREHOUSE.x,
-            WAREHOUSE.y,
-            WAREHOUSE.w,
-            WAREHOUSE.h
-        );
+    ctx.textAlign="center";
 
+    ctx.fillText(
+        "KHU NHẬP HÀNG",
+        915,
+        190
+    );
 
-        ctx.fillStyle="#a93434";
+    ctx.fillStyle="#303030";
 
-        ctx.fillRect(
-            WAREHOUSE.x-15,
-            WAREHOUSE.y-20,
-            WAREHOUSE.w+30,
-            35
-        );
-
-
-        ctx.fillStyle="#e3b952";
-
-        ctx.fillRect(
-            WAREHOUSE.x+30,
-            WAREHOUSE.y+25,
-            WAREHOUSE.w-60,
-            45
-        );
-
-
-        ctx.fillStyle="#211";
-
-        ctx.font=
-            "bold 18px Arial";
-
-        ctx.textAlign="center";
-
-        ctx.fillText(
-            "KHU NHẬP HÀNG",
-            WAREHOUSE.x+
-            WAREHOUSE.w/2,
-            WAREHOUSE.y+53
-        );
-
-    }
+    ctx.fillRect(
+        870,
+        215,
+        90,
+        55
+    );
 
 }
 
 
 /* =========================================================
-   DRAW TABLES
+   28. DRAW TABLES
 ========================================================= */
 
 function drawTables(){
 
-    for(
-        const table
-        of tables
-    ){
+    for(const t of tables){
+
+        /*
+           Bàn
+        */
 
         ctx.fillStyle=
-            table.occupied?
-            "#8c623d":
-            "#a87948";
-
+            t.occupied?
+            "#986d43":
+            "#aa7c4c";
 
         ctx.fillRect(
-            table.x,
-            table.y,
-            table.w,
-            table.h
+            t.x,
+            t.y,
+            t.w,
+            t.h
         );
 
+        /*
+           Chân
+        */
 
-        ctx.fillStyle="#5b3c26";
-
+        ctx.fillStyle="#5d4029";
 
         ctx.fillRect(
-            table.x+10,
-            table.y+table.h,
+            t.x+10,
+            t.y+t.h-5,
             8,
-            18
+            20
         );
 
-
         ctx.fillRect(
-            table.x+
-            table.w-18,
-            table.y+table.h,
+            t.x+t.w-18,
+            t.y+t.h-5,
             8,
-            18
+            20
         );
 
     }
@@ -2765,7 +1924,67 @@ function drawTables(){
 
 
 /* =========================================================
-   DRAW CUSTOMER
+   29. DRAW TREES
+========================================================= */
+
+function drawTrees(){
+
+    const trees=[
+
+        [120,180],
+
+        [260,120],
+
+        [960,410]
+
+    ];
+
+    for(const [x,y] of trees){
+
+        ctx.fillStyle="#654329";
+
+        ctx.fillRect(
+            x-7,
+            y+15,
+            14,
+            35
+        );
+
+        ctx.fillStyle="#3e7041";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x,
+            y,
+            30,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+        ctx.fillStyle="#527f48";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x-15,
+            y-8,
+            18,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+    }
+
+}
+
+
+/* =========================================================
+   30. DRAW CUSTOMER
 ========================================================= */
 
 function drawCustomer(c){
@@ -2774,9 +1993,7 @@ function drawCustomer(c){
        Bóng
     */
 
-    ctx.fillStyle=
-        "rgba(0,0,0,.22)";
-
+    ctx.fillStyle="rgba(0,0,0,.25)";
 
     ctx.beginPath();
 
@@ -2797,9 +2014,7 @@ function drawCustomer(c){
        Cơ thể
     */
 
-    ctx.fillStyle=
-        c.color;
-
+    ctx.fillStyle=c.color;
 
     ctx.beginPath();
 
@@ -2818,8 +2033,7 @@ function drawCustomer(c){
        Đầu
     */
 
-    ctx.fillStyle="#dfaa82";
-
+    ctx.fillStyle="#e1ae82";
 
     ctx.beginPath();
 
@@ -2835,21 +2049,18 @@ function drawCustomer(c){
 
 
     /*
-       Khách cần phục vụ
+       Trạng thái
     */
 
-    if(
-        c.state==="waiting_food"
-    ){
+    if(c.state==="waiting_food"){
 
-        ctx.fillStyle="#ffd34f";
-
+        ctx.fillStyle="#ffdc54";
 
         ctx.beginPath();
 
         ctx.arc(
-            c.x+21,
-            c.y-26,
+            c.x+22,
+            c.y-25,
             10,
             0,
             Math.PI*2
@@ -2857,42 +2068,45 @@ function drawCustomer(c){
 
         ctx.fill();
 
-
         ctx.fillStyle="#111";
 
-        ctx.font=
-            "bold 13px Arial";
+        ctx.font="bold 13px Arial";
 
         ctx.textAlign="center";
 
         ctx.fillText(
             "!",
-            c.x+21,
-            c.y-22
+            c.x+22,
+            c.y-21
         );
 
     }
 
 
     /*
-       VIP
+       Tên loại khách
     */
 
-    if(
-        c.type==="rich"
-    ){
+    let label="";
 
-        ctx.fillStyle="#ffe05a";
+    if(c.type==="rich") label="VIP";
 
-        ctx.font=
-            "bold 10px Arial";
+    if(c.type==="difficult") label="?";
+
+    if(c.type==="elderly") label="";
+
+    if(label){
+
+        ctx.fillStyle="#fff";
+
+        ctx.font="bold 10px Arial";
 
         ctx.textAlign="center";
 
         ctx.fillText(
-            "VIP",
+            label,
             c.x,
-            c.y-29
+            c.y-28
         );
 
     }
@@ -2901,7 +2115,7 @@ function drawCustomer(c){
 
 
 /* =========================================================
-   DRAW PLAYER
+   31. DRAW PLAYER
 ========================================================= */
 
 function drawPlayer(){
@@ -2910,17 +2124,15 @@ function drawPlayer(){
        Bóng
     */
 
-    ctx.fillStyle=
-        "rgba(0,0,0,.25)";
-
+    ctx.fillStyle="rgba(0,0,0,.3)";
 
     ctx.beginPath();
 
     ctx.ellipse(
         player.x,
-        player.y+21,
-        19,
-        7,
+        player.y+22,
+        20,
+        8,
         0,
         0,
         Math.PI*2
@@ -2930,11 +2142,10 @@ function drawPlayer(){
 
 
     /*
-       Chưa có ảnh:
-       dùng hình tạm.
+       Thân
     */
 
-    ctx.fillStyle="#244f76";
+    ctx.fillStyle="#234b72";
 
     ctx.fillRect(
         player.x-14,
@@ -2944,7 +2155,11 @@ function drawPlayer(){
     );
 
 
-    ctx.fillStyle="#dba77e";
+    /*
+       Đầu
+    */
+
+    ctx.fillStyle="#dca77e";
 
     ctx.beginPath();
 
@@ -2958,6 +2173,10 @@ function drawPlayer(){
 
     ctx.fill();
 
+
+    /*
+       Tóc
+    */
 
     ctx.fillStyle="#222";
 
@@ -2975,13 +2194,81 @@ function drawPlayer(){
 
 
     /*
-       Tên
+       Hướng nhìn
+    */
+
+    ctx.fillStyle="#111";
+
+    if(player.direction==="down"){
+
+        ctx.fillRect(
+            player.x-5,
+            player.y-10,
+            3,
+            3
+        );
+
+        ctx.fillRect(
+            player.x+3,
+            player.y-10,
+            3,
+            3
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   32. DRAW
+========================================================= */
+
+function draw(){
+
+    ctx.clearRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+    drawMap();
+
+    drawTrees();
+
+    drawShop();
+
+    drawWarehouse();
+
+    drawTables();
+
+
+    /*
+       Khách
+    */
+
+    for(const c of customers){
+
+        drawCustomer(c);
+
+    }
+
+
+    /*
+       Player
+    */
+
+    drawPlayer();
+
+
+    /*
+       Hiển thị tên Đạt Trung
     */
 
     ctx.fillStyle="white";
 
-    ctx.font=
-        "bold 12px Arial";
+    ctx.font="bold 12px Arial";
 
     ctx.textAlign="center";
 
@@ -2995,76 +2282,13 @@ function drawPlayer(){
 
 
 /* =========================================================
-   DRAW
-========================================================= */
-
-function draw(){
-
-    ctx.clearRect(
-        0,
-        0,
-        W,
-        H
-    );
-
-
-    /*
-       Nền
-    */
-
-    drawBackground();
-
-
-    /*
-       Hai công trình
-    */
-
-    drawShop();
-
-    drawWarehouse();
-
-
-    /*
-       Bàn
-    */
-
-    drawTables();
-
-
-    /*
-       NPC
-    */
-
-    for(
-        const c
-        of customers
-    ){
-
-        drawCustomer(c);
-
-    }
-
-
-    /*
-       Player
-    */
-
-    drawPlayer();
-
-}
-
-
-/* =========================================================
-   HUD
+   33. HUD
 ========================================================= */
 
 function updateHUD(){
 
-    document.getElementById(
-        "day"
-    ).textContent=
-        game.day;
-
+    document.getElementById("day")
+        .textContent=game.day;
 
     const hour=
         Math.floor(
@@ -3074,57 +2298,39 @@ function updateHUD(){
     const minute=
         game.minute%60;
 
-
-    document.getElementById(
-        "time"
-    ).textContent=
+    document.getElementById("time")
+        .textContent=
         String(hour).padStart(2,"0")+
         ":"+
         String(minute).padStart(2,"0");
 
+    document.getElementById("money")
+        .textContent=
+        formatMoney(game.money);
 
-    document.getElementById(
-        "money"
-    ).textContent=
-        formatMoney(
-            game.money
-        );
+    document.getElementById("debt")
+        .textContent=
+        formatMoney(game.debt);
 
-
-    document.getElementById(
-        "debt"
-    ).textContent=
-        formatMoney(
-            game.debt
-        );
-
-
-    document.getElementById(
-        "rep"
-    ).textContent=
+    document.getElementById("rep")
+        .textContent=
         Math.max(
             0,
-            Math.round(
-                game.reputation
-            )
+            Math.round(game.reputation)
         );
 
-
-    document.getElementById(
-        "customers"
-    ).textContent=
+    document.getElementById("customers")
+        .textContent=
         customers.length;
 
 }
 
 
 /* =========================================================
-   MONEY
+   34. MONEY FORMAT
 ========================================================= */
 
-function formatMoney(
-    value
-){
+function formatMoney(value){
 
     return Math.round(value)
         .toLocaleString("vi-VN")
@@ -3134,69 +2340,98 @@ function formatMoney(
 
 
 /* =========================================================
-   MESSAGE
+   35. MESSAGE
 ========================================================= */
 
 let messageTimer=null;
 
+function showMessage(text){
 
-function showMessage(
-    text
-){
+    const el=
+        document.getElementById("message");
 
-    const element=
-        document.getElementById(
-            "message"
-        );
+    el.textContent=text;
 
+    el.classList.add("show");
 
-    element.textContent=
-        text;
-
-
-    element.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        messageTimer
-    );
-
+    clearTimeout(messageTimer);
 
     messageTimer=
-        setTimeout(
-            ()=>{
+        setTimeout(()=>{
 
-                element.classList.remove(
-                    "show"
-                );
+            el.classList.remove("show");
 
-            },
-            2200
-        );
+        },2500);
 
 }
 
 
 /* =========================================================
-   INTERACTION
+   36. START GAME
+========================================================= */
+
+function startGame(){
+
+    const input=
+        document.getElementById("playerName");
+
+    game.name=
+        input.value.trim()||
+        "Người chơi";
+
+    document
+        .getElementById("startScreen")
+        .style.display="none";
+
+    game.running=true;
+
+    /*
+       Spawn vài khách ban đầu
+       nhưng vị trí vẫn ngẫu nhiên.
+    */
+
+    for(let i=0;i<3;i++){
+
+        setTimeout(
+            spawnCustomer,
+            i*1000
+        );
+
+    }
+
+    showMessage(
+        "Chào mừng đến với sạp của Đạt Trung!"
+    );
+
+}
+
+
+/* =========================================================
+   37. SERVE BUTTON
+========================================================= */
+
+const serveBtn=
+    document.getElementById("serveBtn");
+
+serveBtn.addEventListener(
+    "click",
+    serveNearestCustomer
+);
+
+
+/* =========================================================
+   38. SHOW SERVE BUTTON WHEN NEAR CUSTOMER
 ========================================================= */
 
 function updateInteraction(){
 
     let near=false;
 
-
-    for(
-        const c
-        of customers
-    ){
+    for(const c of customers){
 
         if(
-            c.state===
-            "waiting_food" &&
-            dist(player,c)<110
+            c.state==="waiting_food" &&
+            distance(player,c)<100
         ){
 
             near=true;
@@ -3207,34 +2442,25 @@ function updateInteraction(){
 
     }
 
-
     const interaction=
         document.getElementById(
             "interaction"
         );
 
-    const serve=
-        document.getElementById(
-            "serveBtn"
-        );
-
-
     if(near){
 
-        interaction.style.display=
-            "block";
+        interaction.style.display="block";
 
-        serve.style.display=
-            "block";
+        serveBtn.style.display="block";
 
-    }
-    else{
+        interaction.textContent=
+            "NHẤN E ĐỂ PHỤC VỤ";
 
-        interaction.style.display=
-            "none";
+    }else{
 
-        serve.style.display=
-            "none";
+        interaction.style.display="none";
+
+        serveBtn.style.display="none";
 
     }
 
@@ -3242,77 +2468,10 @@ function updateInteraction(){
 
 
 /* =========================================================
-   START GAME
+   39. GAME LOOP
 ========================================================= */
 
-function startGame(){
-
-    const input=
-        document.getElementById(
-            "playerName"
-        );
-
-
-    game.name=
-        input.value.trim() ||
-        "Người chơi";
-
-
-    document.getElementById(
-        "startScreen"
-    ).style.display=
-        "none";
-
-
-    game.running=true;
-
-
-    /*
-       Spawn ban đầu nhiều hơn.
-    */
-
-    for(
-        let i=0;
-        i<6;
-        i++
-    ){
-
-        setTimeout(
-            ()=>{
-                spawnCustomer();
-            },
-            i*350
-        );
-
-    }
-
-
-    showMessage(
-        "Một ngày mới bắt đầu!"
-    );
-
-}
-
-
-/* =========================================================
-   SERVE BUTTON
-========================================================= */
-
-document
-    .getElementById("serveBtn")
-    .addEventListener(
-        "click",
-        serveNearestCustomer
-    );
-
-
-/* =========================================================
-   MAIN LOOP
-========================================================= */
-
-let lastTime=
-    performance.now();
-
+let lastTime=performance.now();
 
 function gameLoop(now){
 
@@ -3322,35 +2481,9 @@ function gameLoop(now){
             50
         );
 
-
     lastTime=now;
 
-
-    if(
-        game.running
-    ){
-
-        updatePlayer();
-
-        updateTime(dt);
-
-        updateSpawn(dt);
-
-
-        for(
-            const customer
-            of [...customers]
-        ){
-
-            updateCustomer(
-                customer,
-                dt
-            );
-
-        }
-
-    }
-
+    update(dt);
 
     draw();
 
@@ -3358,17 +2491,63 @@ function gameLoop(now){
 
     updateInteraction();
 
-
-    requestAnimationFrame(
-        gameLoop
-    );
+    requestAnimationFrame(gameLoop);
 
 }
 
+requestAnimationFrame(gameLoop);
 
-requestAnimationFrame(
-    gameLoop
-);
+
+/* =========================================================
+   40. DEBUG
+========================================================= */
+
+/*
+   Tự spawn khách sau khi game bắt đầu.
+*/
+
+setInterval(()=>{
+
+    if(game.running){
+
+        /*
+           Tăng khách mạnh hơn
+           vào giờ cao điểm.
+        */
+
+        const hour=
+            Math.floor(
+                game.minute/60
+            );
+
+        if(
+            hour>=11 &&
+            hour<=13
+        ){
+
+            if(
+                Math.random()<.7
+            ){
+
+                spawnCustomer();
+
+            }
+
+        }else{
+
+            if(
+                Math.random()<.35
+            ){
+
+                spawnCustomer();
+
+            }
+
+        }
+
+    }
+
+},3000);
 
 </script>
 
