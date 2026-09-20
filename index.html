@@ -1,323 +1,370 @@
-```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0, user-scalable=no">
+
 <title>THỊT CHÓ ÔNG TRUNG</title>
 
 <style>
 *{
     box-sizing:border-box;
-    margin:0;
-    padding:0;
-    user-select:none;
+    -webkit-tap-highlight-color:transparent;
 }
 
 html,body{
-    width:100%;
-    height:100%;
-    overflow:hidden;
+    margin:0;
+    padding:0;
+    min-height:100%;
+}
+
+body{
+    background:#bfe9ff;
     font-family:Arial,sans-serif;
-    background:#222;
+    color:#222;
+    overflow-x:hidden;
+    overflow-y:auto;
 }
 
-#game{
-    position:relative;
-    width:100vw;
-    height:100vh;
-    overflow:hidden;
-}
-
-/* =========================================================
-   BỐ CỤC BẢN ĐỒ
-   ========================================================= */
-
-#world{
-    position:absolute;
-    left:50%;
-    top:50%;
-    width:1200px;
-    height:650px;
-    transform:translate(-50%,-50%);
-    overflow:hidden;
-    background:#777;
-}
-
-/* NỀN TRÊN: CHỈ 1 ẢNH */
-#topBackground{
-    position:absolute;
-    left:0;
-    top:0;
-    width:1200px;
-    height:300px;
-    background-image:url("top-background.png");
-    background-size:100% 100%;
-    background-repeat:no-repeat;
-    z-index:1;
-}
-
-/* NỀN DƯỚI: 15.jpg */
-#bottomBackground{
-    position:absolute;
-    left:0;
-    top:300px;
-    width:1200px;
-    height:350px;
-    background-image:url("15.jpg");
-    background-size:100% 100%;
-    background-repeat:no-repeat;
-    z-index:1;
-}
-
-/* =========================================================
-   KHU VỰC QUÁN / KHO
-   ========================================================= */
-
-.building{
-    position:absolute;
-    z-index:5;
-}
-
-#restaurant{
-    left:50px;
-    top:335px;
-    width:380px;
-    height:250px;
-}
-
-#warehouse{
-    right:50px;
-    top:335px;
-    width:380px;
-    height:250px;
-}
-
-/*
-  Các ảnh công trình cũ của bạn có thể đặt lại ở đây.
-  Không bắt buộc phải dùng nếu top-background.png
-  đã chứa toàn bộ phần hình nền.
-*/
-
-.building img{
+#page{
     width:100%;
-    height:100%;
-    object-fit:contain;
-    pointer-events:none;
+    max-width:1200px;
+    margin:auto;
+    padding:10px 10px 40px;
 }
 
-/* =========================================================
-   ĐƯỜNG ĐI
-   ========================================================= */
+/* =========================
+   START SCREEN
+========================= */
 
-#road{
-    position:absolute;
-    left:0;
-    top:285px;
-    width:1200px;
-    height:100px;
-    z-index:3;
+#startScreen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
-/* =========================================================
-   NHÂN VẬT
-   ========================================================= */
-
-#player{
-    position:absolute;
-    width:48px;
-    height:48px;
-    z-index:30;
-    left:570px;
-    top:510px;
+.startBox{
+    width:min(500px,94vw);
+    background:white;
+    border:4px solid #333;
+    border-radius:18px;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 8px 20px #0003;
 }
 
-#player img{
+.startBox h1{
+    margin:5px 0 10px;
+    font-size:32px;
+}
+
+.startBox p{
+    margin:8px 0 20px;
+    color:#555;
+}
+
+.startBox input{
     width:100%;
-    height:100%;
-    object-fit:contain;
+    padding:14px;
+    border:2px solid #777;
+    border-radius:10px;
+    font-size:18px;
+    outline:none;
 }
 
-/* =========================================================
-   KHÁCH
-   ========================================================= */
-
-.customer{
-    position:absolute;
-    width:42px;
-    height:42px;
-    z-index:25;
-    pointer-events:none;
-}
-
-.customer img{
+.startBox button{
     width:100%;
-    height:100%;
-    object-fit:contain;
-}
-
-.customer-name{
-    position:absolute;
-    left:50%;
-    transform:translateX(-50%);
-    bottom:100%;
-    white-space:nowrap;
-    font-size:10px;
-    color:#fff;
-    background:rgba(0,0,0,.65);
-    padding:2px 4px;
-    border-radius:3px;
-}
-
-/* =========================================================
-   BÀN
-   ========================================================= */
-
-.table{
-    position:absolute;
-    width:76px;
-    height:76px;
-    z-index:12;
-}
-
-.table-img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-}
-
-.table-status{
-    position:absolute;
-    top:-13px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:10px;
+    margin-top:15px;
+    padding:14px;
+    border:0;
+    border-radius:10px;
+    background:#e48b25;
     color:white;
-    background:rgba(0,0,0,.65);
-    padding:2px 4px;
-    border-radius:3px;
-    display:none;
-}
-
-/* =========================================================
-   UI
-   ========================================================= */
-
-#ui{
-    position:fixed;
-    left:10px;
-    top:10px;
-    z-index:100;
-    color:#fff;
+    font-size:19px;
     font-weight:bold;
-    text-shadow:1px 1px 2px #000;
-    line-height:1.7;
+    cursor:pointer;
 }
 
-#money{
-    color:#ffe16b;
-}
+/* =========================
+   GAME
+========================= */
 
-#debt{
-    color:#ff7777;
-}
-
-#day{
-    color:#7ed7ff;
-}
-
-#message{
-    position:fixed;
-    left:50%;
-    bottom:25px;
-    transform:translateX(-50%);
-    z-index:200;
-    color:#fff;
-    background:rgba(0,0,0,.75);
-    padding:10px 18px;
-    border-radius:8px;
+#gameScreen{
     display:none;
 }
 
-/* =========================================================
-   NÚT ĐIỀU KHIỂN
-   ========================================================= */
+.topbar{
+    background:white;
+    border:3px solid #333;
+    border-radius:12px;
+    padding:8px;
+    margin-bottom:8px;
+    box-shadow:0 3px 8px #0002;
+}
 
-#controls{
-    position:fixed;
-    right:15px;
-    bottom:15px;
-    z-index:200;
+.title{
+    text-align:center;
+    font-size:25px;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+.stats{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:6px;
+}
+
+.stat{
+    background:#f2f2f2;
+    border:2px solid #777;
+    border-radius:8px;
+    padding:6px 9px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+/* =========================
+   CANVAS
+========================= */
+
+.gameWrap{
+    width:100%;
+    overflow:visible;
+}
+
+#gameCanvas{
+    display:block;
+    width:100%;
+    height:auto;
+    max-width:1100px;
+    margin:auto;
+    background:#aee5ff;
+    border:3px solid #333;
+    border-radius:8px;
+    touch-action:none;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.actions{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:7px;
+    margin:9px auto;
+}
+
+.actionBtn{
+    border:2px solid #333;
+    background:white;
+    border-radius:9px;
+    padding:10px 13px;
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.actionBtn:active{
+    transform:scale(.96);
+}
+
+/* =========================
+   MOBILE CONTROLS
+========================= */
+
+.mobileControls{
+    width:220px;
+    margin:10px auto;
     display:grid;
-    grid-template-columns:60px 60px 60px;
+    grid-template-columns:70px 70px 70px;
     grid-template-rows:60px 60px;
     gap:5px;
+    justify-content:center;
 }
 
 .control{
-    border:none;
-    border-radius:10px;
-    background:rgba(0,0,0,.6);
-    color:white;
-    font-size:22px;
+    border:2px solid #333;
+    border-radius:12px;
+    background:white;
+    font-size:25px;
+    font-weight:bold;
+    user-select:none;
+    touch-action:none;
 }
 
-#up{
+.control:active{
+    background:#ddd;
+}
+
+.up{
     grid-column:2;
 }
 
-#left{
+.left{
     grid-column:1;
     grid-row:2;
 }
 
-#down{
+.down{
     grid-column:2;
     grid-row:2;
 }
 
-#right{
+.right{
     grid-column:3;
     grid-row:2;
 }
 
-/* =========================================================
-   MENU PHỤC VỤ
-   ========================================================= */
+.interactMobile{
+    width:145px;
+    margin:0 auto 10px;
+    display:block;
+    border:3px solid #333;
+    background:#ffd34e;
+    border-radius:12px;
+    padding:12px;
+    font-weight:bold;
+    font-size:17px;
+}
 
-#servePanel{
+/* =========================
+   PANELS
+========================= */
+
+.panel{
+    display:none;
+    background:white;
+    border:3px solid #333;
+    border-radius:12px;
+    margin:10px auto;
+    padding:15px;
+    max-width:800px;
+    box-shadow:0 4px 12px #0002;
+}
+
+.panel h2{
+    margin-top:0;
+}
+
+.panel button{
+    padding:9px 13px;
+    margin:4px;
+    border:2px solid #333;
+    border-radius:8px;
+    background:#eee;
+    font-weight:bold;
+}
+
+.shopItem{
+    border:2px solid #aaa;
+    border-radius:10px;
+    padding:10px;
+    margin:7px 0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+.shopItem button{
+    background:#e48b25;
+    color:white;
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+#message{
     position:fixed;
     left:50%;
-    bottom:100px;
+    bottom:20px;
     transform:translateX(-50%);
-    z-index:250;
-    background:rgba(0,0,0,.85);
-    padding:12px;
+    background:#222;
+    color:white;
+    padding:11px 18px;
     border-radius:10px;
+    font-weight:bold;
+    z-index:100;
     display:none;
+    max-width:90vw;
+    text-align:center;
 }
 
-#servePanel button{
-    border:none;
-    padding:10px 18px;
-    margin:3px;
-    border-radius:7px;
+/* =========================
+   DIALOGUE
+========================= */
+
+#dialogue{
+    position:fixed;
+    left:50%;
+    bottom:75px;
+    transform:translateX(-50%);
+    width:min(600px,92vw);
+    background:white;
+    border:3px solid #333;
+    border-radius:14px;
+    padding:14px;
+    display:none;
+    z-index:90;
+    box-shadow:0 6px 20px #0004;
 }
 
-/* =========================================================
+.dialogueName{
+    font-weight:bold;
+    color:#c56b00;
+    margin-bottom:7px;
+}
+
+.dialogueText{
+    font-size:17px;
+    min-height:48px;
+}
+
+.dialogueHint{
+    margin-top:8px;
+    color:#777;
+    font-size:13px;
+}
+
+/* =========================
    RESPONSIVE
-   ========================================================= */
+========================= */
 
-@media(max-width:700px){
-    #world{
-        transform:translate(-50%,-50%) scale(.72);
+@media(max-width:600px){
+
+    #page{
+        padding:5px 5px 30px;
     }
-}
 
-@media(min-width:701px) and (max-width:1100px){
-    #world{
-        transform:translate(-50%,-50%) scale(.85);
+    .title{
+        font-size:20px;
+    }
+
+    .stat{
+        font-size:12px;
+        padding:5px 7px;
+    }
+
+    .actionBtn{
+        font-size:12px;
+        padding:8px 9px;
+    }
+
+    #message{
+        bottom:10px;
+        font-size:13px;
+    }
+
+    #dialogue{
+        bottom:150px;
     }
 }
 </style>
@@ -325,1021 +372,598 @@ html,body{
 
 <body>
 
-<div id="game">
+<div id="page">
 
-    <div id="world">
+<!-- =========================
+     START
+========================= -->
 
-        <!-- =================================================
-             CHỈ 1 ẢNH NỀN TRÊN
-             ================================================= -->
-        <div id="topBackground"></div>
+<div id="startScreen">
 
-        <!-- =================================================
-             NỀN DƯỚI = 15.jpg
-             ================================================= -->
-        <div id="bottomBackground"></div>
+    <div class="startBox">
 
-        <div id="road"></div>
+        <h1>THỊT CHÓ ÔNG TRUNG</h1>
 
-        <!-- QUÁN ĂN BÊN TRÁI -->
-        <div id="restaurant" class="building"></div>
+        <p>
+            Nhập tên của bạn để tham gia bảng xếp hạng.
+        </p>
 
-        <!-- KHO NHẬP HÀNG BÊN PHẢI -->
-        <div id="warehouse" class="building"></div>
+        <input
+            id="playerNameInput"
+            maxlength="20"
+            placeholder="Tên trên BXH..."
+        >
 
-        <div id="tables"></div>
-        <div id="customers"></div>
+        <button onclick="startGame()">
+            BẮT ĐẦU
+        </button>
 
-        <div id="player">
-            <img id="playerImg" src="player.png">
-        </div>
-
-    </div>
-
-    <div id="ui">
-        <div>Tiền: <span id="money">10.000.000đ</span></div>
-        <div>Nợ: <span id="debt">360.000.000đ</span></div>
-        <div>Ngày: <span id="day">1 / 30</span></div>
-        <div>Uy tín: <span id="rep">60</span></div>
-    </div>
-
-    <div id="message"></div>
-
-    <div id="servePanel">
-        <button onclick="serveFood()">Phục vụ</button>
-        <button onclick="closeServePanel()">Đóng</button>
-    </div>
-
-    <div id="controls">
-        <button class="control" id="up">▲</button>
-        <button class="control" id="left">◀</button>
-        <button class="control" id="down">▼</button>
-        <button class="control" id="right">▶</button>
     </div>
 
 </div>
 
+
+<!-- =========================
+     GAME
+========================= -->
+
+<div id="gameScreen">
+
+    <div class="topbar">
+
+        <div class="title">
+            THỊT CHÓ ÔNG TRUNG
+        </div>
+
+        <div class="stats">
+
+            <div class="stat">
+                Ngày: <span id="dayText">1</span>/30
+            </div>
+
+            <div class="stat">
+                Tiền: <span id="moneyText">10.000.000đ</span>
+            </div>
+
+            <div class="stat">
+                Nợ: <span id="debtText">360.000.000đ</span>
+            </div>
+
+            <div class="stat">
+                Uy tín: <span id="repText">60</span>
+            </div>
+
+            <div class="stat">
+                Thịt: <span id="meatText">0</span>/15
+            </div>
+
+            <div class="stat">
+                Người chơi: <span id="nameText">---</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="gameWrap">
+
+        <canvas
+            id="gameCanvas"
+            width="1100"
+            height="700">
+        </canvas>
+
+    </div>
+
+
+    <!-- ACTION BUTTONS -->
+
+    <div class="actions">
+
+        <button class="actionBtn" onclick="openShop()">
+            NHẬP HÀNG
+        </button>
+
+        <button class="actionBtn" onclick="payDebt()">
+            TRẢ NỢ
+        </button>
+
+        <button class="actionBtn" onclick="upgradeShop()">
+            NÂNG CẤP
+        </button>
+
+        <button class="actionBtn" onclick="showLeaderboard()">
+            BXH
+        </button>
+
+        <button class="actionBtn" onclick="showHelp()">
+            HƯỚNG DẪN
+        </button>
+
+        <button class="actionBtn" onclick="toggleMenu()">
+            MENU
+        </button>
+
+    </div>
+
+
+    <!-- MOBILE -->
+
+    <div class="mobileControls">
+
+        <button class="control up"
+                data-key="ArrowUp">
+            ▲
+        </button>
+
+        <button class="control left"
+                data-key="ArrowLeft">
+            ◀
+        </button>
+
+        <button class="control down"
+                data-key="ArrowDown">
+            ▼
+        </button>
+
+        <button class="control right"
+                data-key="ArrowRight">
+            ▶
+        </button>
+
+    </div>
+
+    <button
+        class="interactMobile"
+        onclick="interact()">
+        E - TƯƠNG TÁC
+    </button>
+
+
+    <!-- SHOP -->
+
+    <div id="shopPanel" class="panel">
+
+        <h2>NHẬP HÀNG</h2>
+
+        <p>
+            Kho tối đa: 15 phần thịt.
+        </p>
+
+        <div class="shopItem">
+
+            <div>
+                <b>Thịt tươi</b><br>
+                2.000.000đ / phần
+            </div>
+
+            <button onclick="buyMeat(1)">
+                MUA 1
+            </button>
+
+        </div>
+
+        <div class="shopItem">
+
+            <div>
+                <b>Thịt giá rẻ</b><br>
+                500.000đ / phần
+            </div>
+
+            <button onclick="buyMeat(1,true)">
+                MUA 1
+            </button>
+
+        </div>
+
+        <button onclick="closePanels()">
+            ĐÓNG
+        </button>
+
+    </div>
+
+
+    <!-- HELP -->
+
+    <div id="helpPanel" class="panel">
+
+        <h2>HƯỚNG DẪN</h2>
+
+        <p>
+            <b>WASD / phím mũi tên:</b> di chuyển.
+        </p>
+
+        <p>
+            <b>E:</b> tương tác.
+        </p>
+
+        <p>
+            Khách xuất hiện ngẫu nhiên.
+        </p>
+
+        <p>
+            Đi tới khách và nhấn E để nói chuyện.
+        </p>
+
+        <p>
+            Khi khách gọi món, một chiếc đĩa sẽ xuất hiện
+            ở cửa quán.
+        </p>
+
+        <p>
+            Đi tới chiếc đĩa và nhấn E để lấy.
+        </p>
+
+        <p>
+            Sau đó mang đúng món tới đúng khách
+            và nhấn E để phục vụ.
+        </p>
+
+        <p>
+            Khách ăn xong sẽ ngồi lại.
+            Đi tới khách và nhấn E để đuổi khách.
+        </p>
+
+        <button onclick="closePanels()">
+            ĐÓNG
+        </button>
+
+    </div>
+
+
+    <!-- LEADERBOARD -->
+
+    <div id="leaderPanel" class="panel">
+
+        <h2>BẢNG XẾP HẠNG</h2>
+
+        <div id="leaderboardContent"></div>
+
+        <button onclick="closePanels()">
+            ĐÓNG
+        </button>
+
+    </div>
+
+
+    <!-- MENU -->
+
+    <div id="menuPanel" class="panel">
+
+        <h2>MENU</h2>
+
+        <button onclick="saveGame()">
+            LƯU GAME
+        </button>
+
+        <button onclick="location.reload()">
+            THOÁT
+        </button>
+
+        <button onclick="closePanels()">
+            ĐÓNG
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<div id="message"></div>
+
+
+<div id="dialogue">
+
+    <div class="dialogueName"
+         id="dialogueName">
+    </div>
+
+    <div class="dialogueText"
+         id="dialogueText">
+    </div>
+
+    <div class="dialogueHint">
+        Nhấn E để tiếp tục
+    </div>
+
+</div>
+
+
 <script>
+
 /* =========================================================
-   THỊT CHÓ ÔNG TRUNG
-   GAMEPLAY
-   ========================================================= */
+   ASSETS
+========================================================= */
 
-/*
-=============================================================
-  ASSETS
-=============================================================
+const assets = {};
 
-  GIỮ CÁC ẢNH CŨ CỦA BẠN Ở ĐÂY.
+const assetFiles = {
 
-  Nền:
-    15.jpg
-    top-background.png
+    restaurant: "01.png",
+    warehouse: "02.png",
 
-  Nhân vật:
-    player.png
+    playerDown: "03.png",
+    playerUp: "04.png",
+    playerLeft: "05.png",
+    playerRight: "06.png",
 
-  Khách:
-    customer1.png
-    customer2.png
-    customer3.png
-    ...
+    carryDown: "07.png",
+    carryUp: "08.png",
+    carryLeft: "09.png",
+    carryRight: "10.png",
 
-  Bàn:
-    table.png
-
-  Đồ ăn:
-    food.png
-
-  Bạn có thể thay tên file ở đây bằng đúng tên ảnh cũ.
-*/
-
-const ASSETS = {
-
-    player: "player.png",
-
-    customerImages: [
-        "customer1.png",
-        "customer2.png",
-        "customer3.png",
-        "customer4.png",
-        "customer5.png"
-    ],
-
-    table: "table.png",
-
-    food: "food.png"
+    road: "11.png",
+    background: "12.png"
 
 };
 
 
 /* =========================================================
-   CẤU HÌNH GAME
-   ========================================================= */
+   CANVAS
+========================================================= */
 
-const MAX_CUSTOMERS = 20;
+const canvas =
+    document.getElementById("gameCanvas");
 
-/*
-  Khách xuất hiện liên tục hơn:
-  thời gian spawn ngẫu nhiên từ 0.7 -> 1.7 giây.
-*/
-const SPAWN_MIN = 700;
-const SPAWN_MAX = 1700;
-
-/*
-  Thời gian khách không có bàn sẽ chờ.
-*/
-const NO_TABLE_WAIT = 5000;
-
-/*
-  Khách đi qua đường không vào quán.
-*/
-const WALK_SPEED = 1.3;
+const ctx =
+    canvas.getContext("2d");
 
 
 /* =========================================================
-   TRẠNG THÁI
-   ========================================================= */
+   MAP
+========================================================= */
 
-let money = 10000000;
-let debt = 360000000;
-let reputation = 60;
+const MAP = {
 
-let currentDay = 1;
-let gameRunning = true;
+    width:1100,
 
-let customers = [];
-let tables = [];
+    height:700,
 
-let customerId = 0;
+    roadY:220,
 
-let player = {
-    x:570,
-    y:510,
-    speed:4
+    roadHeight:90
+
 };
 
-let keys = {};
+
+/* =========================================================
+   BUILDINGS
+========================================================= */
+
+const RESTAURANT = {
+
+    x:390,
+
+    y:35,
+
+    w:300,
+
+    h:170
+
+};
+
+
+const WAREHOUSE = {
+
+    x:45,
+
+    y:45,
+
+    w:220,
+
+    h:145
+
+};
+
+
+const SHOP_DOOR = {
+
+    x:505,
+
+    y:185,
+
+    w:70,
+
+    h:35
+
+};
 
 
 /* =========================================================
-   DOM
-   ========================================================= */
+   SQUARE TABLES
+   6 BÀN XẾP NGANG
+========================================================= */
 
-const world = document.getElementById("world");
-const customersLayer = document.getElementById("customers");
-const tablesLayer = document.getElementById("tables");
+const TABLE_SIZE = 70;
 
-const moneyEl = document.getElementById("money");
-const debtEl = document.getElementById("debt");
-const dayEl = document.getElementById("day");
-const repEl = document.getElementById("rep");
+const TABLE_Y = 350;
 
-const messageEl = document.getElementById("message");
+const tables = [
 
-const playerEl = document.getElementById("player");
+    {
+        id:1,
+        x:90,
+        y:TABLE_Y,
+        w:TABLE_SIZE,
+        h:TABLE_SIZE,
+        customer:null
+    },
 
+    {
+        id:2,
+        x:270,
+        y:TABLE_Y,
+        w:TABLE_SIZE,
+        h:TABLE_SIZE,
+        customer:null
+    },
 
-/* =========================================================
-   TIỆN ÍCH
-   ========================================================= */
+    {
+        id:3,
+        x:450,
+        y:TABLE_Y,
+        w:TABLE_SIZE,
+        h:TABLE_SIZE,
+        customer:null
+    },
 
-function formatMoney(value){
-    return value.toLocaleString("vi-VN") + "đ";
-}
+    {
+        id:4,
+        x:630,
+        y:TABLE_Y,
+        w:TABLE_SIZE,
+        h:TABLE_SIZE,
+        customer:null
+    },
 
-function random(min,max){
-    return Math.random() * (max-min) + min;
-}
+    {
+        id:5,
+        x:810,
+        y:TABLE_Y,
+        w:TABLE_SIZE,
+        h:TABLE_SIZE,
+        customer:null
+    },
 
-function randomInt(min,max){
-    return Math.floor(random(min,max+1));
-}
-
-function distance(a,b){
-    return Math.sqrt(
-        Math.pow(a.x-b.x,2) +
-        Math.pow(a.y-b.y,2)
-    );
-}
-
-function showMessage(text,time=2000){
-    messageEl.textContent = text;
-    messageEl.style.display = "block";
-
-    setTimeout(()=>{
-        messageEl.style.display = "none";
-    },time);
-}
-
-
-/* =========================================================
-   UI
-   ========================================================= */
-
-function updateUI(){
-
-    moneyEl.textContent = formatMoney(money);
-    debtEl.textContent = formatMoney(debt);
-
-    dayEl.textContent =
-        currentDay + " / 30";
-
-    repEl.textContent =
-        reputation;
-}
-
-
-/* =========================================================
-   TẠO BÀN
-   ========================================================= */
-
-/*
-  Bàn xếp ngang theo khu vực quán,
-  không kéo dài map.
-*/
-
-const TABLE_POSITIONS = [
-
-    {x:115,y:405},
-    {x:205,y:405},
-    {x:295,y:405},
-
-    {x:115,y:500},
-    {x:205,y:500},
-    {x:295,y:500}
+    {
+        id:6,
+        x:990,
+        y:TABLE_Y,
+        w:TABLE_SIZE,
+        h:TABLE_SIZE,
+        customer:null
+    }
 
 ];
 
-function createTables(){
-
-    tablesLayer.innerHTML = "";
-    tables = [];
-
-    TABLE_POSITIONS.forEach((pos,index)=>{
-
-        const el = document.createElement("div");
-
-        el.className = "table";
-
-        el.style.left = pos.x + "px";
-        el.style.top = pos.y + "px";
-
-        const img = document.createElement("img");
-
-        img.className = "table-img";
-        img.src = ASSETS.table;
-
-        el.appendChild(img);
-
-        const status =
-            document.createElement("div");
-
-        status.className =
-            "table-status";
-
-        status.textContent =
-            "Đang dùng";
-
-        el.appendChild(status);
-
-        tablesLayer.appendChild(el);
-
-        tables.push({
-
-            id:index,
-
-            x:pos.x + 38,
-            y:pos.y + 38,
-
-            occupied:false,
-
-            customerId:null,
-
-            element:el,
-
-            status
-
-        });
-
-    });
-}
-
 
 /* =========================================================
-   TÌM BÀN TRỐNG
-   ========================================================= */
+   GAME STATE
+========================================================= */
 
-function findFreeTable(customer){
+const game = {
 
-    let freeTables =
-        tables.filter(table =>
-            !table.occupied
-        );
+    running:false,
 
-    if(freeTables.length === 0){
-        return null;
-    }
+    leaderboardName:"",
 
-    /*
-      Chọn bàn gần khách nhất.
-    */
+    day:1,
 
-    freeTables.sort((a,b)=>{
+    money:10000000,
 
-        const da =
-            distance(customer,a);
+    debt:360000000,
 
-        const db =
-            distance(customer,b);
+    reputation:60,
 
-        return da-db;
+    meat:0,
 
-    });
+    maxMeat:15,
 
-    return freeTables[0];
-}
+    shopLevel:1,
 
+    time:0,
 
-/* =========================================================
-   SPAWN KHÁCH
-   ========================================================= */
+    dayLength:90,
 
-function spawnCustomer(){
+    creditorShown:false,
 
-    if(!gameRunning){
-        return;
-    }
+    customers:[],
 
-    if(customers.length >= MAX_CUSTOMERS){
-        return;
-    }
+    nextCustomerId:1,
 
-    /*
-      Spawn từ hai phía đường.
-    */
+    spawnTimer:2,
 
-    const fromLeft =
-        Math.random() < 0.5;
+    plate:null,
 
-    const x =
-        fromLeft ? -50 : 1250;
+    heldFood:null,
 
-    const direction =
-        fromLeft ? 1 : -1;
+    dialogue:null,
 
-    const wantsFood =
-        Math.random() < 0.72;
+    messageTimer:0,
 
-    const img =
-        ASSETS.customerImages[
-            randomInt(
-                0,
-                ASSETS.customerImages.length-1
-            )
-        ];
+    gameOver:false
 
-    const el =
-        document.createElement("div");
-
-    el.className =
-        "customer";
-
-    el.innerHTML = `
-        <img src="${img}">
-        <div class="customer-name">
-            ${wantsFood ? "Khách" : "Qua đường"}
-        </div>
-    `;
-
-    customersLayer.appendChild(el);
-
-    const customer = {
-
-        id:customerId++,
-
-        x:x,
-
-        y:randomInt(315,350),
-
-        direction:direction,
-
-        speed:random(0.8,1.4),
-
-        wantsFood:wantsFood,
-
-        state:wantsFood
-            ? "LOOKING_FOR_TABLE"
-            : "PASSING",
-
-        table:null,
-
-        waitUntil:0,
-
-        element:el,
-
-        enteredRestaurant:false
-
-    };
-
-    /*
-      Chống spawn chồng nhau.
-    */
-
-    if(isCustomerPositionBlocked(customer)){
-
-        el.remove();
-
-        return;
-
-    }
-
-    customers.push(customer);
-
-    updateCustomerVisual(customer);
-}
-
-
-/* =========================================================
-   CHỐNG KHÁCH CHỒNG NHAU
-   ========================================================= */
-
-function isCustomerPositionBlocked(newCustomer){
-
-    const MIN_DISTANCE = 48;
-
-    for(const other of customers){
-
-        if(distance(newCustomer,other)
-            < MIN_DISTANCE){
-
-            return true;
-        }
-    }
-
-    return false;
-}
-
-
-/* =========================================================
-   KIỂM TRA ĐƯỜNG ĐI
-   ========================================================= */
-
-function canEnterRestaurant(customer){
-
-    /*
-      Chỉ khách muốn ăn mới được vào quán.
-    */
-
-    if(!customer.wantsFood){
-        return false;
-    }
-
-    /*
-      Khu vực cửa quán ở bên trái.
-    */
-
-    const restaurantEntrance = {
-
-        x:80,
-        y:350
-
-    };
-
-    return distance(
-        customer,
-        restaurantEntrance
-    ) < 100;
-}
-
-
-/* =========================================================
-   KHÁCH KHÔNG VÀO QUÁN
-   ========================================================= */
-
-function updatePassingCustomer(customer){
-
-    customer.x +=
-        customer.direction *
-        customer.speed;
-
-    /*
-      Luôn đi đến mép bản đồ.
-      Không quay lại.
-    */
-
-    if(
-        (customer.direction > 0 &&
-         customer.x > 1250)
-        ||
-        (customer.direction < 0 &&
-         customer.x < -80)
-    ){
-
-        removeCustomer(customer);
-
-    }
-
-}
-
-
-/* =========================================================
-   KHÁCH TÌM BÀN
-   ========================================================= */
-
-function updateLookingCustomer(customer){
-
-    /*
-      Nếu đã quá thời gian chờ,
-      khách rời đi.
-    */
-
-    if(
-        customer.waitUntil > 0 &&
-        Date.now() > customer.waitUntil
-    ){
-
-        leaveRestaurant(customer);
-
-        return;
-    }
-
-
-    /*
-      Tìm bàn.
-    */
-
-    const table =
-        findFreeTable(customer);
-
-    if(table){
-
-        table.occupied = true;
-
-        table.customerId =
-            customer.id;
-
-        table.status.style.display =
-            "block";
-
-        customer.table =
-            table;
-
-        customer.state =
-            "GOING_TO_TABLE";
-
-        customer.enteredRestaurant =
-            true;
-
-        customer.waitUntil = 0;
-
-        return;
-
-    }
-
-
-    /*
-      Không còn bàn.
-      Bắt đầu chờ.
-    */
-
-    if(customer.waitUntil === 0){
-
-        customer.waitUntil =
-            Date.now() +
-            NO_TABLE_WAIT;
-
-    }
-
-    /*
-      KHÔNG đứng kẹt ở bên phải.
-      Đi chậm về phía cửa / mép trái.
-    */
-
-    customer.x -=
-        customer.speed * 0.35;
-
-}
-
-
-/* =========================================================
-   KHÁCH ĐI ĐẾN BÀN
-   ========================================================= */
-
-function updateGoingToTable(customer){
-
-    if(!customer.table){
-
-        customer.state =
-            "LOOKING_FOR_TABLE";
-
-        return;
-    }
-
-    const table =
-        customer.table;
-
-    const dx =
-        table.x-customer.x;
-
-    const dy =
-        table.y-customer.y;
-
-    const d =
-        Math.sqrt(dx*dx+dy*dy);
-
-    if(d < 4){
-
-        customer.x =
-            table.x;
-
-        customer.y =
-            table.y;
-
-        customer.state =
-            "EATING";
-
-        return;
-
-    }
-
-    customer.x +=
-        dx/d *
-        customer.speed;
-
-    customer.y +=
-        dy/d *
-        customer.speed;
-
-}
-
-
-/* =========================================================
-   KHÁCH ĂN
-   ========================================================= */
-
-function updateEatingCustomer(customer){
-
-    /*
-      Khách ăn trong khoảng 5-10 giây.
-    */
-
-    if(!customer.eatingUntil){
-
-        customer.eatingUntil =
-            Date.now() +
-            randomInt(5000,10000);
-
-    }
-
-    if(Date.now() >
-       customer.eatingUntil){
-
-        finishCustomer(customer);
-
-    }
-
-}
-
-
-/* =========================================================
-   KHÁCH RỜI ĐI
-   ========================================================= */
-
-function leaveRestaurant(customer){
-
-    customer.state =
-        "LEAVING";
-
-    customer.direction =
-        -1;
-
-    customer.table = null;
-
-    customer.waitUntil = 0;
-}
-
-
-/* =========================================================
-   HOÀN THÀNH KHÁCH
-   ========================================================= */
-
-function finishCustomer(customer){
-
-    /*
-      Tính tiền.
-    */
-
-    const price =
-        randomInt(80000,250000);
-
-    money += price;
-
-    reputation =
-        Math.min(
-            100,
-            reputation+1
-        );
-
-    updateUI();
-
-    showMessage(
-        "Khách thanh toán +" +
-        formatMoney(price)
-    );
-
-    if(customer.table){
-
-        customer.table.occupied =
-            false;
-
-        customer.table.customerId =
-            null;
-
-        customer.table.status.style.display =
-            "none";
-
-        customer.table = null;
-
-    }
-
-    customer.state =
-        "LEAVING";
-
-    customer.direction =
-        -1;
-
-}
-
-
-/* =========================================================
-   CẬP NHẬT KHÁCH
-   ========================================================= */
-
-function updateCustomers(){
-
-    /*
-      Duyệt bản sao vì khách có thể bị xóa
-      ngay trong vòng lặp.
-    */
-
-    for(
-        const customer of [...customers]
-    ){
-
-        if(customer.state === "PASSING"){
-
-            updatePassingCustomer(customer);
-
-        }
-
-        else if(
-            customer.state ===
-            "LOOKING_FOR_TABLE"
-        ){
-
-            updateLookingCustomer(customer);
-
-        }
-
-        else if(
-            customer.state ===
-            "GOING_TO_TABLE"
-        ){
-
-            updateGoingToTable(customer);
-
-        }
-
-        else if(
-            customer.state ===
-            "EATING"
-        ){
-
-            updateEatingCustomer(customer);
-
-        }
-
-        else if(
-            customer.state ===
-            "LEAVING"
-        ){
-
-            customer.x -=
-                customer.speed * 1.4;
-
-            /*
-              Rời khỏi mép trái
-              thì xóa hoàn toàn.
-            */
-
-            if(customer.x < -80){
-
-                removeCustomer(customer);
-
-            }
-
-        }
-
-        updateCustomerVisual(customer);
-
-    }
-
-}
-
-
-/* =========================================================
-   HIỂN THỊ KHÁCH
-   ========================================================= */
-
-function updateCustomerVisual(customer){
-
-    customer.element.style.left =
-        (customer.x-21) + "px";
-
-    customer.element.style.top =
-        (customer.y-21) + "px";
-
-}
-
-
-/* =========================================================
-   XÓA KHÁCH
-   ========================================================= */
-
-function removeCustomer(customer){
-
-    const index =
-        customers.indexOf(customer);
-
-    if(index !== -1){
-
-        customers.splice(
-            index,
-            1
-        );
-
-    }
-
-    if(customer.table){
-
-        customer.table.occupied =
-            false;
-
-        customer.table.customerId =
-            null;
-
-        customer.table.status.style.display =
-            "none";
-
-    }
-
-    if(customer.element){
-
-        customer.element.remove();
-
-    }
-
-}
-
-
-/* =========================================================
-   SPAWN LIÊN TỤC
-   ========================================================= */
-
-function scheduleNextCustomer(){
-
-    if(!gameRunning){
-        return;
-    }
-
-    const delay =
-        randomInt(
-            SPAWN_MIN,
-            SPAWN_MAX
-        );
-
-    setTimeout(()=>{
-
-        spawnCustomer();
-
-        scheduleNextCustomer();
-
-    },delay);
-
-}
+};
 
 
 /* =========================================================
    PLAYER
-   ========================================================= */
+========================================================= */
 
-function updatePlayer(){
+const player = {
 
-    let dx = 0;
-    let dy = 0;
+    x:550,
 
-    if(keys["ArrowUp"] ||
-       keys["w"] ||
-       keys["W"]){
+    y:260,
 
-        dy -= player.speed;
+    speed:3.2,
 
-    }
+    direction:"down",
 
-    if(keys["ArrowDown"] ||
-       keys["s"] ||
-       keys["S"]){
+    w:42,
 
-        dy += player.speed;
+    h:58
 
-    }
-
-    if(keys["ArrowLeft"] ||
-       keys["a"] ||
-       keys["A"]){
-
-        dx -= player.speed;
-
-    }
-
-    if(keys["ArrowRight"] ||
-       keys["d"] ||
-       keys["D"]){
-
-        dx += player.speed;
-
-    }
-
-    player.x += dx;
-    player.y += dy;
-
-
-    /*
-      Giới hạn nhân vật trong map.
-    */
-
-    player.x =
-        Math.max(
-            20,
-            Math.min(
-                1160,
-                player.x
-            )
-        );
-
-    player.y =
-        Math.max(
-            300,
-            Math.min(
-                600,
-                player.y
-            )
-        );
-
-
-    playerEl.style.left =
-        player.x + "px";
-
-    playerEl.style.top =
-        player.y + "px";
-
-}
+};
 
 
 /* =========================================================
-   KEYBOARD
-   ========================================================= */
+   INPUT
+========================================================= */
 
-document.addEventListener(
-    "keydown",
-    e=>{
+const keys = {};
 
-        keys[e.key] = true;
+
+window.addEventListener("keydown",function(e){
+
+    keys[e.key.toLowerCase()] = true;
+
+    if(
+        e.key === "ArrowUp" ||
+        e.key === "ArrowDown" ||
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowRight" ||
+        e.key === " "
+    ){
+
+        e.preventDefault();
 
     }
-);
 
-document.addEventListener(
-    "keyup",
-    e=>{
+    if(
+        e.key.toLowerCase() === "e" &&
+        !e.repeat
+    ){
 
-        keys[e.key] = false;
+        interact();
 
     }
-);
+
+});
+
+
+window.addEventListener("keyup",function(e){
+
+    keys[e.key.toLowerCase()] = false;
+
+});
 
 
 /* =========================================================
    MOBILE CONTROL
-   ========================================================= */
+========================================================= */
 
-function holdButton(id,key){
+document
+.querySelectorAll(".control")
+.forEach(btn=>{
 
-    const btn =
-        document.getElementById(id);
+    const key =
+        btn.dataset.key.toLowerCase();
 
-    const start = e=>{
+    const start = e => {
 
         e.preventDefault();
 
@@ -1347,7 +971,7 @@ function holdButton(id,key){
 
     };
 
-    const end = e=>{
+    const end = e => {
 
         e.preventDefault();
 
@@ -1355,212 +979,2552 @@ function holdButton(id,key){
 
     };
 
-    btn.addEventListener(
-        "touchstart",
-        start,
-        {passive:false}
-    );
+    btn.addEventListener("pointerdown",start);
 
-    btn.addEventListener(
-        "touchend",
-        end,
-        {passive:false}
-    );
+    btn.addEventListener("pointerup",end);
 
-    btn.addEventListener(
-        "mousedown",
-        start
-    );
+    btn.addEventListener("pointercancel",end);
 
-    btn.addEventListener(
-        "mouseup",
-        end
-    );
+    btn.addEventListener("pointerleave",end);
 
-    btn.addEventListener(
-        "mouseleave",
-        end
-    );
-
-}
-
-holdButton("up","ArrowUp");
-holdButton("down","ArrowDown");
-holdButton("left","ArrowLeft");
-holdButton("right","ArrowRight");
+});
 
 
 /* =========================================================
-   PHỤC VỤ
-   ========================================================= */
+   IMAGE LOADING
+========================================================= */
 
-function checkNearbyTable(){
+function loadAssets(){
 
-    for(const table of tables){
+    const promises = [];
 
-        if(!table.occupied){
-            continue;
-        }
+    for(const key in assetFiles){
 
-        const d =
-            distance(
-                player,
-                table
-            );
+        promises.push(
 
-        if(d < 90){
+            new Promise(resolve=>{
 
-            return table;
+                const img = new Image();
 
-        }
+                img.onload = ()=>{
+
+                    assets[key] = img;
+
+                    resolve();
+
+                };
+
+                img.onerror = ()=>{
+
+                    console.warn(
+                        "Không tải được:",
+                        assetFiles[key]
+                    );
+
+                    resolve();
+
+                };
+
+                img.src =
+                    assetFiles[key];
+
+            })
+
+        );
 
     }
 
-    return null;
+    return Promise.all(promises);
+
 }
 
-function serveFood(){
+
+/* =========================================================
+   START GAME
+========================================================= */
+
+async function startGame(){
+
+    let name =
+        document
+        .getElementById("playerNameInput")
+        .value
+        .trim();
+
+    if(!name){
+
+        name = "Người chơi";
+
+    }
+
+    game.leaderboardName =
+        name.substring(0,20);
+
+    document
+    .getElementById("nameText")
+    .textContent =
+        game.leaderboardName;
+
+    document
+    .getElementById("startScreen")
+    .style.display="none";
+
+    document
+    .getElementById("gameScreen")
+    .style.display="block";
+
+    await loadAssets();
+
+    game.running = true;
+
+    showMessage(
+        "Bắt đầu ngày 1!"
+    );
+
+    requestAnimationFrame(gameLoop);
+
+}
+
+
+/* =========================================================
+   PLAYER MOVEMENT
+========================================================= */
+
+function updatePlayer(){
+
+    let dx = 0;
+
+    let dy = 0;
+
+
+    if(
+        keys["w"] ||
+        keys["arrowup"]
+    ){
+
+        dy--;
+
+        player.direction="up";
+
+    }
+
+    if(
+        keys["s"] ||
+        keys["arrowdown"]
+    ){
+
+        dy++;
+
+        player.direction="down";
+
+    }
+
+    if(
+        keys["a"] ||
+        keys["arrowleft"]
+    ){
+
+        dx--;
+
+        player.direction="left";
+
+    }
+
+    if(
+        keys["d"] ||
+        keys["arrowright"]
+    ){
+
+        dx++;
+
+        player.direction="right";
+
+    }
+
+
+    if(dx !== 0 || dy !== 0){
+
+        const length =
+            Math.hypot(dx,dy);
+
+        dx /= length;
+
+        dy /= length;
+
+        player.x +=
+            dx * player.speed;
+
+        player.y +=
+            dy * player.speed;
+
+    }
+
+
+    /* giới hạn bản đồ */
+
+    player.x =
+        Math.max(
+            20,
+            Math.min(
+                MAP.width-20,
+                player.x
+            )
+        );
+
+    player.y =
+        Math.max(
+            20,
+            Math.min(
+                MAP.height-20,
+                player.y
+            )
+        );
+
+}
+
+
+/* =========================================================
+   RANDOM SPAWN
+========================================================= */
+
+function randomSpawn(){
+
+    const side =
+        Math.random() < .5
+        ? "left"
+        : "right";
+
+    if(side === "left"){
+
+        return {
+
+            x:-35,
+
+            y:
+                MAP.roadY +
+                15 +
+                Math.random() *
+                (MAP.roadHeight-30)
+
+        };
+
+    }
+
+    return {
+
+        x:MAP.width+35,
+
+        y:
+            MAP.roadY +
+            15 +
+            Math.random() *
+            (MAP.roadHeight-30)
+
+    };
+
+}
+
+
+/* =========================================================
+   FIND FREE TABLE
+========================================================= */
+
+function getFreeTable(){
+
+    const free =
+        tables.filter(
+            t => t.customer === null
+        );
+
+    if(!free.length){
+
+        return null;
+
+    }
+
+    return free[
+        Math.floor(
+            Math.random()*free.length
+        )
+    ];
+
+}
+
+
+/* =========================================================
+   SPAWN CUSTOMER
+========================================================= */
+
+function spawnCustomer(){
+
+    if(
+        game.customers.length >= 4
+    ){
+
+        return;
+
+    }
+
+    const spawn =
+        randomSpawn();
+
+    const wantsEat =
+        Math.random() < .7;
+
+    if(!wantsEat){
+
+        const customer = {
+
+            id:game.nextCustomerId++,
+
+            x:spawn.x,
+
+            y:spawn.y,
+
+            targetX:
+                spawn.x < 0
+                ? MAP.width+60
+                : -60,
+
+            targetY:spawn.y,
+
+            state:"walkingPast",
+
+            table:null,
+
+            dialogueDone:false,
+
+            eatingTimer:0,
+
+            name:
+                randomCustomerName(),
+
+            speed:
+                1.2 +
+                Math.random()*.5
+
+        };
+
+        game.customers.push(customer);
+
+        return;
+
+    }
+
 
     const table =
-        checkNearbyTable();
+        getFreeTable();
 
     if(!table){
 
+        return;
+
+    }
+
+
+    const customer = {
+
+        id:game.nextCustomerId++,
+
+        x:spawn.x,
+
+        y:spawn.y,
+
+        targetX:
+            table.x +
+            table.w/2,
+
+        targetY:
+            table.y +
+            table.h +
+            28,
+
+        state:"walking",
+
+        table:table,
+
+        dialogueDone:false,
+
+        eatingTimer:0,
+
+        name:
+            randomCustomerName(),
+
+        speed:
+            1.0 +
+            Math.random()*.35
+
+    };
+
+
+    table.customer =
+        customer.id;
+
+
+    game.customers.push(
+        customer
+    );
+
+}
+
+
+/* =========================================================
+   CUSTOMER NAMES
+========================================================= */
+
+function randomCustomerName(){
+
+    const names = [
+
+        "Anh khách",
+
+        "Chú khách",
+
+        "Cô khách",
+
+        "Bạn trẻ",
+
+        "Khách quen",
+
+        "Khách lạ"
+
+    ];
+
+    return names[
+        Math.floor(
+            Math.random()*names.length
+        )
+    ];
+
+}
+
+
+/* =========================================================
+   MOVE CUSTOMER
+========================================================= */
+
+function moveTowards(obj){
+
+    const dx =
+        obj.targetX - obj.x;
+
+    const dy =
+        obj.targetY - obj.y;
+
+    const distance =
+        Math.hypot(dx,dy);
+
+    if(distance < 3){
+
+        obj.x =
+            obj.targetX;
+
+        obj.y =
+            obj.targetY;
+
+        return true;
+
+    }
+
+
+    obj.x +=
+        dx/distance *
+        obj.speed;
+
+    obj.y +=
+        dy/distance *
+        obj.speed;
+
+    return false;
+
+}
+
+
+/* =========================================================
+   CUSTOMER UPDATE
+========================================================= */
+
+function updateCustomers(dt){
+
+    for(let i=game.customers.length-1;i>=0;i--){
+
+        const c =
+            game.customers[i];
+
+
+        /* =====================
+           ĐI NGANG
+        ===================== */
+
+        if(c.state === "walkingPast"){
+
+            c.x +=
+                c.x < 0
+                ? c.speed
+                : -c.speed;
+
+
+            if(
+                c.x < -100 ||
+                c.x > MAP.width+100
+            ){
+
+                game.customers.splice(i,1);
+
+            }
+
+            continue;
+
+        }
+
+
+        /* =====================
+           ĐI TỚI BÀN
+        ===================== */
+
+        if(c.state === "walking"){
+
+            if(moveTowards(c)){
+
+                c.state =
+                    "waitingDialogue";
+
+            }
+
+            continue;
+
+        }
+
+
+        /* =====================
+           CHỜ NÓI CHUYỆN
+        ===================== */
+
+        if(
+            c.state === "waitingDialogue"
+        ){
+
+            continue;
+
+        }
+
+
+        /* =====================
+           CHỜ MÓN
+        ===================== */
+
+        if(
+            c.state === "waitingFood"
+        ){
+
+            continue;
+
+        }
+
+
+        /* =====================
+           ĐANG ĂN
+        ===================== */
+
+        if(c.state === "eating"){
+
+            c.eatingTimer -= dt;
+
+            if(
+                c.eatingTimer <= 0
+            ){
+
+                c.state =
+                    "finished";
+
+                showMessage(
+                    c.name +
+                    " đã ăn xong. Hãy tới đuổi khách."
+                );
+
+            }
+
+            continue;
+
+        }
+
+
+        /* =====================
+           ĐÃ ĂN XONG
+        ===================== */
+
+        if(c.state === "finished"){
+
+            continue;
+
+        }
+
+
+        /* =====================
+           ĐANG ĐI RA
+        ===================== */
+
+        if(c.state === "leaving"){
+
+            moveTowards(c);
+
+            if(
+                c.x < -100 ||
+                c.x > MAP.width+100
+            ){
+
+                if(c.table){
+
+                    c.table.customer =
+                        null;
+
+                }
+
+                game.customers.splice(i,1);
+
+            }
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   CREATE FOOD PLATE
+========================================================= */
+
+function ensureFoodPlate(){
+
+    if(game.plate){
+
+        return;
+
+    }
+
+    if(game.heldFood){
+
+        return;
+
+    }
+
+
+    const waiting =
+        game.customers.find(
+            c =>
+                c.state ===
+                "waitingFood"
+        );
+
+
+    if(!waiting){
+
+        return;
+
+    }
+
+
+    game.plate = {
+
+        customerId:
+            waiting.id,
+
+        x:
+            SHOP_DOOR.x +
+            SHOP_DOOR.w/2,
+
+        y:
+            SHOP_DOOR.y +
+            SHOP_DOOR.h +
+            28
+
+    };
+
+}
+
+
+/* =========================================================
+   DISTANCE
+========================================================= */
+
+function distanceTo(x,y){
+
+    return Math.hypot(
+        player.x-x,
+        player.y-y
+    );
+
+}
+
+
+/* =========================================================
+   INTERACTION
+========================================================= */
+
+function interact(){
+
+    if(!game.running){
+
+        return;
+
+    }
+
+
+    /* =====================
+       DIALOGUE
+    ===================== */
+
+    if(game.dialogue){
+
+        nextDialogue();
+
+        return;
+
+    }
+
+
+    /* =====================
+       LẤY ĐĨA
+    ===================== */
+
+    if(game.plate){
+
+        const d =
+            distanceTo(
+                game.plate.x,
+                game.plate.y
+            );
+
+
+        if(d < 70){
+
+            game.heldFood = {
+
+                customerId:
+                    game.plate.customerId
+
+            };
+
+            game.plate = null;
+
+            showMessage(
+                "Đã lấy đĩa món. Mang tới đúng khách!"
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    /* =====================
+       TÌM KHÁCH GẦN NHẤT
+    ===================== */
+
+    let nearest = null;
+
+    let nearestDistance = Infinity;
+
+
+    for(const c of game.customers){
+
+        if(
+            c.state === "walkingPast" ||
+            c.state === "walking" ||
+            c.state === "leaving"
+        ){
+
+            continue;
+
+        }
+
+
+        const d =
+            distanceTo(c.x,c.y);
+
+
+        if(
+            d < nearestDistance
+        ){
+
+            nearestDistance = d;
+
+            nearest = c;
+
+        }
+
+    }
+
+
+    if(
+        nearest &&
+        nearestDistance < 80
+    ){
+
+        /* =====================
+           PHỤC VỤ
+        ===================== */
+
+        if(game.heldFood){
+
+            if(
+                game.heldFood.customerId !==
+                nearest.id
+            ){
+
+                showMessage(
+                    "Món này không phải của khách này!"
+                );
+
+                return;
+
+            }
+
+
+            if(
+                nearest.state !==
+                "waitingFood"
+            ){
+
+                showMessage(
+                    "Khách này chưa gọi món."
+                );
+
+                return;
+
+            }
+
+
+            game.heldFood = null;
+
+            nearest.state =
+                "eating";
+
+            nearest.eatingTimer =
+                30 +
+                Math.random()*20;
+
+            showMessage(
+                "Phục vụ thành công!"
+            );
+
+            ensureFoodPlate();
+
+            return;
+
+        }
+
+
+        /* =====================
+           BẮT ĐẦU HỘI THOẠI
+        ===================== */
+
+        if(
+            nearest.state ===
+            "waitingDialogue"
+        ){
+
+            startCustomerDialogue(
+                nearest
+            );
+
+            return;
+
+        }
+
+
+        /* =====================
+           ĐUỔI KHÁCH
+        ===================== */
+
+        if(
+            nearest.state ===
+            "finished"
+        ){
+
+            dismissCustomer(
+                nearest
+            );
+
+            return;
+
+        }
+
+
+        return;
+
+    }
+
+
+    /* =====================
+       CỬA KHO
+    ===================== */
+
+    if(
+        distanceTo(
+            WAREHOUSE.x +
+            WAREHOUSE.w/2,
+
+            WAREHOUSE.y +
+            WAREHOUSE.h
+        ) < 100
+    ){
+
+        openShop();
+
+        return;
+
+    }
+
+
+    /* =====================
+       CỬA QUÁN
+    ===================== */
+
+    if(
+        distanceTo(
+            SHOP_DOOR.x +
+            SHOP_DOOR.w/2,
+
+            SHOP_DOOR.y +
+            SHOP_DOOR.h/2
+        ) < 80
+    ){
+
+        if(game.heldFood){
+
+            showMessage(
+                "Bạn đang cầm món ăn."
+            );
+
+        }else{
+
+            showMessage(
+                "Đĩa món sẽ xuất hiện ở đây khi khách gọi món."
+            );
+
+        }
+
+        return;
+
+    }
+
+
+    showMessage(
+        "Không có gì để tương tác ở đây."
+    );
+
+}
+
+
+/* =========================================================
+   CUSTOMER DIALOGUE
+========================================================= */
+
+function startCustomerDialogue(customer){
+
+    customer.dialogueDone = true;
+
+    game.dialogue = {
+
+        customer:customer,
+
+        lines:[
+
+            "Chào ông Trung!",
+
+            "Cho tôi một phần ngon nhé.",
+
+            "Tôi ngồi đây chờ món."
+
+        ],
+
+        index:0
+
+    };
+
+
+    customer.state =
+        "dialogue";
+
+    showDialogue();
+
+}
+
+
+/* =========================================================
+   SHOW DIALOGUE
+========================================================= */
+
+function showDialogue(){
+
+    if(!game.dialogue){
+
+        return;
+
+    }
+
+
+    const d =
+        game.dialogue;
+
+    const c =
+        d.customer;
+
+
+    document
+    .getElementById("dialogueName")
+    .textContent =
+        c.name;
+
+
+    document
+    .getElementById("dialogueText")
+    .textContent =
+        d.lines[d.index];
+
+
+    document
+    .getElementById("dialogue")
+    .style.display =
+        "block";
+
+}
+
+
+/* =========================================================
+   NEXT DIALOGUE
+========================================================= */
+
+function nextDialogue(){
+
+    if(!game.dialogue){
+
+        return;
+
+    }
+
+
+    game.dialogue.index++;
+
+
+    if(
+        game.dialogue.index >=
+        game.dialogue.lines.length
+    ){
+
+        const customer =
+            game.dialogue.customer;
+
+
+        game.dialogue = null;
+
+
+        document
+        .getElementById("dialogue")
+        .style.display =
+            "none";
+
+
+        customer.state =
+            "waitingFood";
+
+
+        ensureFoodPlate();
+
+
         showMessage(
-            "Không có khách gần đây."
+            "Khách đã gọi món. Đĩa món đang ở cửa quán."
+        );
+
+
+        return;
+
+    }
+
+
+    showDialogue();
+
+}
+
+
+/* =========================================================
+   DISMISS CUSTOMER
+========================================================= */
+
+function dismissCustomer(customer){
+
+    if(customer.table){
+
+        customer.table.customer =
+            null;
+
+    }
+
+
+    game.money +=
+        150000 +
+        game.shopLevel*25000;
+
+
+    game.reputation =
+        Math.min(
+            100,
+            game.reputation+1
+        );
+
+
+    customer.state =
+        "leaving";
+
+
+    customer.targetX =
+        customer.x < MAP.width/2
+        ? -120
+        : MAP.width+120;
+
+
+    customer.targetY =
+        customer.y;
+
+
+    showMessage(
+        "Khách thanh toán và rời quán."
+    );
+
+
+    updateUI();
+
+}
+
+
+/* =========================================================
+   UPDATE DAY
+========================================================= */
+
+function updateDay(dt){
+
+    game.time += dt;
+
+
+    if(
+        game.time >=
+        game.dayLength
+    ){
+
+        game.time = 0;
+
+        game.day++;
+
+        if(
+            game.day > 30
+        ){
+
+            endMonth();
+
+            return;
+
+        }
+
+
+        game.creditorShown =
+            false;
+
+
+        showMessage(
+            "Bắt đầu ngày " +
+            game.day
+        );
+
+    }
+
+
+    /* =====================
+       CHỦ NỢ
+    ===================== */
+
+    if(
+        game.day % 6 === 0 &&
+        !game.creditorShown
+    ){
+
+        game.creditorShown = true;
+
+        showMessage(
+            "Chủ nợ tới nhắc tiền! Ngày " +
+            game.day
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   SPAWN TIMER
+========================================================= */
+
+function updateSpawning(dt){
+
+    game.spawnTimer -= dt;
+
+
+    if(
+        game.spawnTimer <= 0
+    ){
+
+        spawnCustomer();
+
+        game.spawnTimer =
+            5 +
+            Math.random()*6;
+
+    }
+
+}
+
+
+/* =========================================================
+   DRAW HELPERS
+========================================================= */
+
+function drawContain(img,x,y,w,h){
+
+    if(
+        !img ||
+        !img.naturalWidth
+    ){
+
+        return;
+
+    }
+
+
+    const ratio =
+        Math.min(
+            w/img.naturalWidth,
+            h/img.naturalHeight
+        );
+
+
+    const dw =
+        img.naturalWidth *
+        ratio;
+
+    const dh =
+        img.naturalHeight *
+        ratio;
+
+
+    const dx =
+        x +
+        (w-dw)/2;
+
+    const dy =
+        y +
+        (h-dh)/2;
+
+
+    ctx.drawImage(
+        img,
+        dx,
+        dy,
+        dw,
+        dh
+    );
+
+}
+
+
+/* =========================================================
+   DRAW TILE WITHOUT DISTORTION
+========================================================= */
+
+function drawTiledBackground(){
+
+    const img =
+        assets.background;
+
+
+    if(
+        !img ||
+        !img.naturalWidth
+    ){
+
+        ctx.fillStyle =
+            "#9eddf5";
+
+        ctx.fillRect(
+            0,
+            0,
+            MAP.width,
+            MAP.roadY
         );
 
         return;
-    }
-
-    /*
-      Phục vụ nhanh hơn cho khách.
-    */
-
-    const customer =
-        customers.find(
-            c =>
-            c.id ===
-            table.customerId
-        );
-
-    if(customer){
-
-        customer.eatingUntil =
-            Date.now() +
-            3000;
-
-        showMessage(
-            "Đã phục vụ món ăn."
-        );
 
     }
 
-    closeServePanel();
-}
 
-function closeServePanel(){
+    const tileW = 260;
 
-    document.getElementById(
-        "servePanel"
-    ).style.display =
-        "none";
+    const ratio =
+        tileW /
+        img.naturalWidth;
 
-}
-
-
-/* =========================================================
-   KIỂM TRA PHỤC VỤ GẦN NGƯỜI CHƠI
-   ========================================================= */
-
-function checkServe(){
-
-    const table =
-        checkNearbyTable();
-
-    if(table){
-
-        document.getElementById(
-            "servePanel"
-        ).style.display =
-            "block";
-
-    }
-
-}
+    const tileH =
+        img.naturalHeight *
+        ratio;
 
 
-/* =========================================================
-   NGÀY
-   ========================================================= */
+    for(
+        let y=0;
+        y<MAP.roadY;
+        y+=tileH
+    ){
 
-let dayTimer = 0;
-
-function updateDay(){
-
-    dayTimer++;
-
-    /*
-      60 giây = 1 ngày.
-      Có thể đổi nếu muốn.
-    */
-
-    if(dayTimer >= 60){
-
-        dayTimer = 0;
-
-        currentDay++;
-
-        if(currentDay > 30){
-
-            currentDay = 30;
-
-            gameRunning = false;
-
-            showMessage(
-                "Đã hết 30 ngày!"
-            );
-
-        }
-
-        /*
-          Cứ 6 ngày chủ nợ đến.
-        */
-
-        if(
-            currentDay % 6 === 0
+        for(
+            let x=0;
+            x<MAP.width;
+            x+=tileW
         ){
 
-            showMessage(
-                "Chủ nợ đến đòi tiền!"
+            ctx.drawImage(
+                img,
+                x,
+                y,
+                tileW,
+                tileH
             );
 
         }
 
-        updateUI();
+    }
+
+}
+
+
+/* =========================================================
+   DRAW ROAD
+========================================================= */
+
+function drawRoad(){
+
+    const img =
+        assets.road;
+
+
+    if(
+        !img ||
+        !img.naturalWidth
+    ){
+
+        ctx.fillStyle="#777";
+
+        ctx.fillRect(
+            0,
+            MAP.roadY,
+            MAP.width,
+            MAP.roadHeight
+        );
+
+        return;
 
     }
+
+
+    const tileH =
+        MAP.roadHeight;
+
+    const ratio =
+        tileH /
+        img.naturalHeight;
+
+    const tileW =
+        img.naturalWidth *
+        ratio;
+
+
+    for(
+        let x=0;
+        x<MAP.width;
+        x+=tileW
+    ){
+
+        ctx.drawImage(
+            img,
+            x,
+            MAP.roadY,
+            tileW,
+            tileH
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DRAW TABLE
+========================================================= */
+
+function drawTable(table){
+
+    const x =
+        table.x;
+
+    const y =
+        table.y;
+
+    const s =
+        table.w;
+
+
+    /* bóng */
+
+    ctx.fillStyle =
+        "rgba(0,0,0,.18)";
+
+    ctx.fillRect(
+        x+5,
+        y+7,
+        s,
+        s
+    );
+
+
+    /* bàn vuông */
+
+    ctx.fillStyle =
+        "#8b4d25";
+
+    ctx.fillRect(
+        x,
+        y,
+        s,
+        s
+    );
+
+
+    ctx.strokeStyle =
+        "#4d2815";
+
+    ctx.lineWidth = 3;
+
+    ctx.strokeRect(
+        x,
+        y,
+        s,
+        s
+    );
+
+
+    /* mặt bàn */
+
+    ctx.fillStyle =
+        "#b86e39";
+
+    ctx.fillRect(
+        x+6,
+        y+6,
+        s-12,
+        s-12
+    );
+
+
+    /* ghế trên */
+
+    drawChair(
+        x+s/2-14,
+        y-22
+    );
+
+
+    /* ghế dưới */
+
+    drawChair(
+        x+s/2-14,
+        y+s+7
+    );
+
+
+    /* ghế trái */
+
+    drawChair(
+        x-22,
+        y+s/2-14
+    );
+
+
+    /* ghế phải */
+
+    drawChair(
+        x+s+7,
+        y+s/2-14
+    );
+
+
+    /* số bàn */
+
+    ctx.fillStyle =
+        "#fff";
+
+    ctx.font =
+        "bold 14px Arial";
+
+    ctx.textAlign =
+        "center";
+
+    ctx.fillText(
+        "BÀN " + table.id,
+        x+s/2,
+        y+s/2+5
+    );
+
+}
+
+
+function drawChair(x,y){
+
+    ctx.fillStyle =
+        "#d89b54";
+
+    ctx.fillRect(
+        x,
+        y,
+        28,
+        28
+    );
+
+    ctx.strokeStyle =
+        "#633816";
+
+    ctx.strokeRect(
+        x,
+        y,
+        28,
+        28
+    );
+
+}
+
+
+/* =========================================================
+   DRAW CUSTOMER
+========================================================= */
+
+function drawCustomer(c){
+
+    const r = 15;
+
+
+    ctx.fillStyle =
+        "#efb68c";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        c.x,
+        c.y-15,
+        r,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.fillStyle =
+        "#2868a8";
+
+    ctx.fillRect(
+        c.x-13,
+        c.y,
+        26,
+        30
+    );
+
+
+    ctx.fillStyle =
+        "#222";
+
+    ctx.font =
+        "bold 11px Arial";
+
+    ctx.textAlign =
+        "center";
+
+    ctx.fillText(
+        c.name,
+        c.x,
+        c.y-32
+    );
+
+
+    /* trạng thái */
+
+    let stateText = "";
+
+    if(
+        c.state ===
+        "waitingFood"
+    ){
+
+        stateText =
+            "ĐANG CHỜ MÓN";
+
+    }
+
+    if(
+        c.state ===
+        "eating"
+    ){
+
+        stateText =
+            "ĐANG ĂN";
+
+    }
+
+    if(
+        c.state ===
+        "finished"
+    ){
+
+        stateText =
+            "E - ĐUỔI KHÁCH";
+
+    }
+
+
+    if(stateText){
+
+        ctx.fillStyle =
+            "rgba(255,255,255,.9)";
+
+        ctx.fillRect(
+            c.x-55,
+            c.y+35,
+            110,
+            18
+        );
+
+        ctx.fillStyle =
+            "#222";
+
+        ctx.font =
+            "bold 10px Arial";
+
+        ctx.fillText(
+            stateText,
+            c.x,
+            c.y+48
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DRAW PLATE
+========================================================= */
+
+function drawPlate(){
+
+    if(!game.plate){
+
+        return;
+
+    }
+
+
+    const x =
+        game.plate.x;
+
+    const y =
+        game.plate.y;
+
+
+    /* bóng */
+
+    ctx.fillStyle =
+        "rgba(0,0,0,.2)";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        x,
+        y+8,
+        27,
+        9,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    /* đĩa */
+
+    ctx.fillStyle =
+        "#fff";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y,
+        24,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.strokeStyle =
+        "#333";
+
+    ctx.lineWidth=2;
+
+    ctx.stroke();
+
+
+    /* món */
+
+    ctx.fillStyle =
+        "#a74728";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y,
+        13,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    /* chữ */
+
+    ctx.fillStyle =
+        "#222";
+
+    ctx.font =
+        "bold 12px Arial";
+
+    ctx.textAlign =
+        "center";
+
+    ctx.fillText(
+        "E - LẤY ĐĨA",
+        x,
+        y-34
+    );
+
+}
+
+
+/* =========================================================
+   DRAW PLAYER
+========================================================= */
+
+function drawPlayer(){
+
+    let img;
+
+
+    if(game.heldFood){
+
+        if(
+            player.direction ===
+            "up"
+        ){
+
+            img =
+                assets.carryUp;
+
+        }else if(
+            player.direction ===
+            "left"
+        ){
+
+            img =
+                assets.carryLeft;
+
+        }else if(
+            player.direction ===
+            "right"
+        ){
+
+            img =
+                assets.carryRight;
+
+        }else{
+
+            img =
+                assets.carryDown;
+
+        }
+
+    }else{
+
+        if(
+            player.direction ===
+            "up"
+        ){
+
+            img =
+                assets.playerUp;
+
+        }else if(
+            player.direction ===
+            "left"
+        ){
+
+            img =
+                assets.playerLeft;
+
+        }else if(
+            player.direction ===
+            "right"
+        ){
+
+            img =
+                assets.playerRight;
+
+        }else{
+
+            img =
+                assets.playerDown;
+
+        }
+
+    }
+
+
+    drawContain(
+        img,
+        player.x-30,
+        player.y-42,
+        60,
+        75
+    );
+
+}
+
+
+/* =========================================================
+   DRAW MAP
+========================================================= */
+
+function drawMap(){
+
+    ctx.clearRect(
+        0,
+        0,
+        MAP.width,
+        MAP.height
+    );
+
+
+    /* nền trên */
+
+    drawTiledBackground();
+
+
+    /* nền dưới */
+
+    ctx.fillStyle =
+        "#bfe9ff";
+
+    ctx.fillRect(
+        0,
+        MAP.roadY +
+        MAP.roadHeight,
+        MAP.width,
+        MAP.height -
+        MAP.roadY -
+        MAP.roadHeight
+    );
+
+
+    /* đường */
+
+    drawRoad();
+
+
+    /* warehouse */
+
+    drawContain(
+        assets.warehouse,
+        WAREHOUSE.x,
+        WAREHOUSE.y,
+        WAREHOUSE.w,
+        WAREHOUSE.h
+    );
+
+
+    /* restaurant */
+
+    drawContain(
+        assets.restaurant,
+        RESTAURANT.x,
+        RESTAURANT.y,
+        RESTAURANT.w,
+        RESTAURANT.h
+    );
+
+
+    /* cửa */
+
+    ctx.fillStyle =
+        "#d9a441";
+
+    ctx.fillRect(
+        SHOP_DOOR.x,
+        SHOP_DOOR.y,
+        SHOP_DOOR.w,
+        SHOP_DOOR.h
+    );
+
+
+    ctx.strokeStyle =
+        "#4b321c";
+
+    ctx.lineWidth=3;
+
+    ctx.strokeRect(
+        SHOP_DOOR.x,
+        SHOP_DOOR.y,
+        SHOP_DOOR.w,
+        SHOP_DOOR.h
+    );
+
+
+    ctx.fillStyle =
+        "#222";
+
+    ctx.font =
+        "bold 12px Arial";
+
+    ctx.textAlign =
+        "center";
+
+    ctx.fillText(
+        "CỬA QUÁN",
+        SHOP_DOOR.x+
+        SHOP_DOOR.w/2,
+        SHOP_DOOR.y+22
+    );
+
+
+    /* bàn */
+
+    for(const table of tables){
+
+        drawTable(table);
+
+    }
+
+
+    /* khách */
+
+    for(const c of game.customers){
+
+        drawCustomer(c);
+
+    }
+
+
+    /* đĩa */
+
+    drawPlate();
+
+
+    /* player */
+
+    drawPlayer();
+
+}
+
+
+/* =========================================================
+   UI
+========================================================= */
+
+function updateUI(){
+
+    document
+    .getElementById("dayText")
+    .textContent =
+        game.day;
+
+    document
+    .getElementById("moneyText")
+    .textContent =
+        moneyFormat(game.money);
+
+    document
+    .getElementById("debtText")
+    .textContent =
+        moneyFormat(game.debt);
+
+    document
+    .getElementById("repText")
+    .textContent =
+        game.reputation;
+
+    document
+    .getElementById("meatText")
+    .textContent =
+        game.meat;
+
+}
+
+
+/* =========================================================
+   MONEY FORMAT
+========================================================= */
+
+function moneyFormat(number){
+
+    return number
+        .toLocaleString("vi-VN")
+        + "đ";
+
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+function showMessage(text){
+
+    const box =
+        document
+        .getElementById("message");
+
+
+    box.textContent =
+        text;
+
+    box.style.display =
+        "block";
+
+
+    game.messageTimer = 2.5;
+
+}
+
+
+/* =========================================================
+   MESSAGE UPDATE
+========================================================= */
+
+function updateMessage(dt){
+
+    if(
+        game.messageTimer > 0
+    ){
+
+        game.messageTimer -= dt;
+
+        if(
+            game.messageTimer <= 0
+        ){
+
+            document
+            .getElementById("message")
+            .style.display =
+                "none";
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   BUY MEAT
+========================================================= */
+
+function buyMeat(amount,cheap=false){
+
+    if(
+        game.meat >=
+        game.maxMeat
+    ){
+
+        showMessage(
+            "Kho đã đầy!"
+        );
+
+        return;
+
+    }
+
+
+    const price =
+        cheap
+        ? 500000
+        : 2000000;
+
+
+    if(
+        game.money <
+        price
+    ){
+
+        showMessage(
+            "Không đủ tiền!"
+        );
+
+        return;
+
+    }
+
+
+    game.money -=
+        price;
+
+    game.meat +=
+        amount;
+
+
+    updateUI();
+
+    showMessage(
+        "Đã nhập 1 phần thịt."
+    );
+
+}
+
+
+/* =========================================================
+   PAY DEBT
+========================================================= */
+
+function payDebt(){
+
+    if(game.debt <= 0){
+
+        showMessage(
+            "Bạn đã trả hết nợ."
+        );
+
+        return;
+
+    }
+
+
+    const amount =
+        Math.min(
+            5000000,
+            game.debt
+        );
+
+
+    if(
+        game.money <
+        amount
+    ){
+
+        showMessage(
+            "Không đủ tiền trả 5 triệu."
+        );
+
+        return;
+
+    }
+
+
+    game.money -=
+        amount;
+
+    game.debt -=
+        amount;
+
+
+    updateUI();
+
+
+    showMessage(
+        "Đã trả " +
+        moneyFormat(amount) +
+        " tiền nợ."
+    );
+
+}
+
+
+/* =========================================================
+   UPGRADE
+========================================================= */
+
+function upgradeShop(){
+
+    const cost =
+        game.shopLevel *
+        10000000;
+
+
+    if(
+        game.money <
+        cost
+    ){
+
+        showMessage(
+            "Không đủ tiền nâng cấp."
+        );
+
+        return;
+
+    }
+
+
+    game.money -=
+        cost;
+
+    game.shopLevel++;
+
+
+    game.maxMeat =
+        15 +
+        (game.shopLevel-1)*3;
+
+
+    updateUI();
+
+
+    showMessage(
+        "Nâng cấp thành công! Cấp " +
+        game.shopLevel
+    );
+
+}
+
+
+/* =========================================================
+   SHOP PANEL
+========================================================= */
+
+function openShop(){
+
+    closePanels();
+
+    document
+    .getElementById("shopPanel")
+    .style.display =
+        "block";
+
+}
+
+
+function showHelp(){
+
+    closePanels();
+
+    document
+    .getElementById("helpPanel")
+    .style.display =
+        "block";
+
+}
+
+
+function showLeaderboard(){
+
+    closePanels();
+
+    const data =
+        JSON.parse(
+            localStorage.getItem(
+                "ot_v2_rank"
+            ) || "[]"
+        );
+
+
+    data.push({
+
+        name:
+            game.leaderboardName,
+
+        money:
+            game.money,
+
+        day:
+            game.day
+
+    });
+
+
+    data.sort(
+        (a,b)=>
+            b.money-a.money
+    );
+
+
+    const top =
+        data.slice(0,10);
+
+
+    let html = "";
+
+
+    top.forEach(
+        (item,index)=>{
+
+            html +=
+                `<p>
+                    <b>#${index+1}</b>
+                    ${escapeHTML(item.name)}
+                    -
+                    ${moneyFormat(item.money)}
+                </p>`;
+
+        }
+    );
+
+
+    document
+    .getElementById(
+        "leaderboardContent"
+    )
+    .innerHTML =
+        html || "Chưa có dữ liệu.";
+
+
+    document
+    .getElementById(
+        "leaderPanel"
+    )
+    .style.display =
+        "block";
+
+}
+
+
+function toggleMenu(){
+
+    closePanels();
+
+    document
+    .getElementById("menuPanel")
+    .style.display =
+        "block";
+
+}
+
+
+function closePanels(){
+
+    document
+    .querySelectorAll(".panel")
+    .forEach(
+        p =>
+            p.style.display =
+                "none"
+    );
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(text){
+
+    return String(text)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   SAVE
+========================================================= */
+
+function saveGame(){
+
+    const data = {
+
+        leaderboardName:
+            game.leaderboardName,
+
+        day:
+            game.day,
+
+        money:
+            game.money,
+
+        debt:
+            game.debt,
+
+        reputation:
+            game.reputation,
+
+        meat:
+            game.meat,
+
+        maxMeat:
+            game.maxMeat,
+
+        shopLevel:
+            game.shopLevel
+
+    };
+
+
+    localStorage.setItem(
+        "thi_t_cho_ong_trung_save",
+        JSON.stringify(data)
+    );
+
+
+    showMessage(
+        "Đã lưu game."
+    );
+
+}
+
+
+/* =========================================================
+   END MONTH
+========================================================= */
+
+function endMonth(){
+
+    game.running=false;
+
+
+    if(
+        game.debt <= 0
+    ){
+
+        showMessage(
+            "Bạn đã trả hết nợ!"
+        );
+
+    }else{
+
+        showMessage(
+            "Hết 30 ngày. Còn " +
+            moneyFormat(game.debt) +
+            " tiền nợ."
+        );
+
+    }
+
+
+    saveLeaderboard();
+
+}
+
+
+/* =========================================================
+   SAVE LEADERBOARD
+========================================================= */
+
+function saveLeaderboard(){
+
+    const data =
+        JSON.parse(
+            localStorage.getItem(
+                "ot_v2_rank"
+            ) || "[]"
+        );
+
+
+    data.push({
+
+        name:
+            game.leaderboardName,
+
+        money:
+            game.money,
+
+        day:
+            game.day
+
+    });
+
+
+    data.sort(
+        (a,b)=>
+            b.money-a.money
+    );
+
+
+    localStorage.setItem(
+        "ot_v2_rank",
+        JSON.stringify(
+            data.slice(0,50)
+        )
+    );
 
 }
 
 
 /* =========================================================
    GAME LOOP
-   ========================================================= */
+========================================================= */
 
-function gameLoop(){
+let lastTime =
+    performance.now();
 
-    if(gameRunning){
 
-        updatePlayer();
+function gameLoop(now){
 
-        updateCustomers();
+    if(!game.running){
 
-        checkServe();
+        drawMap();
 
-        updateDay();
+        return;
 
     }
+
+
+    const dt =
+        Math.min(
+            0.05,
+            (now-lastTime)/1000
+        );
+
+
+    lastTime =
+        now;
+
+
+    updatePlayer();
+
+    updateCustomers(dt);
+
+    updateSpawning(dt);
+
+    updateDay(dt);
+
+    updateMessage(dt);
+
+    ensureFoodPlate();
+
+    updateUI();
+
+    drawMap();
+
 
     requestAnimationFrame(
         gameLoop
@@ -1569,52 +3533,7 @@ function gameLoop(){
 }
 
 
-/* =========================================================
-   KHỞI ĐỘNG
-   ========================================================= */
-
-function init(){
-
-    /*
-      Đảm bảo ảnh player dùng đúng asset.
-    */
-
-    document.getElementById(
-        "playerImg"
-    ).src =
-        ASSETS.player;
-
-    createTables();
-
-    updateUI();
-
-    /*
-      Tạo sẵn một số khách ban đầu.
-    */
-
-    for(let i=0;i<8;i++){
-
-        setTimeout(
-            spawnCustomer,
-            i*350
-        );
-
-    }
-
-    /*
-      Sau đó spawn liên tục.
-    */
-
-    scheduleNextCustomer();
-
-    gameLoop();
-
-}
-
-init();
-
 </script>
 
 </body>
 </html>
-```
