@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -25,10 +24,7 @@ body{
 body{
     font-family:Arial,Helvetica,sans-serif;
     color:#222;
-
-    /* NỀN TRANG CHỈ LÀ XANH NHẠT */
     background:#bde8ff;
-
     background-attachment:scroll;
 }
 
@@ -196,7 +192,7 @@ button{
     border:3px solid #222;
     border-radius:14px;
 
-    background:#bde8ff;
+    background:transparent;
 
     box-shadow:
         0 7px 20px rgba(0,0,0,.22);
@@ -729,16 +725,116 @@ button{
     }
 
 }
+
+
+/* =====================================================
+   VISUAL UPGRADE — ÔNG TRUNG DELUXE
+===================================================== */
+body{
+    background:#bde8ff;
+}
+
+#gamePage{
+    max-width:1200px;
+}
+
+.startBox,
+.endBox{
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(245,251,255,.96));
+    border:3px solid #222;
+    box-shadow:0 18px 45px rgba(0,0,0,.22),0 2px 0 rgba(255,255,255,.9) inset;
+}
+
+.startBox::before,
+.endBox::before{
+    content:"";
+    position:absolute;
+    left:-20%;
+    top:-80px;
+    width:140%;
+    height:130px;
+    background:linear-gradient(90deg,transparent,rgba(255,205,50,.22),transparent);
+    transform:rotate(-4deg);
+    pointer-events:none;
+}
+
+.startBox h1{
+    letter-spacing:.5px;
+    text-shadow:0 2px 0 #fff;
+}
+
+.topBar{
+    position:sticky;
+    top:5px;
+    z-index:20;
+}
+
+.stat{
+    position:relative;
+    overflow:hidden;
+    background:rgba(255,255,255,.94);
+    border:2px solid #222;
+    box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+
+.stat::after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    height:3px;
+    background:#e5b400;
+    opacity:.9;
+}
+
+#gameCanvas{
+    border:3px solid #202020;
+    box-shadow:0 14px 32px rgba(0,0,0,.25),0 0 0 4px rgba(255,255,255,.38);
+}
+
+.moveBox button,
+.actionBox button,
+#eButton{
+    box-shadow:0 4px 9px rgba(0,0,0,.13);
+    transition:transform .12s ease,box-shadow .12s ease,filter .12s ease;
+}
+
+.moveBox button:hover,
+.actionBox button:hover,
+#eButton:hover{
+    filter:brightness(1.04);
+    box-shadow:0 6px 13px rgba(0,0,0,.16);
+}
+
+.actionBox button:nth-child(1){border-color:#4b8f57}
+.actionBox button:nth-child(2){border-color:#b48a00}
+.actionBox button:nth-child(3){border-color:#52749a}
+.actionBox button:nth-child(4){border-color:#7955a8}
+.actionBox button:nth-child(5){border-color:#368b87}
+
+.panel,.modalBox{
+    box-shadow:0 12px 30px rgba(0,0,0,.16);
+}
+
+#gameMessage{
+    border:2px solid #e5b400;
+    box-shadow:0 8px 22px rgba(0,0,0,.22);
+    font-weight:bold;
+}
+
+@media(max-width:750px){
+    .topBar{position:relative;top:auto}
+}
+
 </style>
 </head>
 
 <body>
 
 <div id="gamePage">
-
-<!-- =================================================
-     MÀN HÌNH BẮT ĐẦU
-================================================= -->
 
 <section id="startScreen">
 
@@ -769,10 +865,6 @@ button{
 
 </section>
 
-
-<!-- =================================================
-     GAME
-================================================= -->
 
 <section id="gameScreen">
 
@@ -819,8 +911,6 @@ button{
 
     </div>
 
-
-    <!-- ĐIỀU KHIỂN -->
 
     <div class="controlArea">
 
@@ -889,8 +979,6 @@ button{
     </div>
 
 
-    <!-- NHẬP HÀNG -->
-
     <div
         class="panel"
         id="shopPanel">
@@ -955,8 +1043,6 @@ button{
     </div>
 
 
-    <!-- NÂNG CẤP -->
-
     <div
         class="panel"
         id="upgradePanel">
@@ -995,8 +1081,6 @@ button{
     </div>
 
 
-    <!-- BXH -->
-
     <div
         class="panel"
         id="leaderboardPanel">
@@ -1020,10 +1104,6 @@ button{
 
 </section>
 
-
-<!-- =================================================
-     MÀN HÌNH KẾT THÚC
-================================================= -->
 
 <section id="endScreen">
 
@@ -1068,16 +1148,8 @@ button{
 </div>
 
 
-<!-- =================================================
-     MESSAGE
-================================================= -->
-
 <div id="gameMessage"></div>
 
-
-<!-- =================================================
-     DIALOG
-================================================= -->
 
 <div
     class="modal"
@@ -1099,10 +1171,6 @@ button{
 
 </div>
 
-
-<!-- =================================================
-     GUIDE
-================================================= -->
 
 <div
     class="modal"
@@ -1163,10 +1231,6 @@ button{
 </div>
 
 
-<!-- =================================================
-     STATUS
-================================================= -->
-
 <div
     class="modal"
     id="statusModal">
@@ -1208,11 +1272,6 @@ const H=canvas.height;
 
 const images={};
 
-
-/* =====================================================
-   HÀM LOAD ẢNH
-===================================================== */
-
 function loadImage(
     name,
     file
@@ -1226,69 +1285,32 @@ function loadImage(
 
 }
 
-
-/* =====================================================
-   NỀN GAME
-===================================================== */
-
-/*
-   15.jpg được đưa vào hệ thống ảnh
-   và sẽ được vẽ trực tiếp trên Canvas.
-*/
-
-loadImage(
-    "background",
-    "15.jpg"
-);
-
-
-/* =====================================================
-   CÁC ẢNH GAME HIỆN TẠI
-===================================================== */
-
 loadImage("building","01.png");
-
 loadImage("warehouse","02.png");
 
 loadImage("down","03.png");
-
 loadImage("up","04.png");
-
 loadImage("left","05.png");
-
 loadImage("right","06.png");
 
 loadImage("foodDown","07.png");
-
 loadImage("foodUp","08.png");
-
 loadImage("foodLeft","09.png");
-
 loadImage("foodRight","10.png");
 
 loadImage("road","11.png");
+loadImage("background","15.jpg");
 
-
-/* =====================================================
-   ẢNH KHÁCH
-===================================================== */
 
 const customerData=[
 
     ["Dũng","dung.png"],
-
     ["Tuấn","tuan.png"],
-
     ["Hùng","hung.png"],
-
     ["Nam","nam.png"],
-
     ["Minh","minh.png"],
-
     ["Long","long.png"],
-
     ["Phong","phong.png"],
-
     ["An","an.png"]
 
 ];
@@ -1358,13 +1380,19 @@ let game={
 
     messageTimer:0,
 
-    message:""
+    message:"",
+
+    effects:[],
+
+    visualTime:0,
+
+    lastFrame:performance.now()
 
 };
 
 
 /* =====================================================
-   BXH
+   BXH LƯU TRÊN TRÌNH DUYỆT
 ===================================================== */
 
 const RANK_KEY=
@@ -1469,48 +1497,34 @@ const player={
 const restaurant={
 
     x:410,
-
     y:55,
-
     w:280,
-
     h:155
 
 };
 
-
 const warehouse={
 
     x:55,
-
     y:55,
-
     w:220,
-
     h:145
 
 };
 
-
 const shopDoor={
 
     x:515,
-
     y:190,
-
     w:70,
-
     h:30
 
 };
 
-
 const roadY=220;
-
 const roadH=80;
 
 const tableSize=68;
-
 
 const tables=[
 
@@ -1558,7 +1572,6 @@ const tables=[
 ===================================================== */
 
 const keys={};
-
 
 document.addEventListener(
     "keydown",
@@ -1734,7 +1747,13 @@ function startGame(){
 
         messageTimer:0,
 
-        message:""
+        message:"",
+
+        effects:[],
+
+        visualTime:0,
+
+        lastFrame:performance.now()
 
     };
 
@@ -1746,9 +1765,7 @@ function startGame(){
 
 
     player.x=550;
-
     player.y=300;
-
     player.direction="down";
 
 
@@ -1788,7 +1805,6 @@ function startGame(){
 function movePlayer(){
 
     let dx=0;
-
     let dy=0;
 
 
@@ -1798,7 +1814,6 @@ function movePlayer(){
     ){
 
         dy--;
-
         player.direction="up";
 
     }
@@ -1810,7 +1825,6 @@ function movePlayer(){
     ){
 
         dy++;
-
         player.direction="down";
 
     }
@@ -1822,7 +1836,6 @@ function movePlayer(){
     ){
 
         dx--;
-
         player.direction="left";
 
     }
@@ -1834,7 +1847,6 @@ function movePlayer(){
     ){
 
         dx++;
-
         player.direction="right";
 
     }
@@ -1846,7 +1858,6 @@ function movePlayer(){
             Math.hypot(dx,dy);
 
         dx/=length;
-
         dy/=length;
 
 
@@ -1988,110 +1999,35 @@ function customerPositionFree(
 ===================================================== */
 
 function spawnCustomer(){
+    if(game.customers.length>=MAX_CUSTOMERS) return false;
 
-    if(
-        game.customers.length>=
-        MAX_CUSTOMERS
-    ){
+    const data=customerData[Math.floor(Math.random()*customerData.length)];
+    const startX=320+Math.random()*460;
+    const startY=roadY+roadH+28;
 
-        return false;
+    if(!customerPositionFree(startX,startY)) return false;
 
-    }
-
-
-    const table=
-        freeTable();
-
-
-    if(!table)
-        return false;
-
-
-    const data=
-        customerData[
-            Math.floor(
-                Math.random()*
-                customerData.length
-            )
-        ];
-
-
-    const startX=
-        320+
-        Math.random()*460;
-
-
-    const startY=
-        roadY+
-        roadH+
-        35;
-
-
-    if(
-        !customerPositionFree(
-            startX,
-            startY
-        )
-    ){
-
-        return false;
-
-    }
-
-
+    const table=freeTable();
     const customer={
-
-        id:
-            Date.now()+
-            Math.random(),
-
+        id:Date.now()+Math.random(),
         name:data[0],
-
-        img:
-            images[
-                "customer_"+data[0]
-            ],
-
+        img:images["customer_"+data[0]],
         x:startX,
-
         y:startY,
-
         table:table,
-
-        state:"walking",
-
+        state:table?"walking":"queue",
         dialogueIndex:0,
-
         eatingTimer:0,
-
-        payment:
-            300000+
-            Math.floor(
-                Math.random()*500000
-            ),
-
-        speed:
-            1.05+
-            Math.random()*.4
-
+        payment:300000+Math.floor(Math.random()*500000),
+        speed:1.15+Math.random()*.55
     };
 
-
-    table.occupied=true;
-
-
-    game.customers.push(
-        customer
-    );
-
-
+    if(table) table.occupied=true;
+    game.customers.push(customer);
     game.totalCustomers++;
-
-
+    burst(startX,startY,5);
     return true;
-
 }
-
 
 /* =====================================================
    SPAWN CAR
@@ -2162,6 +2098,8 @@ function drawCar(car){
     }
 
 
+    /* bóng */
+
     ctx.fillStyle=
         "rgba(0,0,0,.25)";
 
@@ -2180,7 +2118,12 @@ function drawCar(car){
     ctx.fill();
 
 
-    ctx.fillStyle="#d93636";
+    /* thân xe */
+
+    const carColors=["#d93636","#2f73b7","#e39b25","#4d9b62"];
+    const carColor=car.color||carColors[Math.floor(Math.random()*carColors.length)];
+    car.color=carColor;
+    ctx.fillStyle=carColor;
 
     ctx.beginPath();
 
@@ -2195,6 +2138,8 @@ function drawCar(car){
     ctx.fill();
 
 
+    /* thân dưới */
+
     ctx.fillStyle="#aa1e28";
 
     ctx.fillRect(
@@ -2205,7 +2150,9 @@ function drawCar(car){
     );
 
 
-    ctx.fillStyle="#c42b32";
+    /* nóc */
+
+    ctx.fillStyle=carColor;
 
     ctx.beginPath();
 
@@ -2219,6 +2166,8 @@ function drawCar(car){
 
     ctx.fill();
 
+
+    /* kính trước */
 
     ctx.fillStyle="#9fd9e8";
 
@@ -2237,6 +2186,8 @@ function drawCar(car){
     ctx.fill();
 
 
+    /* kính sau */
+
     ctx.beginPath();
 
     ctx.moveTo(2,-29);
@@ -2252,12 +2203,16 @@ function drawCar(car){
     ctx.fill();
 
 
+    /* kính viền */
+
     ctx.strokeStyle="#355866";
 
     ctx.lineWidth=2;
 
     ctx.stroke();
 
+
+    /* bánh */
 
     ctx.fillStyle="#161616";
 
@@ -2287,6 +2242,8 @@ function drawCar(car){
     ctx.fill();
 
 
+    /* mâm */
+
     ctx.fillStyle="#aaa";
 
     ctx.beginPath();
@@ -2314,6 +2271,8 @@ function drawCar(car){
 
     ctx.fill();
 
+
+    /* đèn */
 
     ctx.fillStyle="#fff3a0";
 
@@ -2380,7 +2339,6 @@ function moveTowards(
     ){
 
         object.x=targetX;
-
         object.y=targetY;
 
         return true;
@@ -2405,108 +2363,42 @@ function moveTowards(
 ===================================================== */
 
 function updateCustomers(){
+    assignWaitingCustomer();
 
-    for(
-        let i=
-            game.customers.length-1;
-        i>=0;
-        i--
-    ){
+    for(let i=game.customers.length-1;i>=0;i--){
+        const c=game.customers[i];
 
-        const c=
-            game.customers[i];
-
-
-        if(
-            c.state==="walking"
-        ){
-
-            const arrived=
-                moveTowards(
-
-                    c,
-
-                    c.table.x+
-                    tableSize/2,
-
-                    c.table.y+
-                    tableSize/2,
-
-                    c.speed
-
-                );
-
-
-            if(arrived){
-
-                c.state=
-                    "waitingDialogue";
-
-            }
-
+        if(c.state==="queue"){
+            const queued=game.customers.filter(x=>x.state==="queue");
+            const index=queued.indexOf(c);
+            const spot=queueSpot(Math.max(0,index));
+            moveTowards(c,spot.x,spot.y,c.speed*.8);
         }
-
-
-        else if(
-            c.state==="eating"
-        ){
-
+        else if(c.state==="walking" && c.table){
+            const arrived=moveTowards(c,c.table.x+tableSize/2,c.table.y+tableSize/2,c.speed);
+            if(arrived) c.state="waitingDialogue";
+        }
+        else if(c.state==="eating"){
             c.eatingTimer-=16;
-
-
-            if(
-                c.eatingTimer<=0
-            ){
-
-                c.state=
-                    "finished";
-
+            if(c.eatingTimer<=0){
+                c.state="finished";
+                addFloatText("Ăn xong!",c.x,c.y-55,"normal");
+                burst(c.x,c.y,6);
             }
-
         }
-
-
-        else if(
-            c.state==="leaving"
-        ){
-
-            const targetX=
-                c.x<W/2
-                ? -100
-                : W+100;
-
-
-            const gone=
-                moveTowards(
-
-                    c,
-
-                    targetX,
-
-                    c.y,
-
-                    2.2
-
-                );
-
-
+        else if(c.state==="leaving"){
+            const targetX=c.x<W/2?-100:W+100;
+            const gone=moveTowards(c,targetX,c.y,2.4);
             if(gone){
-
-                c.table.occupied=false;
-
-                game.customers.splice(
-                    i,
-                    1
-                );
-
+                if(c.table) c.table.occupied=false;
+                game.customers.splice(i,1);
             }
-
         }
-
     }
 
+    separateCustomers();
+    assignWaitingCustomer();
 }
-
 
 /* =====================================================
    UPDATE CARS
@@ -2795,6 +2687,8 @@ function interact(){
         nearestDistance<90
     ){
 
+        /* Ưu tiên phục vụ khi đang cầm món */
+
         if(
             game.heldFood
         ){
@@ -2912,7 +2806,8 @@ function serveCustomer(c){
 
 
     game.served++;
-
+    addFloatText("+MÓN",c.x,c.y-65,"normal");
+    burst(c.x,c.y,10);
 
     message(
         "Đã phục vụ "+
@@ -2941,6 +2836,8 @@ function dismissCustomer(c){
 
     game.income+=
         c.payment;
+    addFloatText("+"+money(c.payment),c.x,c.y-70,"money");
+    burst(c.x,c.y,12);
 
 
     game.reputation=
@@ -3047,7 +2944,7 @@ function upgradeCapacity(){
     ){
 
         message(
-            "Không đủ tiền nâng cấp."
+            "Không đủ tiền."
         );
 
         return;
@@ -3132,11 +3029,6 @@ function updateSpawn(){
         return;
 
 
-    /*
-       Khách và xe xuất hiện liên tục.
-       Tối đa 20 khách.
-    */
-
     const type=
         Math.random();
 
@@ -3165,8 +3057,8 @@ function updateSpawn(){
 
 
     game.spawnTimer=
-        1700+
-        Math.random()*2300;
+        1150+
+        Math.random()*1800;
 
 }
 
@@ -3228,53 +3120,525 @@ function drawContain(
 
 
 /* =====================================================
-   BACKGROUND
+   BACKGROUND + EFFECTS
 ===================================================== */
 
-/*
-   15.jpg phủ kín toàn bộ Canvas 1100x620.
-
-   Ảnh được vẽ trực tiếp bằng Canvas,
-   không còn liên quan đến background của body.
-*/
-
 function drawBackground(){
+    const image=images.background;
 
-    const image=
-        images.background;
+    if(image && image.complete && image.naturalWidth){
+        ctx.drawImage(image,0,0,W,H);
+    }else{
+        const g=ctx.createLinearGradient(0,0,0,H);
+        g.addColorStop(0,"#bde8ff");
+        g.addColorStop(1,"#dff5ff");
+        ctx.fillStyle=g;
+        ctx.fillRect(0,0,W,H);
+    }
 
+    const glow=ctx.createRadialGradient(W*.5,H*.28,60,W*.5,H*.45,W*.78);
+    glow.addColorStop(0,"rgba(255,255,255,.10)");
+    glow.addColorStop(1,"rgba(0,0,0,.13)");
+    ctx.fillStyle=glow;
+    ctx.fillRect(0,0,W,H);
+}
+
+function addFloatText(text,x,y,kind="normal"){
+    game.effects.push({
+        type:"text",
+        text,
+        x,y,
+        life:900,
+        maxLife:900,
+        vy:-.45,
+        kind
+    });
+}
+
+function burst(x,y,count=8){
+    for(let i=0;i<count;i++){
+        const a=Math.random()*Math.PI*2;
+        const speed=1+Math.random()*2.2;
+        game.effects.push({
+            type:"particle",
+            x,y,
+            vx:Math.cos(a)*speed,
+            vy:Math.sin(a)*speed-1,
+            life:450+Math.random()*350,
+            maxLife:800,
+            size:2+Math.random()*3
+        });
+    }
+}
+
+function updateEffects(dt){
+    game.visualTime+=dt;
+
+    for(let i=game.effects.length-1;i>=0;i--){
+        const e=game.effects[i];
+        e.life-=dt;
+
+        if(e.type==="text"){
+            e.y+=e.vy;
+        }
+        else{
+            e.x+=e.vx;
+            e.y+=e.vy;
+            e.vy+=.025;
+        }
+
+        if(e.life<=0)
+            game.effects.splice(i,1);
+    }
+}
+
+function drawEffects(){
+    game.effects.forEach(e=>{
+        const alpha=Math.max(0,e.life/e.maxLife);
+
+        ctx.save();
+
+        ctx.globalAlpha=alpha;
+
+        if(e.type==="text"){
+
+            ctx.font="bold 15px Arial";
+            ctx.textAlign="center";
+            ctx.textBaseline="middle";
+
+            ctx.lineWidth=4;
+            ctx.strokeStyle="rgba(255,255,255,.9)";
+
+            ctx.strokeText(
+                e.text,
+                e.x,
+                e.y
+            );
+
+            ctx.fillStyle=
+                e.kind==="money"
+                ?" #16803c".trim()
+                :"#b07b00";
+
+            ctx.fillText(
+                e.text,
+                e.x,
+                e.y
+            );
+
+        }
+        else{
+
+            ctx.fillStyle="#ffd447";
+
+            ctx.beginPath();
+
+            ctx.arc(
+                e.x,
+                e.y,
+                e.size,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+
+        }
+
+        ctx.restore();
+    });
+}
+
+function drawCanvasBadge(
+    text,
+    x,
+    y,
+    opts={}
+){
+
+    ctx.save();
+
+    const font=
+        opts.font ||
+        "bold 12px Arial";
+
+    ctx.font=font;
+
+    const padX=
+        opts.padX ||
+        10;
+
+    const h=
+        opts.height ||
+        25;
+
+    const w=
+        ctx.measureText(text).width+
+        padX*2;
+
+    const bx=
+        x-w/2;
+
+    const by=
+        y-h;
+
+    ctx.fillStyle=
+        opts.bg ||
+        "rgba(255,255,255,.97)";
+
+    ctx.strokeStyle=
+        opts.border ||
+        "#e5b400";
+
+    ctx.lineWidth=
+        opts.lineWidth ||
+        2;
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        bx,
+        by,
+        w,
+        h,
+        7
+    );
+
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle=
+        opts.color ||
+        "#171717";
+
+    ctx.textAlign="center";
+    ctx.textBaseline="middle";
+
+    ctx.fillText(
+        text,
+        x,
+        by+h/2
+    );
+
+    ctx.restore();
+}
+
+function drawCustomerLabel(customer){
+
+    let title="";
+    let border="#e5b400";
 
     if(
-        !image ||
-        !image.complete ||
-        !image.naturalWidth
-    ){
+        customer.state===
+        "waitingDialogue"
+    )
+        title="KHÁCH GỌI MÓN";
 
-        ctx.fillStyle="#bde8ff";
+    else if(
+        customer.state===
+        "waitingFood"
+    )
+        title="CHỜ MÓN";
 
-        ctx.fillRect(
-            0,
-            0,
-            W,
-            H
-        );
+    else if(
+        customer.state===
+        "eating"
+    )
+        title="ĐANG ĂN";
 
+    else if(
+        customer.state===
+        "finished"
+    )
+        title="ĂN XONG • E";
+
+    else if(
+        customer.state===
+        "queue"
+    )
+        title="ĐANG CHỜ BÀN";
+
+    if(!title)
         return;
+
+    const bob=
+        Math.sin(
+            game.visualTime/260+
+            customer.id
+        )*2;
+
+    drawCanvasBadge(
+        title,
+        customer.x,
+        customer.y-51+bob,
+        {
+            border
+        }
+    );
+
+    ctx.save();
+
+    ctx.font=
+        "bold 11px Arial";
+
+    ctx.textAlign="center";
+    ctx.textBaseline="middle";
+
+    const nameW=
+        ctx.measureText(
+            customer.name
+        ).width+16;
+
+    ctx.fillStyle=
+        "rgba(20,20,20,.82)";
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        customer.x-nameW/2,
+        customer.y+43,
+        nameW,
+        20,
+        6
+    );
+
+    ctx.fill();
+
+    ctx.fillStyle="#fff";
+
+    ctx.fillText(
+        customer.name,
+        customer.x,
+        customer.y+53
+    );
+
+    ctx.restore();
+}
+
+function drawPlayerBadge(){
+
+    const bob=
+        Math.sin(
+            game.visualTime/300
+        )*1.5;
+
+    drawCanvasBadge(
+        "ĐẠT TRUNG",
+        player.x,
+        player.y-48+bob,
+        {
+            font:"bold 13px Arial",
+            height:27,
+            padX:12,
+            border:"#e5b400"
+        }
+    );
+}
+
+function drawInteractionHint(){
+
+    let target=null;
+    let best=Infinity;
+
+    if(game.plate){
+
+        const d=
+            distance(
+                player,
+                game.plate
+            );
+
+        if(d<110){
+
+            target=
+                game.plate;
+
+            best=d;
+
+        }
 
     }
 
+    game.customers.forEach(c=>{
 
-    ctx.drawImage(
+        if(
+            c.state==="walking" ||
+            c.state==="queue"
+        )
+            return;
 
-        image,
+        const d=
+            distance(
+                player,
+                c
+            );
 
+        if(d<best){
+
+            target=c;
+            best=d;
+
+        }
+
+    });
+
+    if(
+        !target ||
+        best>90
+    )
+        return;
+
+    ctx.save();
+
+    ctx.strokeStyle=
+        "rgba(229,180,0,.9)";
+
+    ctx.lineWidth=3;
+
+    ctx.setLineDash([
+        7,
+        5
+    ]);
+
+    ctx.beginPath();
+
+    ctx.arc(
+        target.x,
+        target.y,
+        46+
+        Math.sin(
+            game.visualTime/130
+        )*3,
         0,
-        0,
-
-        W,
-        H
-
+        Math.PI*2
     );
+
+    ctx.stroke();
+
+    ctx.restore();
+}
+
+function queueSpot(index){
+
+    const col=
+        index%10;
+
+    const row=
+        Math.floor(
+            index/10
+        );
+
+    return {
+
+        x:
+            75+
+            col*105,
+
+        y:
+            505+
+            row*58
+
+    };
+
+}
+
+function assignWaitingCustomer(){
+
+    const table=
+        freeTable();
+
+    if(!table)
+        return;
+
+    const waiting=
+        game.customers.find(
+            c=>
+                c.state==="queue"
+        );
+
+    if(!waiting)
+        return;
+
+    waiting.table=
+        table;
+
+    table.occupied=
+        true;
+
+    waiting.state=
+        "walking";
+
+}
+
+function separateCustomers(){
+
+    for(
+        let i=0;
+        i<game.customers.length;
+        i++
+    ){
+
+        for(
+            let j=i+1;
+            j<game.customers.length;
+            j++
+        ){
+
+            const a=
+                game.customers[i];
+
+            const b=
+                game.customers[j];
+
+            if(
+                a.state==="leaving" ||
+                b.state==="leaving"
+            )
+                continue;
+
+            const dx=
+                b.x-a.x;
+
+            const dy=
+                b.y-a.y;
+
+            const d=
+                Math.hypot(
+                    dx,
+                    dy
+                ) ||
+                .001;
+
+            const min=48;
+
+            if(d<min){
+
+                const push=
+                    (min-d)/2;
+
+                const nx=
+                    dx/d;
+
+                const ny=
+                    dy/d;
+
+                a.x-=
+                    nx*push;
+
+                a.y-=
+                    ny*push;
+
+                b.x+=
+                    nx*push;
+
+                b.y+=
+                    ny*push;
+
+            }
+
+        }
+
+    }
 
 }
 
@@ -3344,371 +3708,163 @@ function drawRoad(){
 
 function drawTables(){
 
-    tables.forEach(table=>{
+    tables.forEach(
+        (table,index)=>{
 
-        ctx.fillStyle="#754723";
-
-
-        ctx.fillRect(
-            table.x,
-            table.y,
-            tableSize,
-            tableSize
-        );
-
-
-        ctx.strokeStyle="#2d190c";
-
-        ctx.lineWidth=3;
+            const pulse=
+                table.occupied
+                ?Math.sin(
+                    game.visualTime/300+
+                    index
+                )*1.5
+                :0;
 
 
-        ctx.strokeRect(
-            table.x,
-            table.y,
-            tableSize,
-            tableSize
-        );
+            ctx.save();
 
 
-        ctx.fillStyle="#a36a37";
+            ctx.fillStyle=
+                "rgba(0,0,0,.24)";
+
+            ctx.beginPath();
+
+            ctx.ellipse(
+                table.x+
+                tableSize/2,
+                table.y+
+                tableSize+
+                18,
+                42,
+                10,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
 
 
-        ctx.fillRect(
-            table.x+20,
-            table.y-18,
-            28,
-            14
-        );
+            ctx.fillStyle=
+                "#754723";
+
+            ctx.strokeStyle=
+                "#2d190c";
+
+            ctx.lineWidth=3;
 
 
-        ctx.fillRect(
-            table.x+20,
-            table.y+
-            tableSize+
-            4,
-            28,
-            14
-        );
+            ctx.beginPath();
+
+            ctx.roundRect(
+                table.x,
+                table.y-pulse,
+                tableSize,
+                tableSize,
+                9
+            );
+
+            ctx.fill();
+            ctx.stroke();
 
 
-        ctx.fillRect(
-            table.x-18,
-            table.y+20,
-            14,
-            28
-        );
+            ctx.fillStyle=
+                "#a36a37";
 
 
-        ctx.fillRect(
-            table.x+
-            tableSize+
-            4,
-            table.y+20,
-            14,
-            28
-        );
+            const chairs=[
 
-    });
+                [
+                    table.x+20,
+                    table.y-18,
+                    28,
+                    14
+                ],
 
-}
+                [
+                    table.x+20,
+                    table.y+
+                    tableSize+
+                    4,
+                    28,
+                    14
+                ],
 
+                [
+                    table.x-18,
+                    table.y+20,
+                    14,
+                    28
+                ],
 
-/* =====================================================
-   BẢNG TRẠNG THÁI KHÁCH
-===================================================== */
+                [
+                    table.x+
+                    tableSize+
+                    4,
+                    table.y+20,
+                    14,
+                    28
+                ]
 
-function drawCustomerLabel(customer){
-
-    let title="";
-
-
-    if(
-        customer.state===
-        "waitingDialogue"
-    ){
-
-        title="KHÁCH GỌI MÓN";
-
-    }
-
-
-    else if(
-        customer.state===
-        "waitingFood"
-    ){
-
-        title="CHỜ MÓN";
-
-    }
+            ];
 
 
-    else if(
-        customer.state===
-        "eating"
-    ){
-
-        title="ĐANG ĂN";
-
-    }
+            chairs.forEach(
+                r=>
+                    ctx.fillRect(...r)
+            );
 
 
-    else if(
-        customer.state===
-        "finished"
-    ){
+            /* đĩa + chén */
 
-        title="ĂN XONG";
+            ctx.fillStyle=
+                "#f7f4e9";
 
-    }
+            ctx.beginPath();
 
+            ctx.arc(
+                table.x+
+                tableSize/2,
+                table.y+
+                tableSize/2,
+                15,
+                0,
+                Math.PI*2
+            );
 
-    if(!title)
-        return;
-
-
-    ctx.save();
-
-
-    ctx.font=
-        "bold 12px Arial";
-
-
-    const textWidth=
-        ctx.measureText(title).width;
+            ctx.fill();
 
 
-    const boxWidth=
-        textWidth+24;
+            ctx.strokeStyle=
+                "#d6c49b";
+
+            ctx.lineWidth=2;
+
+            ctx.stroke();
 
 
-    const boxHeight=27;
+            if(table.occupied){
+
+                ctx.fillStyle=
+                    "#e5b400";
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    table.x+10,
+                    table.y+10,
+                    4,
+                    0,
+                    Math.PI*2
+                );
+
+                ctx.fill();
+
+            }
 
 
-    const boxX=
-        customer.x-
-        boxWidth/2;
+            ctx.restore();
 
-
-    const boxY=
-        customer.y-
-        78;
-
-
-    /*
-       NỀN TRẮNG
-    */
-
-    ctx.fillStyle=
-        "rgba(255,255,255,.97)";
-
-
-    ctx.fillRect(
-
-        boxX,
-        boxY,
-        boxWidth,
-        boxHeight
-
+        }
     );
-
-
-    /*
-       VIỀN VÀNG
-    */
-
-    ctx.strokeStyle="#e5b400";
-
-    ctx.lineWidth=3;
-
-
-    ctx.strokeRect(
-
-        boxX,
-        boxY,
-        boxWidth,
-        boxHeight
-
-    );
-
-
-    /*
-       CHỮ
-    */
-
-    ctx.fillStyle="#111";
-
-    ctx.textAlign="center";
-
-    ctx.textBaseline="middle";
-
-
-    ctx.fillText(
-
-        title,
-
-        customer.x,
-
-        boxY+
-        boxHeight/2
-
-    );
-
-
-    /*
-       MŨI TÊN
-    */
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-
-        customer.x-6,
-
-        boxY+
-        boxHeight
-
-    );
-
-
-    ctx.lineTo(
-
-        customer.x,
-
-        boxY+
-        boxHeight+
-        7
-
-    );
-
-
-    ctx.lineTo(
-
-        customer.x+6,
-
-        boxY+
-        boxHeight
-
-    );
-
-
-    ctx.closePath();
-
-
-    ctx.fillStyle="#fff";
-
-    ctx.fill();
-
-
-    ctx.strokeStyle="#e5b400";
-
-    ctx.stroke();
-
-
-    ctx.restore();
-
-}
-
-
-/* =====================================================
-   NÚT HÀNH ĐỘNG KHÁCH
-===================================================== */
-
-function drawCustomerAction(customer){
-
-    let text="";
-
-
-    if(
-        customer.state===
-        "waitingDialogue"
-    ){
-
-        text="E - NÓI CHUYỆN";
-
-    }
-
-
-    else if(
-        customer.state===
-        "finished"
-    ){
-
-        text="E - ĐUỔI KHÁCH";
-
-    }
-
-
-    if(!text)
-        return;
-
-
-    ctx.save();
-
-
-    ctx.font=
-        "bold 11px Arial";
-
-
-    const width=96;
-
-    const height=25;
-
-
-    const x=
-        customer.x-
-        width/2;
-
-
-    const y=
-        customer.y+
-        48;
-
-
-    ctx.fillStyle="#fff";
-
-
-    ctx.fillRect(
-        x,
-        y,
-        width,
-        height
-    );
-
-
-    ctx.strokeStyle="#e5b400";
-
-    ctx.lineWidth=2;
-
-
-    ctx.strokeRect(
-        x,
-        y,
-        width,
-        height
-    );
-
-
-    ctx.fillStyle="#111";
-
-    ctx.textAlign="center";
-
-    ctx.textBaseline="middle";
-
-
-    ctx.fillText(
-
-        text,
-
-        customer.x,
-
-        y+
-        height/2
-
-    );
-
-
-    ctx.restore();
 
 }
 
@@ -3727,194 +3883,92 @@ function drawGame(){
     );
 
 
-    /*
-       =================================================
-       1. NỀN 15.JPG
-       =================================================
-    */
+    /* 15.jpg được vẽ trực tiếp lên toàn bộ Canvas 1100x620. */
 
     drawBackground();
 
 
-    /*
-       =================================================
-       2. ĐƯỜNG
-       =================================================
-    */
-
     drawRoad();
 
 
-    /*
-       =================================================
-       3. KHO
-       =================================================
-    */
+    /* khu vực công trình */
 
     drawContain(
-
         images.warehouse,
-
         warehouse.x,
         warehouse.y,
-
         warehouse.w,
         warehouse.h
-
     );
 
-
-    /*
-       =================================================
-       4. QUÁN
-       =================================================
-    */
 
     drawContain(
-
         images.building,
-
         restaurant.x,
         restaurant.y,
-
         restaurant.w,
         restaurant.h
-
     );
 
 
-    /*
-       =================================================
-       5. BẢNG NHẬP HÀNG
-       =================================================
-    */
+    /* biển khu nhập hàng */
 
-    ctx.save();
-
-
-    ctx.fillStyle=
-        "rgba(255,255,255,.9)";
-
-
-    ctx.fillRect(
-
-        warehouse.x,
-
-        warehouse.y+
-        warehouse.h+
-        8,
-
-        warehouse.w,
-
-        34
-
-    );
-
-
-    ctx.fillStyle="#111";
-
-    ctx.font=
-        "bold 17px Arial";
-
-    ctx.textAlign="center";
-
-    ctx.textBaseline="alphabetic";
-
-
-    ctx.fillText(
-
+    drawCanvasBadge(
         "KHU NHẬP HÀNG",
-
         warehouse.x+
         warehouse.w/2,
-
         warehouse.y+
         warehouse.h+
-        31
-
+        42,
+        {
+            font:"bold 15px Arial",
+            height:30,
+            padX:16,
+            border:"#e5b400"
+        }
     );
 
-
-    ctx.restore();
-
-
-    /*
-       =================================================
-       6. BÀN
-       =================================================
-    */
 
     drawTables();
 
 
-    /*
-       =================================================
-       7. KHÁCH
-       =================================================
-    */
+    /* khách */
 
     game.customers.forEach(
         customer=>{
 
-            drawContain(
-
-                customer.img,
-
-                customer.x-32,
-
-                customer.y-42,
-
-                64,
-
-                84
-
-            );
-
-
-            /*
-               Tên khách
-            */
-
             ctx.save();
 
-            ctx.font=
-                "bold 12px Arial";
+            ctx.fillStyle=
+                "rgba(0,0,0,.18)";
 
-            ctx.textAlign="center";
+            ctx.beginPath();
 
-            ctx.textBaseline="alphabetic";
-
-            ctx.fillStyle="#111";
-
-
-            ctx.fillText(
-
-                customer.name,
-
+            ctx.ellipse(
                 customer.x,
-
-                customer.y+54
-
+                customer.y+39,
+                27,
+                8,
+                0,
+                0,
+                Math.PI*2
             );
 
+            ctx.fill();
 
             ctx.restore();
 
 
-            /*
-               Bảng trạng thái
-            */
-
-            drawCustomerLabel(
-                customer
+            drawContain(
+                customer.img,
+                customer.x-32,
+                customer.y-42,
+                64,
+                84
             );
 
 
-            /*
-               Nút E
-            */
-
-            drawCustomerAction(
+            drawCustomerLabel(
                 customer
             );
 
@@ -3922,27 +3976,28 @@ function drawGame(){
     );
 
 
-    /*
-       =================================================
-       8. XE
-       =================================================
-    */
-
     game.cars.forEach(
-        car=>
-            drawCar(car)
+        drawCar
     );
 
 
-    /*
-       =================================================
-       9. ĐĨA THỨC ĂN
-       =================================================
-    */
+    /* đĩa món */
 
     if(game.plate){
 
+        const bob=
+            Math.sin(
+                game.visualTime/170
+            )*3;
+
+
         ctx.save();
+
+
+        ctx.shadowColor=
+            "rgba(229,180,0,.65)";
+
+        ctx.shadowBlur=14;
 
 
         ctx.fillStyle="#fff";
@@ -3950,18 +4005,17 @@ function drawGame(){
         ctx.beginPath();
 
         ctx.arc(
-
             game.plate.x,
-            game.plate.y,
-
-            18,
-
+            game.plate.y+bob,
+            19,
             0,
             Math.PI*2
-
         );
 
         ctx.fill();
+
+
+        ctx.shadowBlur=0;
 
 
         ctx.strokeStyle="#222";
@@ -3976,71 +4030,27 @@ function drawGame(){
         ctx.beginPath();
 
         ctx.arc(
-
             game.plate.x,
-            game.plate.y,
-
+            game.plate.y+bob,
             9,
-
             0,
             Math.PI*2
-
         );
 
         ctx.fill();
 
 
-        ctx.fillStyle="#fff";
-
-        ctx.fillRect(
-
-            game.plate.x-48,
-
-            game.plate.y-50,
-
-            96,
-
-            25
-
-        );
-
-
-        ctx.strokeStyle="#e5b400";
-
-        ctx.lineWidth=2;
-
-
-        ctx.strokeRect(
-
-            game.plate.x-48,
-
-            game.plate.y-50,
-
-            96,
-
-            25
-
-        );
-
-
-        ctx.fillStyle="#111";
-
-        ctx.font=
-            "bold 11px Arial";
-
-        ctx.textAlign="center";
-
-        ctx.textBaseline="middle";
-
-
-        ctx.fillText(
-
-            "E - LẤY ĐĨA",
-
+        drawCanvasBadge(
+            "E • LẤY MÓN",
             game.plate.x,
-
-            game.plate.y-37
-
+            game.plate.y-
+            25+
+            bob,
+            {
+                height:24,
+                padX:9,
+                border:"#e5b400"
+            }
         );
 
 
@@ -4049,11 +4059,7 @@ function drawGame(){
     }
 
 
-    /*
-       =================================================
-       10. PLAYER
-       =================================================
-    */
+    /* player */
 
     let playerImage;
 
@@ -4070,6 +4076,38 @@ function drawGame(){
                     .slice(1)
             ];
 
+
+        ctx.save();
+
+
+        ctx.shadowColor=
+            "rgba(255,214,54,.8)";
+
+        ctx.shadowBlur=18;
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+            player.x,
+            player.y,
+            35+
+            Math.sin(
+                game.visualTime/150
+            )*3,
+            0,
+            Math.PI*2
+        );
+
+        ctx.strokeStyle=
+            "rgba(229,180,0,.7)";
+
+        ctx.lineWidth=3;
+
+        ctx.stroke();
+
+        ctx.restore();
+
     }
     else{
 
@@ -4081,197 +4119,104 @@ function drawGame(){
     }
 
 
+    ctx.save();
+
+    ctx.fillStyle=
+        "rgba(0,0,0,.24)";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        player.x,
+        player.y+30,
+        26,
+        8,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+    ctx.restore();
+
+
     drawContain(
-
         playerImage,
-
         player.x-
         player.size/2,
-
         player.y-
         player.size/2,
-
         player.size,
-
         player.size
-
     );
 
 
-    /*
-       =================================================
-       BẢNG TÊN ĐẠT TRUNG
-       =================================================
-    */
+    drawPlayerBadge();
+
+    drawInteractionHint();
+
+    drawEffects();
+
+
+    /* thanh thông tin nhỏ trong Canvas */
 
     ctx.save();
 
+    ctx.fillStyle=
+        "rgba(20,20,20,.72)";
 
-    const playerNameText=
-        "Đạt Trung";
+    ctx.beginPath();
 
+    ctx.roundRect(
+        15,
+        15,
+        210,
+        34,
+        10
+    );
+
+    ctx.fill();
+
+
+    ctx.fillStyle="#fff";
 
     ctx.font=
-        "bold 14px Arial";
+        "bold 13px Arial";
 
-
-    const playerNameWidth=
-        ctx.measureText(
-            playerNameText
-        ).width;
-
-
-    const playerBoxWidth=
-        playerNameWidth+
-        16;
-
-
-    const playerBoxHeight=24;
-
-
-    const playerBoxX=
-        player.x-
-        playerBoxWidth/2;
-
-
-    const playerBoxY=
-        player.y-
-        65;
-
-
-    /*
-       NỀN TRẮNG
-    */
-
-    ctx.fillStyle=
-        "rgba(255,255,255,.97)";
-
-
-    ctx.fillRect(
-
-        playerBoxX,
-
-        playerBoxY,
-
-        playerBoxWidth,
-
-        playerBoxHeight
-
-    );
-
-
-    /*
-       VIỀN VÀNG
-    */
-
-    ctx.strokeStyle="#e5b400";
-
-    ctx.lineWidth=2;
-
-
-    ctx.strokeRect(
-
-        playerBoxX,
-
-        playerBoxY,
-
-        playerBoxWidth,
-
-        playerBoxHeight
-
-    );
-
-
-    /*
-       CHỮ ĐẠT TRUNG
-    */
-
-    ctx.fillStyle="#111";
-
-    ctx.textAlign="center";
-
+    ctx.textAlign="left";
     ctx.textBaseline="middle";
 
 
     ctx.fillText(
-
-        playerNameText,
-
-        player.x,
-
-        playerBoxY+
-        playerBoxHeight/2
-
+        `NGÀY ${game.day}/10  •  KHÁCH ${game.customers.length}/${MAX_CUSTOMERS}`,
+        28,
+        32
     );
 
 
     ctx.restore();
 
 
-    /*
-       =================================================
-       MESSAGE
-       =================================================
-    */
+    /* message */
 
-    if(
-        game.messageTimer>0
-    ){
+    if(game.messageTimer>0){
 
         game.messageTimer--;
 
 
-        const boxWidth=
-            Math.min(
-                620,
-                W-30
-            );
-
-
-        ctx.save();
-
-
-        ctx.fillStyle=
-            "rgba(0,0,0,.82)";
-
-
-        ctx.fillRect(
-
-            W/2-
-            boxWidth/2,
-
-            H-55,
-
-            boxWidth,
-
-            38
-
-        );
-
-
-        ctx.fillStyle="#fff";
-
-        ctx.font=
-            "bold 15px Arial";
-
-
-        ctx.textAlign="center";
-
-        ctx.textBaseline="middle";
-
-
-        ctx.fillText(
-
+        drawCanvasBadge(
             game.message,
-
             W/2,
-
-            H-36
-
+            H-14,
+            {
+                font:"bold 14px Arial",
+                height:34,
+                padX:16,
+                border:"#e5b400",
+                lineWidth:2
+            }
         );
-
-
-        ctx.restore();
 
     }
 
@@ -4685,8 +4630,8 @@ function endGame(){
 
     const rank=
         rankIndex>=0
-        ? rankIndex+1
-        : all.length;
+        ?rankIndex+1
+        :all.length;
 
 
     document
@@ -4698,7 +4643,9 @@ function endGame(){
         rank;
 
 
-    renderLeaderboard(null);
+    renderLeaderboard(
+        null
+    );
 
 }
 
@@ -4949,6 +4896,7 @@ function openFinalLeaderboard(){
 
     renderLeaderboard();
 
+
 }
 
 
@@ -4996,14 +4944,29 @@ function restartGame(){
 }
 
 
-/* =====================================================
-   GAME LOOP
-===================================================== */
+/* =========================================
+        GAME LOBBY
+   =========================================*/
 
-function gameLoop(){
+function gameLoop(
+    now=performance.now()
+){
 
     if(!game.running)
         return;
+
+
+    const dt=
+        Math.min(
+            40,
+            now-
+            game.lastFrame ||
+            16
+        );
+
+
+    game.lastFrame=
+        now;
 
 
     movePlayer();
@@ -5017,6 +4980,8 @@ function gameLoop(){
     updateDay();
 
     createFoodPlate();
+
+    updateEffects(dt);
 
     updateHUD();
 
@@ -5040,4 +5005,3 @@ drawGame();
 
 </body>
 </html>
-```
