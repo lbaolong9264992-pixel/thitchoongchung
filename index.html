@@ -4081,7 +4081,7 @@ function drawGame(){
 
 
         ctx.shadowColor=
-            "rgba(255,214,54,.8)";
+            "rgba(255,214,54,.😎";
 
         ctx.shadowBlur=18;
 
@@ -4189,7 +4189,7 @@ function drawGame(){
 
 
     ctx.fillText(
-        `NGÀY ${game.day}/10  •  KHÁCH ${game.customers.length}/${MAX_CUSTOMERS}`,
+        NGÀY ${game.day}/10  •  KHÁCH ${game.customers.length}/${MAX_CUSTOMERS},
         28,
         32
     );
@@ -4944,9 +4944,9 @@ function restartGame(){
 }
 
 
-/* =========================================
-        GAME LOBBY
-   =========================================*/
+/* =====================================================
+   GAME LOOP
+===================================================== */
 
 function gameLoop(
     now=performance.now()
